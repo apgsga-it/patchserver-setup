@@ -1,0 +1,10 @@
+parameters:
+  targets:
+    type: TargetSpec
+steps:
+  - resources:
+       - class : java::adopt 
+      parameters:
+        version: 8
+        java: jdk 
+    targets: $targets
