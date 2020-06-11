@@ -1,0 +1,3 @@
+---
+ssh:
+   run-as: root
