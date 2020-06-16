@@ -4,7 +4,7 @@ plan piper::ruby_install (
      $targets.apply_prep
      apply($targets) {
         class { '::ruby':
-            gems_version => 'latest',
+          gems_version => 'latest',
        } 
    }
 } 
