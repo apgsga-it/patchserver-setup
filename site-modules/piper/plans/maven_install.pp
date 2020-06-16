@@ -15,17 +15,19 @@ plan piper::maven_install(
           provider => 'curl',
           require  => Package['curl', 'unzip'],
         }
-        $dirname = 'apache-maven-3.2.2'
-        $filename = "${dirname}-bin.zip"
-        $install_path = "/opt/${dirname}"
-        $profile = @(EOT)
+
+    }
+    $dirname = 'apache-maven-3.2.5'
+    $filename = "${dirname}-bin.zip"
+    $mirror = 'https://apache.brunneis.com/maven/maven-3/3.2.5/binaries'
+    $install_path = "/opt/${dirname}"
+    $profile = @(EOT)
             export MAVEN_HOME=/opt/maven
             export PATH=${MAVEN_HOME}/bin:${PATH}
             |-EOT
-    }
     archive { $filename:
       path         => "/tmp/${filename}",
-      source       => "http://mirror.easyname.ch/apache/maven/binaries/${filename}",
+      source       => "$mirror/${filename}",
       extract      => true,
       extract_path => '/opt',
       creates      => $install_path,

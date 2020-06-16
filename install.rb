@@ -50,7 +50,7 @@ end
 if !opts[:install].empty?
   plans = []
   opts[:install].each do |plan|
-    plans << plans_available.find { |e| e =~ /#{plan}/ } if plans_available.find { |e| e =~ /#{plan}/ }
+    plans += plans_available.select { |e| e =~ /#{plan}/  }
   end
   plans_available = plans
 end
@@ -64,7 +64,7 @@ def run(plan,opts)
 end
 
 
-if opts[:plans] or opts[:all]
+if !plans_available.empty?
   puts "Running with user=<#{opts[:user]}> the plans=<#{plans_available}> on target:#{opts[:target]}"
   if plans_available.include? 'piper::java_install'
     run('piper::java_install',opts)
