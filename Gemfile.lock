@@ -1,0 +1,14 @@
+GEM
+  specs:
+    ipaddress (0.8.3)
+    slop (4.8.1)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  ipaddress
+  slop
+
+BUNDLED WITH
+   2.1.4
