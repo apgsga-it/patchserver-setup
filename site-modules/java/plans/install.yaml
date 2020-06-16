@@ -1,8 +1,0 @@
-parameters:
-  targets:
-    type: TargetSpec
-steps:
-- name: install_jdk8
-  script: java/install_jdk8.sh
-  targets: $targets
-  description: "Installing Java SDK 8"
