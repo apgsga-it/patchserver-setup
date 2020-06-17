@@ -1,0 +1,17 @@
+{
+  "CHANGELOG.md": "2af44098468d02a66fdded353104fe43",
+  "Gemfile": "82e849383a50fcc71de461cd7ffea8a9",
+  "LICENSE": "b3f8a01d8699078d82e8c3c992307517",
+  "README.md": "6e55100343fc750418603577dba998c6",
+  "REFERENCE.md": "fd5f587ede32e5f7d8846712d783bb5c",
+  "Rakefile": "35791ec85225c70e7b5a891f1bbd1b87",
+  "appveyor.yml": "4aa690537aadcdd9341e0e3cca957d38",
+  "data/common.yaml": "6105347ebb9825ac754615ca55ff3b0c",
+  "examples/notify.pp": "dd5a42b60ab0229e6fcb3c476e5878b4",
+  "hiera.yaml": "b13568f83ed354ead5c75d742cdd1b5a",
+  "lib/puppet/provider/transition/ruby.rb": "25e696dffb52d2491eeb58383025de09",
+  "lib/puppet/type/transition.rb": "d9fe1ec762778156b3b0c26de2d0fdbf",
+  "metadata.json": "8d94c96d5af1ae6094fcecbb1cfa0e83",
+  "spec/default_facts.yml": "973bd7e9b429cde3c8d45d57c2fa21ed",
+  "spec/spec_helper.rb": "80a9262fe27b07bccc4cac930a88146e"
+}

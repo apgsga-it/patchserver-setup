@@ -23,6 +23,7 @@ end
 
 show_output = `bolt plan show`
 plans_available = []
+plans_to_execute = []
 lines = show_output.split("\n")
 lines.each do |line|
   if (line.match(/piper::/))
@@ -52,7 +53,7 @@ if !opts[:install].empty?
   opts[:install].each do |plan|
     plans += plans_available.select { |e| e =~ /#{plan}/  }
   end
-  plans_available = plans
+  plans_to_execute = plans
 end
 
 def run(plan,opts)
@@ -63,18 +64,22 @@ def run(plan,opts)
   puts "Done: #{plan}"
 end
 
+if opts[:all]
+  plans_to_execute = plans_available
+end
 
-if !plans_available.empty?
-  puts "Running with user=<#{opts[:user]}> the plans=<#{plans_available}> on target:#{opts[:target]}"
-  if plans_available.include? 'piper::java_install'
+
+if !plans_to_execute.empty?
+  puts "Running with user=<#{opts[:user]}> the plans=<#{plans_to_execute}> on target:#{opts[:target]}"
+  if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
-    plans_available.delete('piper::java_install')
+    plans_to_execute.delete('piper::java_install')
   end
-  if plans_available.include? 'piper::ruby_install'
+  if plans_to_execute.include? 'piper::ruby_install'
     run('piper::ruby_install',opts)
-    plans_available.delete('piper::ruby_install')
+    plans_to_execute.delete('piper::ruby_install')
   end
-  plans_available.each do |plan|
+  plans_to_execute.each do |plan|
     run(plan,opts)
   end
 end

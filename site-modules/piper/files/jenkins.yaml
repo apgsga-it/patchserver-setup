@@ -1,0 +1,195 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "jadas-e ssh credentials "
+          id: "jadas-e-ssh"
+          password: "{AQAAABAAAAAQ8/wv4Gi0xbm6nbhsv4hR9GoS7E4PtSXv5TyphdzR/qI=}"
+          scope: GLOBAL
+          username: "che"
+      - usernamePassword:
+          description: "Github Zugang"
+          id: "chhexgithub"
+          password: "{AQAAABAAAAAgMwpA/g5Mf74BlcOSoe6wHS8MviRjCaMBxS7eOyFx7dJ35DZmb8IUWCzSshWKaaRn}"
+          scope: GLOBAL
+          username: "chhex"
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Agent/Build:authenticated"
+      - "Agent/Configure:authenticated"
+      - "Agent/Connect:authenticated"
+      - "Agent/Create:authenticated"
+      - "Agent/Delete:authenticated"
+      - "Agent/Disconnect:authenticated"
+      - "Credentials/Create:authenticated"
+      - "Credentials/Delete:authenticated"
+      - "Credentials/ManageDomains:authenticated"
+      - "Credentials/Update:authenticated"
+      - "Credentials/View:authenticated"
+      - "Job/Build:authenticated"
+      - "Job/Cancel:authenticated"
+      - "Job/Configure:authenticated"
+      - "Job/Create:authenticated"
+      - "Job/Delete:authenticated"
+      - "Job/Discover:authenticated"
+      - "Job/Move:authenticated"
+      - "Job/Read:authenticated"
+      - "Job/Workspace:authenticated"
+      - "Lockable Resources/Reserve:authenticated"
+      - "Lockable Resources/Unlock:authenticated"
+      - "Lockable Resources/View:authenticated"
+      - "Overall/Administer:authenticated"
+      - "Overall/Read:authenticated"
+      - "Run/Delete:authenticated"
+      - "Run/Replay:authenticated"
+      - "Run/Update:authenticated"
+      - "SCM/Tag:authenticated"
+      - "View/Configure:authenticated"
+      - "View/Create:authenticated"
+      - "View/Delete:authenticated"
+      - "View/Read:authenticated"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  globalNodeProperties:
+  - envVars:
+      env:
+      - key: "CVS_ROOT"
+        value: ":ext:che@cvs.apgsga.ch:/var/local/cvs/root"
+      - key: "CVS_RSH"
+        value: "ssh"
+  labelAtoms:
+  - name: "master"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: true
+      enableCaptcha: false
+      users:
+      - id: "che"
+        name: "Christoph Henrici"
+        properties:
+        - "apiToken"
+        - mailer:
+            emailAddress: "chhenrici@gmail.com"
+        - preferredProvider:
+            providerId: "default"
+  slaveAgentPort: -1
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  sSHD:
+    port: -1
+  scriptApproval:
+    approvedSignatures:
+    - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
+unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  buildStepOperation:
+    enabled: false
+  defaultFolderConfiguration:
+    healthMetrics:
+    - worstChildHealthMetric:
+        recursive: true
+  extendedEmailPublisher:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:\r\n\r\nCheck\
+      \ console output at $BUILD_URL to view the results."
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: 0
+    precedenceBulk: false
+    useSsl: false
+    watchingEnabled: false
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "http://192.168.91.114:8080/github-webhook/"
+  gitSCM:
+    createAccountBasedOnEmail: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalLibraries:
+    libraries:
+    - defaultVersion: "master"
+      implicit: true
+      name: "testlib-functions"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              configuredByUrl: true
+              credentialsId: "chhexgithub"
+              id: "70017d8d-d161-4e1f-896b-ee4f2338f931"
+              repoOwner: "apgsga-it"
+              repository: "apg-jenkins-pipeline-testlibs"
+              repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-testlibs.git"
+              traits:
+              - gitHubBranchDiscovery:
+                  strategyId: 3
+  location:
+    adminAddress: "Adresse nicht konfiguriert <nobody@nowhere>"
+    url: "http://192.168.91.114:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  pollSCM:
+    pollingThreadCount: 10
+  timestamperConfig:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  jdk:
+    installations:
+    - home: "/etc/alternatives/java_sdk"
+      name: "Jdk8"
+  maven:
+    installations:
+    - home: "/opt/maven"
+      name: "maven"
+  pipelineMaven:
+    triggerDownstreamUponResultAborted: false
+    triggerDownstreamUponResultFailure: false
+    triggerDownstreamUponResultNotBuilt: false
+    triggerDownstreamUponResultSuccess: true
+    triggerDownstreamUponResultUnstable: false
