@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-06-17 10:55:59 +0200.
+# This file was automatically generated on 2020-06-17 11:06:05 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Fails when a previous background installation failed. The type

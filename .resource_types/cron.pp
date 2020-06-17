@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-06-17 10:55:58 +0200.
+# This file was automatically generated on 2020-06-17 11:06:05 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Installs and manages cron jobs. Every cron resource created by Puppet
