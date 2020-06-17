@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-06-16 10:49:52 +0200.
+# This file was automatically generated on 2020-06-17 10:19:57 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manages system reboots.  The `reboot` type is typically
@@ -128,7 +128,7 @@ Puppet::Resource::ResourceType3.new(
     #   * Default for `feature` == `posix`.
     # 
     # windows
-    # : * Required binaries: `C:\Windows\system32\shutdown.exe`.
+    # : * Required binaries: `shutdown.exe`.
     #   * Default for `operatingsystem` == `windows`.
     #   * Supported features: `manages_reboot_pending`.
     Puppet::Resource::Param(Any, 'provider')
