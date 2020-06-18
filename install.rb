@@ -12,7 +12,7 @@ opts = Slop.parse do |o|
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans ', default: false
   o.bool '-a', '--all', 'Execute all Bolt plans', default: false
-  o.bool '--dry', 'Only print all Bolt plans commands', default: false
+  o.bool '--dry', '--dry-run','Only print all Bolt plans commands', default: false
   o.bool '--debug', 'Enable bolt debug optin', default: false
   o.on '-h', '--help' do
     puts o
@@ -59,9 +59,9 @@ end
 def run(plan,opts)
   debug = opts[:debug] ? "--debug" : " "
   cmd = "bolt plan run #{plan} #{debug} --targets=#{opts[:target]} -u #{opts[:user]} -p #{opts[:password]}"
-  puts "About to run bolt command: #{cmd}"
+  puts "#{cmd}"
   system(cmd) unless opts[:dry]
-  puts "Done: #{plan}"
+  puts "Done: #{plan}"  unless opts[:dry]
 end
 
 if opts[:all]
@@ -71,6 +71,7 @@ end
 
 if !plans_to_execute.empty?
   puts "Running with user=<#{opts[:user]}> the plans=<#{plans_to_execute}> on target:#{opts[:target]}"
+  plans_after = []
   if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
     plans_to_execute.delete('piper::java_install')
@@ -79,7 +80,15 @@ if !plans_to_execute.empty?
     run('piper::ruby_install',opts)
     plans_to_execute.delete('piper::ruby_install')
   end
+  if plans_to_execute.include? 'piper::jenkins_install'
+    plans_after = %w[piper::jenkins_install piper::open_port]
+    plans_to_execute.delete('piper::jenkins_install')
+    plans_to_execute.delete('piper::open_port')
+  end
   plans_to_execute.each do |plan|
+    run(plan,opts)
+  end
+  plans_after.each do |plan|
     run(plan,opts)
   end
 end

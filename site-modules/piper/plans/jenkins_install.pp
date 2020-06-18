@@ -10,11 +10,13 @@ plan piper::jenkins_install(
           cli          => false,
         }
         jenkins::plugin {
-          # Default Installed (Todo (che,jhe) : Verify and explain
+          # Default Installed , required by the puppet jenkins module
           # 'structs' :  version =>  '1.20'; # Structs Plugin
-          #'trilead-api' :  version =>  '1.0.4'; # Trilead API Plugin
           #'credentials' :  version =>  '2.3.9'; # Credentials Plugin
-          #'jdk-tool' :  version =>  '1.0'; # JDK Tool Plugin
+          #'jdk-tool' :  version =>  '1.0'; # JDK Tool Pluginche
+          'snakeyaml-api' :  version =>  '1.26.4'; # Snakeyaml API Plugin
+          'configuration-as-code' :  version =>  '1.41'; # Configuration as Code Plugin
+          'matrix-auth' :  version =>  '2.6.1'; # Matrix Authorization Strategy Plugin
           'scm-api' :  version =>  '2.6.3'; # SCM API Plugin
           'git' :  version =>  '4.2.2'; # Git plugin
           'script-security' :  version =>  '1.73'; # Script Security Plugin
