@@ -81,9 +81,8 @@ if !plans_to_execute.empty?
     plans_to_execute.delete('piper::ruby_install')
   end
   if plans_to_execute.include? 'piper::jenkins_install'
-    plans_after = %w[piper::jenkins_install piper::open_port]
+    plans_after = %w[piper::jenkins_install]
     plans_to_execute.delete('piper::jenkins_install')
-    plans_to_execute.delete('piper::open_port')
   end
   plans_to_execute.each do |plan|
     run(plan,opts)

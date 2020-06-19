@@ -1,9 +1,0 @@
-parameters:
-  targets:
-    type: TargetSpec
-
-steps:
-  - name: jenkins_firewall
-    script: piper/open-jenkins-port.sh
-    targets: $targets
-    description: "Opening Jenkins Port"
