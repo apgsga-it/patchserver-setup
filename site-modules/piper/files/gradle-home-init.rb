@@ -84,7 +84,10 @@ if errors
 end
 # Invoke iniGradleProfle script
 # TODO (jhe, 25.8) : Missing Mavenlocal Repo Option
-cmd = "#{opts[:targetDir]}/initGradleProfile.sh #{opts[:mvnSettingsParentDir]} #{opts[:mvnProfile]} copySettingsXml"
+cmd = "./initGradleProfile.sh #{opts[:mvnSettingsParentDir]} #{opts[:mvnProfile]} copySettingsXml"
 puts "Running #{cmd}"
-system (cmd)
+Dir.chdir("#{opts[:targetDir]}") do
+  system (cmd)
+end
+
 puts "Done."
