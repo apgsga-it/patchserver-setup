@@ -24,7 +24,7 @@ class jenkins::params {
   $user         = 'jenkins'
   $manage_group = true
   $group        = 'jenkins'
-  $_java_args   = '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=100'
+  $_java_args   = '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false'
   $default_plugins = [
     'credentials', # required by puppet_helper.groovy
     'structs', # required by credentials plugin

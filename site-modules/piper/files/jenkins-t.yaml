@@ -1,0 +1,472 @@
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  globalNodeProperties: |-
+    FAILED TO EXPORT
+    hudson.model.Hudson#globalNodeProperties: io.jenkins.plugins.casc.ConfiguratorException: Can't read attribute 'env' from hudson.slaves.EnvironmentVariablesNodeProperty@71ea742
+      at io.jenkins.plugins.casc.Attribute._getValue(Attribute.java:453)
+      at io.jenkins.plugins.casc.Attribute.getValue(Attribute.java:227)
+      at io.jenkins.plugins.casc.impl.configurators.DataBoundConfigurator.describe(DataBoundConfigurator.java:283)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.lambda$convertToNode$de0cd4f8$1(HeteroDescribableConfigurator.java:283)
+      at io.vavr.CheckedFunction0.lambda$unchecked$52349c75$1(CheckedFunction0.java:247)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.convertToNode(HeteroDescribableConfigurator.java:283)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.lambda$describe$5(HeteroDescribableConfigurator.java:107)
+      at io.vavr.control.Option.map(Option.java:392)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.describe(HeteroDescribableConfigurator.java:107)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.describe(HeteroDescribableConfigurator.java:55)
+      at io.jenkins.plugins.casc.Attribute._describe(Attribute.java:320)
+      at io.jenkins.plugins.casc.Attribute.describe(Attribute.java:249)
+      at io.jenkins.plugins.casc.Configurator.describe(Configurator.java:163)
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  nodes:
+  - dumb:
+      labelString: "jenkins_installer_windows jenkins_installer_windows_oldstyle"
+      launcher:
+        jnlp:
+          workDirSettings:
+            disabled: false
+            failIfWorkDirIsMissing: false
+            internalDir: "remoting"
+      mode: EXCLUSIVE
+      name: "apg-jdv-e-001"
+      nodeDescription: "windows test installer"
+      numExecutors: 3
+      remoteFS: "C:\\Software\\jenkinsWork"
+      retentionStrategy: "always"
+  - dumb:
+      labelString: "jadas-dev-cm.light"
+      launcher:
+        sSHLauncher:
+          credentialsId: "da94ce89-265c-4476-afae-15279ab8f8d8"
+          host: "dev-cmdocker.light.apgsga.ch"
+          maxNumRetries: 0
+          port: 22
+          retryWaitTime: 0
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      mode: EXCLUSIVE
+      name: "dev-cmdocker.light.apgsga.ch"
+      nodeDescription: "Piper-Node"
+      numExecutors: 1
+      remoteFS: "/home/apg-jenkins-jadas-node"
+      retentionStrategy: "always"
+  - dumb:
+      labelString: "jadas-p"
+      launcher:
+        sSHLauncher:
+          credentialsId: "da94ce89-265c-4476-afae-15279ab8f8d8"
+          host: "dev-jadas-pdocker.light.apgsga.ch"
+          maxNumRetries: 0
+          port: 22
+          retryWaitTime: 0
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      mode: EXCLUSIVE
+      name: "dev-jadas-p"
+      nodeDescription: "Piper-Node for Prod-Targets in Development"
+      numExecutors: 1
+      remoteFS: "/home/apg-jenkins-jadas-node"
+      retentionStrategy: "always"
+  - dumb:
+      labelString: "jadas-e"
+      launcher:
+        sSHLauncher:
+          credentialsId: "da94ce89-265c-4476-afae-15279ab8f8d8"
+          host: "dev-jadas-tdocker.light.apgsga.ch"
+          maxNumRetries: 0
+          port: 22
+          retryWaitTime: 0
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      mode: EXCLUSIVE
+      name: "dev-jadas-t"
+      nodeDescription: "Piper-Node for Test/Dev-Targets in Development"
+      numExecutors: 1
+      remoteFS: "/home/apg-jenkins-jadas-node"
+      retentionStrategy: "always"
+  - dumb:
+      labelString: "jadas-t"
+      launcher:
+        sSHLauncher:
+          credentialsId: "da94ce89-265c-4476-afae-15279ab8f8d8"
+          host: "jadas-t.apgsga.ch"
+          maxNumRetries: 0
+          port: 22
+          retryWaitTime: 0
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      mode: EXCLUSIVE
+      name: "lxewi161"
+      nodeDescription: "Piper-Node for Test/Dev-Targets in Development"
+      numExecutors: 1
+      remoteFS: "/home/apg-jenkins-jadas-node"
+      retentionStrategy: "always"
+  - dumb:
+      labelString: "jadas-dev-cm.light"
+      launcher:
+        sSHLauncher:
+          credentialsId: "da94ce89-265c-4476-afae-15279ab8f8d8"
+          host: "dev-cmdocker.light.apgsga.ch"
+          maxNumRetries: 0
+          port: 22
+          retryWaitTime: 0
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      mode: EXCLUSIVE
+      name: "service-dev-cm.light.apgsga.ch"
+      nodeDescription: "Piper-Node"
+      numExecutors: 1
+      remoteFS: "/home/apg-jenkins-jadas-node"
+      retentionStrategy: "always"
+  numExecutors: 7
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm: |-
+    FAILED TO EXPORT
+    hudson.model.Hudson#securityRealm: io.jenkins.plugins.casc.ConfiguratorException: Can't read attribute 'customDomain' from hudson.plugins.active_directory.ActiveDirectorySecurityRealm@33931197
+      at io.jenkins.plugins.casc.Attribute._getValue(Attribute.java:453)
+      at io.jenkins.plugins.casc.Attribute.getValue(Attribute.java:227)
+      at io.jenkins.plugins.casc.impl.configurators.DataBoundConfigurator.describe(DataBoundConfigurator.java:283)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.lambda$convertToNode$de0cd4f8$1(HeteroDescribableConfigurator.java:283)
+      at io.vavr.CheckedFunction0.lambda$unchecked$52349c75$1(CheckedFunction0.java:247)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.convertToNode(HeteroDescribableConfigurator.java:283)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.lambda$describe$5(HeteroDescribableConfigurator.java:107)
+      at io.vavr.control.Option.map(Option.java:392)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.describe(HeteroDescribableConfigurator.java:107)
+      at io.jenkins.plugins.casc.impl.configurators.HeteroDescribableConfigurator.describe(HeteroDescribableConfigurator.java:55)
+      at io.jenkins.plugins.casc.Attribute._describe(Attribute.java:320)
+      at io.jenkins.plugins.casc.Attribute.describe(Attribute.java:256)
+      at io.jenkins.plugins.casc.Configurator.describe(Configurator.java:163)
+  slaveAgentPort: 0
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "http://updates.jenkins-ci.org/update-center.json"
+  views:
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "Framework Builds"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      includeRegex: "Java8Mig.*"
+      name: "Java8Mig"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "Jenkins Admin"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "LIGHT 3.0"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "Maple"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      name: "PLSQL Cop"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "PatchUtils"
+  - list:
+      columns:
+      - "status"
+      - "jobName"
+      - "weather"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "releaseButtonColumn"
+      name: "Patches"
+  - list:
+      columns:
+      - "status"
+      - "weather"
+      - "jobName"
+      - "lastSuccess"
+      - "lastFailure"
+      - "lastDuration"
+      - "buildButton"
+      - "builtOnColumn"
+      - "favoriteColumn"
+      name: "ProductivePatches"
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  downloadSettings:
+    useBrowser: false
+  remotingCLI:
+    enabled: false
+  sSHD:
+    port: -1
+unclassified:
+  artifactoryBuilder:
+    artifactoryServers: |-
+      FAILED TO EXPORT
+      org.jfrog.hudson.ArtifactoryBuilder$DescriptorImpl#artifactoryServers: io.jenkins.plugins.casc.ConfiguratorException: Can't read attribute 'serverId' from org.jfrog.hudson.ArtifactoryServer@7e41c2fc
+        at io.jenkins.plugins.casc.Attribute._getValue(Attribute.java:453)
+        at io.jenkins.plugins.casc.Attribute.getValue(Attribute.java:227)
+        at io.jenkins.plugins.casc.impl.configurators.DataBoundConfigurator.describe(DataBoundConfigurator.java:283)
+        at io.jenkins.plugins.casc.Attribute._describe(Attribute.java:320)
+        at io.jenkins.plugins.casc.Attribute.describe(Attribute.java:249)
+        at io.jenkins.plugins.casc.Configurator.describe(Configurator.java:163)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:106)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.lambda$describe$3(GlobalConfigurationCategoryConfigurator.java:99)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+        at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+        at java.util.Iterator.forEachRemaining(Iterator.java:116)
+        at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+        at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+        at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+        at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+        at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+        at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:99)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:30)
+    useCredentialsPlugin: true
+  bitbucketEndpointConfiguration:
+    endpoints:
+    - bitbucketCloudEndpoint:
+        manageHooks: false
+  buildStepOperation:
+    enabled: false
+  extendedEmailPublisher:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:\r\n\r\nCheck\
+      \ console output at $BUILD_URL to view the results."
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    defaultSuffix: "spgsga.ch"
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: 0
+    precedenceBulk: false
+    smtpAuthPassword: "****"
+    smtpServer: "localhost"
+    useSsl: false
+    watchingEnabled: false
+  gitHubPluginConfig:
+    hookUrl: "https://jenkins-t.apgsga.ch/github-webhook/"
+  gitSCM:
+    createAccountBasedOnEmail: false
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED
+  globalItemStorage:
+    storage: "local"
+  globalLibraries:
+    libraries:
+    - defaultVersion: "jhe_cm-262"
+      implicit: true
+      includeInChangesets: false
+      name: "patch-global-functions"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              credentialsId: "apgsga-jenkins"
+              id: "caa3b2ae-0e00-433d-ad88-b4a8478b1fcb"
+              repoOwner: "apgsga-it"
+              repository: "jenkins-patch-scripts"
+              traits:
+              - branchDiscoveryTrait:
+                  strategyId: 1
+    - defaultVersion: "jhe_cm-262"
+      implicit: true
+      includeInChangesets: false
+      name: "patch-deployment-functions"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              credentialsId: "apgsga-jenkins"
+              id: "2e52f174-8242-4750-811f-da32570a8715"
+              repoOwner: "apgsga-it"
+              repository: "jenkins-patch-scripts"2
+              traits:
+              - branchDiscoveryTrait:
+                  strategyId: 3
+  globalSettings:
+    failOnCorrupt: false
+    noAuthors: false
+    quietMode: false
+  groovy:
+    installations:
+    - home: "/opt/groovy/current"
+      name: "Groovy_2_4_15"
+  jiraProjectProperty:
+    sites: |-
+      FAILED TO EXPORT
+      hudson.plugins.jira.JiraProjectProperty$DescriptorImpl#sites: io.jenkins.plugins.casc.ConfiguratorException: Can't read attribute 'url' from [Lhudson.plugins.jira.JiraSite;@62b73b57
+        at io.jenkins.plugins.casc.Attribute._getValue(Attribute.java:453)
+        at io.jenkins.plugins.casc.Attribute.getValue(Attribute.java:227)
+        at io.jenkins.plugins.casc.impl.configurators.DataBoundConfigurator.describe(DataBoundConfigurator.java:283)
+        at io.jenkins.plugins.casc.Attribute._describe(Attribute.java:320)
+        at io.jenkins.plugins.casc.Attribute.describe(Attribute.java:256)
+        at io.jenkins.plugins.casc.Configurator.describe(Configurator.java:163)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:106)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.lambda$describe$3(GlobalConfigurationCategoryConfigurator.java:99)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+        at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+        at java.util.Iterator.forEachRemaining(Iterator.java:116)
+        at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+        at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+        at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+        at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+        at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+        at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:99)
+        at io.jenkins.plugins.casc.impl.configurators.GlobalConfigurationCategoryConfigurator.describe(GlobalConfigurationCategoryConfigurator.java:30)
+  location:
+    adminAddress: "che"
+    url: "https://jenkins-t.apgsga.ch/"
+  mailer:
+    adminAddress: "che"
+    charset: "UTF-8"
+    defaultSuffix: "@apgsga.ch"
+    useSsl: false
+  mavenModuleSet:
+    localRepository: "default"
+  pollSCM:
+    pollingThreadCount: 10
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: false
+    installations:
+    - databaseLogin: "sonar"
+      databasePassword: "sonar_phs"
+      databaseUrl: "jdbc:oracle:thin:@lxewi082.apgsga.ch:1521:cherep1"
+      name: "SonarQube 5.1.2"
+      serverUrl: "https://sonarqube.apgsga.ch/"
+      serverVersion: "5.1"
+      sonarLogin: "admin"
+      sonarPassword: "solar-admin"
+      triggers:
+        skipScmCause: false
+        skipUpstreamCause: false
+  timestamperConfig:
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  gradle:
+    installations:
+    - name: "gradle-4.0"
+      properties:
+      - installSource:
+          installers:
+          - gradleInstaller:
+              id: "4.0"
+    - name: "gradle-4.1"
+      properties:
+      - installSource:
+          installers:
+          - gradleInstaller:
+              id: "4.1"
+  groovyInstallation:
+    installations:
+    - home: "/opt/groovy/current"
+      name: "Groovy_2_4_15"
+  jdk:
+    installations:
+    - home: "/usr/java/jdk1.8.0_131"
+      name: "default"
+  maven:
+    installations:
+    - name: "apache-maven-3.5.0"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.5.0"
+    - name: "apache-maven-3.4.3"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.5.3"
+  pipelineMaven:
+    triggerDownstreamUponResultAborted: false
+    triggerDownstreamUponResultFailure: false
+    triggerDownstreamUponResultNotBuilt: false
+    triggerDownstreamUponResultSuccess: true
+    triggerDownstreamUponResultUnstable: false
+  sonarRunnerInstallation:
+    installations:
+    - name: "SonarQube Scanner 2.5"
+      properties:
+      - installSource:
+          installers:
+          - sonarRunnerInstaller:
+              id: "2.5"

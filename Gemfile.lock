@@ -1,14 +1,18 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    fileutils (1.1.0)
     ipaddress (0.8.3)
+    nokogiri (1.10.9-java)
     slop (4.8.1)
 
 PLATFORMS
   java
 
 DEPENDENCIES
+  fileutils
   ipaddress
+  nokogiri
   slop
 
 BUNDLED WITH

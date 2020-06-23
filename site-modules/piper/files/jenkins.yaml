@@ -17,7 +17,7 @@ credentials:
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
-  - "Ping"
+  - "Ping"›
   authorizationStrategy:
     globalMatrix:
       permissions:
@@ -159,14 +159,10 @@ tool:
     installations:
     - home: "git"
       name: "Default"
-  jdk:
-    installations:
-    - home: "/etc/alternatives/java_sdk"
-      name: "Jdk8"
   maven:
     installations:
-    - home: "/opt/maven"
-      name: "maven"
+  gradle:
+    installations:
   pipelineMaven:
     triggerDownstreamUponResultAborted: false
     triggerDownstreamUponResultFailure: false
