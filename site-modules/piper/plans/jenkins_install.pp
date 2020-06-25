@@ -2,16 +2,44 @@ plan piper::jenkins_install(
   TargetSpec $targets
 ) {
   $targets.apply_prep
-  run_script('piper/casc-dir-create.sh', $targets, '_run_as' => 'root')
+  ## User Setup
+  run_command('groupadd -f -r jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  run_command('useradd -r -m -c "jenkins user" jenkins -g jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  run_command('mkdir /home/jenkins/.m2', $targets, '_catch_errors' => false, '_run_as' => 'root')
+
+  ## Jenkins JCasc Setup
+  run_command('mkdir "/etc/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  run_command('mkdir "/etc/jenkins/casc"', $targets, '_catch_errors' => false, '_run_as' => 'root')
   upload_file('piper/jenkins.yaml', '/etc/jenkins/casc/jenkins.yaml', $targets)
-  run_script('piper/casc-dir-chmod.sh', $targets, '_run_as' => 'root')
+  run_command('chown -R jenkins:jenkins /etc/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('chmod 0664 /etc/jenkins/casc/*', $targets, '_catch_errors' => true, '_run_as' => 'root')
+
+  ## Jenkins Gradle and Maven Home Setup
+  run_command('mkdir "/var/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  run_command('mkdir "/var/jenkins/gradle"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  run_command('mkdir "/var/jenkins/maven"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  upload_file('/tmp/gradlehome','/var/jenkins/gradle/', $targets,  '_catch_errors' => false,'_run_as' => 'root' )
+  run_command('mv /var/jenkins/gradle/gradle /var/jenkins/gradle/home', $targets, '_catch_errors' => true, '_run_as' => 'root') #Bolt Issue makes mv necessary
+  run_command('chmod u+x /var/jenkins/gradle/home/initGradleProfile.sh', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('cd /var/jenkins/gradle/home ; ./initGradleProfile.sh  /home/jenkins/.m2 artifactory /var/jenkins/maven copySettingsXml', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  # Owner Ship and Groups
+  run_command('chown -R jenkins:jenkins /home/jenkins/.m2', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('chmod -R 777 /var/jenkins/gradle', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('chmod -R 777 /var/jenkins/maven', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('chown -R jenkins:jenkins /var/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
+
   apply($targets) {
       node default {
         class { 'jenkins':
           version => '2.235.1',
           default_plugins => [],
           purge_plugins => true,
+          manage_user => false,
+          manage_group => false,
           plugin_hash => {
+            'email-ext' => { version =>   '2.69'}, # Email Extension Plugin
+            'timestamper' => { version =>   '1.11.3'}, # Timestamper
+            'emailext-template' => { version =>   '1.1'}, # Email Extension Template Plugin
             'jdk-tool' => { version =>   '1.0'}, # JDK Tool Plugin
             'snakeyaml-api' => { version =>   '1.26.4'}, # Snakeyaml API Plugin
             'configuration-as-code' => { version =>   '1.41'}, # Configuration as Code Plugin
@@ -103,6 +131,7 @@ plan piper::jenkins_install(
 
       }
   }
-  run_script('piper/jenkins-open-port.sh', $targets, '_run_as' => 'root')
+  run_command('firewall-cmd --permanent --add-port=8080/tcp', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
 
 }

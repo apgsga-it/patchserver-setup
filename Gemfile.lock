@@ -3,16 +3,20 @@ GEM
   specs:
     fileutils (1.1.0)
     ipaddress (0.8.3)
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.9)
+      mini_portile2 (~> 2.4.0)
     nokogiri (1.10.9-java)
     slop (4.8.1)
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
   fileutils
   ipaddress
-  nokogiri
+  nokogiri (~> 1.6, >= 1.6.7.2)
   slop
 
 BUNDLED WITH

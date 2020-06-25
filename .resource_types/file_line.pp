@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-06-17 14:17:58 +0200.
+# This file was automatically generated on 2020-06-25 15:47:54 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # @summary

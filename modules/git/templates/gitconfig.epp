@@ -1,0 +1,18 @@
+<%- | String  $user_email,
+      String  $user_name,
+      Boolean $color_ui     = true,
+      Enum[simple, matching, upstream]
+              $push_default = simple
+| -%>
+# HEADER: This file is managed by Puppet; changes may be overwritten.
+
+[user]
+    email = <%= $user_email %>
+    name = <%= $user_name %>
+
+[color]
+	ui = <%= $color_ui %>
+
+[push]
+	default = <%= $push_default %>
+

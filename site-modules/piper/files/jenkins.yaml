@@ -11,13 +11,13 @@ credentials:
       - usernamePassword:
           description: "Github Zugang"
           id: "chhexgithub"
-          password: "{AQAAABAAAAAgMwpA/g5Mf74BlcOSoe6wHS8MviRjCaMBxS7eOyFx7dJ35DZmb8IUWCzSshWKaaRn}"
+          password: "{AQAAABAAAABQKF1LnNOqCw8eBu22H88XfwFsfni7flX9DOWGvc7dOPVzfvkOEh7feOHDrZxnLOrM3jl38QzPsgAwLj3hlwtJQvlmXHCGP4/rvnt8f+rdk3q7q0xGO3NR0mpPGJoDOXUX}"
           scope: GLOBAL
           username: "chhex"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
-  - "Ping"›
+  - "Ping"
   authorizationStrategy:
     globalMatrix:
       permissions:
@@ -45,6 +45,7 @@ jenkins:
       - "Lockable Resources/Unlock:authenticated"
       - "Lockable Resources/View:authenticated"
       - "Overall/Administer:authenticated"
+      - "Overall/Administer:che"
       - "Overall/Read:authenticated"
       - "Run/Delete:authenticated"
       - "Run/Replay:authenticated"
@@ -58,19 +59,72 @@ jenkins:
     standard:
       excludeClientIPFromCrumb: false
   disableRememberMe: false
+  disabledAdministrativeMonitors:
+  - "jenkins.diagnostics.RootUrlNotSetMonitor"
+  - "jenkins.security.QueueItemAuthenticatorMonitor"
+  - "hudson.diagnosis.ReverseProxySetupMonitor"
   globalNodeProperties:
   - envVars:
       env:
+      - key: "ARTIFACTORY_SERVER_ID"
+        value: "artifactory4t4apgsga"
       - key: "CVS_ROOT"
-        value: ":ext:che@cvs.apgsga.ch:/var/local/cvs/root"
+        value: ":ext:che@cvs-t.apgsga.ch:/var/local/cvs/root"
       - key: "CVS_RSH"
         value: "ssh"
+      - key: "DB_PATCH_REPO"
+        value: "dbpatch-test/"
+      - key: "GITHUB_JENKINS_VERSION"
+        value: "master"
+      - key: "GRADLE_OPTS"
+        value: "-Dgradle.user.home=/var/jenkins/gradle/home -Dorg.gradle.daemon=false"
+      - key: "JENKINS_MAVEN_AGENT_DISABLED"
+        value: "true"
+      - key: "PATCH_DB_FOLDER"
+        value: "/var/opt/apg-patch-service-server/db/"
+      - key: "PATCH_FILE_PREFIX"
+        value: "Patch"
+      - key: "PIPELINE_ERROR_MAIL_TO"
+        value: "4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch"
+      - key: "PIPELINE_MAIL_ENV"
+        value: "JENKINS-TEST"
+      - key: "PIPELINE_MAIL_FROM"
+        value: "5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms"
+      - key: "RELEASES_PATCH_REPO"
+        value: "releases-test/"
+      - key: "REPO_RO_PASSWD"
+        value: "dev1234-test"
+      - key: "SMTP_HOST"
+        value: "mailint.apgsga.ch"
+      - key: "SMTP_PORT"
+        value: "25"
+      - key: "WINDOWS_INSTALLER_LABEL"
+        value: "jenkins_installer_windows"
+      - key: "WINDOWS_INSTALLER_OLDSTYLE_LABEL"
+        value: "jenkins_installer_windows_oldstyle"
+      - key: "ZIP_DIST_REPO"
+        value: "zip-dist-test/"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
   mode: NORMAL
   myViewsTabBar: "standard"
-  numExecutors: 2
+  nodes:
+  - permanent:
+      labelString: "jenkins_installer_windows jenkins_installer_windows_oldstyle"
+      launcher:
+        jnlp:
+          workDirSettings:
+            disabled: false
+            failIfWorkDirIsMissing: false
+            internalDir: "remoting"
+      mode: EXCLUSIVE
+      name: "apg-jdv-e-001"
+      nodeDescription: "windows test installer"
+      numExecutors: 3
+      remoteFS: "C:\\Software\\jenkinsWork"
+      retentionStrategy: "always"
+  numExecutors: 7
   primaryView:
     all:
       name: "all"
@@ -85,22 +139,16 @@ jenkins:
       enableCaptcha: false
       users:
       - id: "che"
-        name: "Christoph Henrici"
+        name: "che"
         properties:
         - "apiToken"
         - mailer:
             emailAddress: "chhenrici@gmail.com"
-        - preferredProvider:
-            providerId: "default"
-  slaveAgentPort: -1
+  slaveAgentPort: 0
   updateCenter:
     sites:
     - id: "default"
-      url: "https://updates.jenkins.io/update-center.json"
-  views:
-  - all:
-      name: "all"
-  viewsTabBar: "standard"
+      url: "http://updates.jenkins-ci.org/update-center.json"
 security:
   apiToken:
     creationOfLegacyTokenEnabled: false
@@ -110,8 +158,10 @@ security:
     port: -1
   scriptApproval:
     approvedSignatures:
-    - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
+    - "field hudson.model.Executor executable"
 unclassified:
+  artifactoryBuilder:
+    useCredentialsPlugin: true
   buildDiscarders:
     configuredBuildDiscarders:
     - "jobBuildDiscarder"
@@ -119,14 +169,33 @@ unclassified:
     healthMetrics:
     - worstChildHealthMetric:
         recursive: true
+  extendedEmailPublisher:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:\r\n\r\nCheck\
+      \ console output at $BUILD_URL to view the results."
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    defaultSuffix: "spgsga.ch"
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: 0
+    precedenceBulk: false
+    smtpPassword: "{AQAAABAAAAAQBKqC88KAxQvbTt6N+nxhU86Sm9YQL3+y0EKjPvypf2c=}"
+    smtpServer: "localhost"
+    useSsl: false
+    watchingEnabled: false
   gitHubConfiguration:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:
-    hookUrl: "http://192.168.91.114:8080/github-webhook/"
+    hookUrl: "http://172.16.92.164:8080/github-webhook/"
   gitSCM:
     createAccountBasedOnEmail: false
     showEntireCommitSummaryInChanges: false
     useExistingAccountWithSameEmail: false
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: MAX_SURVIVABILITY
   globalLibraries:
     libraries:
     - defaultVersion: "master"
@@ -137,7 +206,7 @@ unclassified:
           scm:
             github:
               configuredByUrl: true
-              credentialsId: "chhexgithub"
+              credentialsId: "apgsga-jenkins"
               id: "70017d8d-d161-4e1f-896b-ee4f2338f931"
               repoOwner: "apgsga-it"
               repository: "apg-jenkins-pipeline-testlibs"
@@ -145,24 +214,51 @@ unclassified:
               traits:
               - gitHubBranchDiscovery:
                   strategyId: 3
+    - defaultVersion: "master"
+      implicit: true
+      name: "patchlibs"
+      retriever:
+        modernSCM:
+          scm:
+            github:
+              configuredByUrl: true
+              id: "eb12cea2-fad6-4eb2-89ab-49981ba9a0c3"
+              repoOwner: "apgsga-it"
+              repository: "apg-jenkins-pipeline-libs"
+              repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs"
+              traits:
+                - gitHubBranchDiscovery:
+                    strategyId: 3
+  ivyBuildTrigger:
+    extendedVersionMatching: false
   location:
     adminAddress: "Adresse nicht konfiguriert <nobody@nowhere>"
-    url: "http://192.168.91.114:8080/"
   mailer:
     charset: "UTF-8"
+    defaultSuffix: "@apgsga.ch"
     useSsl: false
     useTls: false
+  mavenModuleSet:
+    localRepository: "default"
   pollSCM:
     pollingThreadCount: 10
+  timestamperConfig:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
 tool:
   git:
     installations:
     - home: "git"
       name: "Default"
-  maven:
-    installations:
   gradle:
     installations:
+      - home: "/opt/gradle"
+        name: "Default"
+  maven:
+    installations:
+      - home: "/opt/maven"
+        name: "Default"
   pipelineMaven:
     triggerDownstreamUponResultAborted: false
     triggerDownstreamUponResultFailure: false

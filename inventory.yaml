@@ -1,4 +1,2 @@
-groups:
-  - name: piper
-    vars:
-      java_home: /etc/alternatives
+vars:
+   sometest: aValue

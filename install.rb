@@ -12,6 +12,7 @@ opts = Slop.parse do |o|
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans ', default: false
   o.bool '-a', '--all', 'Execute all Bolt plans', default: false
+  o.bool '-x', '--xceptJenkins', 'Execute all Bolt plans', default: false
   o.bool '--dry', '--dry-run','Only print all Bolt plans commands', default: false
   o.bool '--debug', 'Enable bolt debug optin', default: false
   o.on '-h', '--help' do
@@ -40,11 +41,17 @@ if !opts[:install].empty? and opts[:all]
   puts opts
   exit
 end
+if !opts[:all] and opts[:xceptJenkins]
+  puts "The x , resp. xceptJenkins option only makes sense with the --all options"
+  puts opts
+  exit
+end
 if !IPAddress.valid? opts[:target]
   puts "Ipaddress not valid: #{opts[:target]}, you can do better "
   puts opts
   exit
 end
+
 if opts[:list]
   puts "Available installations plans are : #{plans_available}"
 end
@@ -72,13 +79,15 @@ end
 if !plans_to_execute.empty?
   puts "Running with user=<#{opts[:user]}> the plans=<#{plans_to_execute}> on target:#{opts[:target]}"
   plans_after = []
+  if opts[:xceptJenkins]
+    plans_to_execute.delete('piper::jenkins_install')
+  end
   if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
     plans_to_execute.delete('piper::java_install')
   end
   if plans_to_execute.include? 'piper::ruby_install'
     run('piper::ruby_install',opts)
-    plans_to_execute.delete('piper::ruby_install')
   end
   if plans_to_execute.include? 'piper::jenkins_install'
     plans_after = %w[piper::jenkins_install]
