@@ -71,7 +71,7 @@ EOS
         apply(pp, catch_failures: true)
       end
 
-      describe file('/var/lib/jenkins/jobs/foo/config.xml') do
+      describe file('/var/lib/jenkins/jobs/foo/testapp-bom.xml.erb') do
         it { is_expected.to be_file }
         it { is_expected.to be_owned_by 'jenkins' }
         it { is_expected.to be_grouped_into 'jenkins' }
@@ -92,7 +92,7 @@ EOS
         apply(pp, catch_changes: true)
       end
 
-      describe file('/var/lib/jenkins/jobs/foo/config.xml') do
+      describe file('/var/lib/jenkins/jobs/foo/testapp-bom.xml.erb') do
         it { is_expected.not_to exist }
       end
     end # 'absent' do
@@ -130,8 +130,8 @@ EOS
         end
 
         %w[
-          /var/lib/jenkins/jobs/foo/config.xml
-          /var/lib/jenkins/jobs/foo/jobs/bar/config.xml
+          /var/lib/jenkins/jobs/foo/testapp-bom.xml.erb
+          /var/lib/jenkins/jobs/foo/jobs/bar/testapp-bom.xml.erb
         ].each do |config|
           describe file(config) do
             it { is_expected.to be_file }
@@ -142,7 +142,7 @@ EOS
           end
         end
 
-        describe file('/var/lib/jenkins/jobs/foo/jobs/bar/jobs/baz/config.xml') do
+        describe file('/var/lib/jenkins/jobs/foo/jobs/bar/jobs/baz/testapp-bom.xml.erb') do
           it { is_expected.to be_file }
           it { is_expected.to be_owned_by 'jenkins' }
           it { is_expected.to be_grouped_into 'jenkins' }
@@ -164,9 +164,9 @@ EOS
         end
 
         %w[
-          /var/lib/jenkins/jobs/foo/config.xml
-          /var/lib/jenkins/jobs/foo/jobs/bar/config.xml
-          /var/lib/jenkins/jobs/foo/jobs/bar/jobs/baz/config.xml
+          /var/lib/jenkins/jobs/foo/testapp-bom.xml.erb
+          /var/lib/jenkins/jobs/foo/jobs/bar/testapp-bom.xml.erb
+          /var/lib/jenkins/jobs/foo/jobs/bar/jobs/baz/testapp-bom.xml.erb
         ].each do |config|
           describe file(config) { it { is_expected.not_to exist } }
         end

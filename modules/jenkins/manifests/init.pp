@@ -405,7 +405,7 @@ class jenkins(
       } elsif !empty($cli_password_file) {
         $_cli_auth_arg = "-auth '@${cli_password_file}'"
       } else {
-        fail('ERROR: Need cli_password or cli_password_file if cli_username is specified')
+        $_cli_auth_arg = "-ssh -user ${cli_username}"
       }
     } else {
       fail('ERROR: Due to https://issues.jenkins-ci.org/browse/JENKINS-12543 username and password mode are only supported for the non-remoting CLI mode (see https://issues.jenkins-ci.org/browse/JENKINS-41745)')

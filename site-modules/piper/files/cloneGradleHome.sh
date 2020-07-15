@@ -1,2 +1,2 @@
 #!/bin/bash
-su - jenkins
+git clone

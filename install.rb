@@ -10,8 +10,8 @@ opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ","
   o.separator ''
   o.separator 'other options:'
-  o.bool '-l', '--list', 'List all Installation Bolt plans ', default: false
-  o.bool '-a', '--all', 'Execute all Bolt plans', default: false
+  o.bool '-l', '--list', 'List all Installation Bolt plans '
+  o.bool '-a', '--all', 'Execute all Bolt plans'
   o.bool '-x', '--xceptJenkins', 'Execute all Bolt plans', default: false
   o.bool '--dry', '--dry-run','Only print all Bolt plans commands', default: false
   o.bool '--debug', 'Enable bolt debug optin', default: false
@@ -22,7 +22,7 @@ opts = Slop.parse do |o|
 end
 
 
-show_output = `bolt plan show`
+show_output = `bolt plan show --concurrency 20 `
 plans_available = []
 plans_to_execute = []
 lines = show_output.split("\n")
@@ -46,15 +46,23 @@ if !opts[:all] and opts[:xceptJenkins]
   puts opts
   exit
 end
+if opts[:list]
+  puts "Available installations plans are: "
+  plans_available.each do
+    | plan | puts plan
+  end
+  puts "piper:jenkins_install will be executed last"
+end
+if opts[:install].empty? and !opts[:all]
+  exit
+end
 if !IPAddress.valid? opts[:target]
   puts "Ipaddress not valid: #{opts[:target]}, you can do better "
   puts opts
   exit
 end
 
-if opts[:list]
-  puts "Available installations plans are : #{plans_available}"
-end
+
 if !opts[:install].empty?
   plans = []
   opts[:install].each do |plan|
@@ -65,7 +73,7 @@ end
 
 def run(plan,opts)
   debug = opts[:debug] ? "--debug" : " "
-  cmd = "bolt plan run #{plan} #{debug} --targets=#{opts[:target]} -u #{opts[:user]} -p #{opts[:password]}"
+  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --targets=#{opts[:target]} -u #{opts[:user]} -p #{opts[:password]}"
   puts "#{cmd}"
   system(cmd) unless opts[:dry]
   puts "Done: #{plan}"  unless opts[:dry]
@@ -90,7 +98,7 @@ if !plans_to_execute.empty?
     run('piper::ruby_install',opts)
   end
   if plans_to_execute.include? 'piper::jenkins_install'
-    plans_after = %w[piper::jenkins_install]
+    plans_after = ['piper::jenkins_install']
     plans_to_execute.delete('piper::jenkins_install')
   end
   plans_to_execute.each do |plan|

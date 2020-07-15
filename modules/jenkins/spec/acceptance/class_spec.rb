@@ -84,7 +84,7 @@ describe 'jenkins class' do
       it { is_expected.to be_enabled }
     end
 
-    describe file('/var/lib/jenkins/config.xml') do
+    describe file('/var/lib/jenkins/testapp-bom.xml.erb') do
       it { is_expected.to contain '  <numExecutors>42</numExecutors>' }
     end
   end # executors
@@ -110,7 +110,7 @@ describe 'jenkins class' do
       it { is_expected.to be_enabled }
     end
 
-    describe file('/var/lib/jenkins/config.xml') do
+    describe file('/var/lib/jenkins/testapp-bom.xml.erb') do
       it { is_expected.to contain '  <slaveAgentPort>7777</slaveAgentPort>' }
     end
   end # slaveagentport

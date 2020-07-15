@@ -49,7 +49,7 @@ EOS
       # apply(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/lib/jenkins/jobs/test-build-job/testapp-bom.xml.erb') do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'jenkins' }
       it { is_expected.to be_grouped_into 'jenkins' }
@@ -85,7 +85,7 @@ EOS
       apply(pp_update, catch_failures: true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-noreplace-job/config.xml') do
+    describe file('/var/lib/jenkins/jobs/test-noreplace-job/testapp-bom.xml.erb') do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'jenkins' }
       it { is_expected.to be_grouped_into 'jenkins' }
@@ -114,7 +114,7 @@ EOS
       # apply(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/lib/jenkins/jobs/test-build-job/testapp-bom.xml.erb') do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'jenkins' }
       it { is_expected.to be_grouped_into 'jenkins' }
@@ -158,7 +158,7 @@ EOS
       # apply(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/lib/jenkins/jobs/test-build-job/testapp-bom.xml.erb') do
       # XXX Serverspec::Type::File doesn't support exists?
       it { is_expected.not_to be_file }
     end

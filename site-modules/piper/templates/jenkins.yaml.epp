@@ -69,11 +69,11 @@ jenkins:
       - key: "ARTIFACTORY_SERVER_ID"
         value: "artifactory4t4apgsga"
       - key: "CVS_ROOT"
-        value: ":ext:che@cvs-t.apgsga.ch:/var/local/cvs/root"
+        value: ":ext:<%= $user %>@cvs-t.apgsga.ch:/var/local/cvs/root"
       - key: "CVS_RSH"
         value: "ssh"
       - key: "DB_PATCH_REPO"
-        value: "dbpatch-test/"
+        value: "<%= $db_patch_repo %>"
       - key: "GITHUB_JENKINS_VERSION"
         value: "master"
       - key: "GRADLE_OPTS"
@@ -81,17 +81,17 @@ jenkins:
       - key: "JENKINS_MAVEN_AGENT_DISABLED"
         value: "true"
       - key: "PATCH_DB_FOLDER"
-        value: "/var/opt/apg-patch-service-server/db/"
+        value: "<%= $patch_db_folder %>"
       - key: "PATCH_FILE_PREFIX"
         value: "Patch"
       - key: "PIPELINE_ERROR_MAIL_TO"
-        value: "4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch"
+        value: "<%= $pipeline_error_mail_to %>"
       - key: "PIPELINE_MAIL_ENV"
-        value: "JENKINS-TEST"
+        value: "<%= $pipeline_mail_env %>"
       - key: "PIPELINE_MAIL_FROM"
-        value: "5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms"
+        value: "<%= $pipeline_mail_from %>"
       - key: "RELEASES_PATCH_REPO"
-        value: "releases-test/"
+        value: "<%= $releases_patch_repo %>"
       - key: "REPO_RO_PASSWD"
         value: "dev1234-test"
       - key: "SMTP_HOST"
@@ -103,7 +103,9 @@ jenkins:
       - key: "WINDOWS_INSTALLER_OLDSTYLE_LABEL"
         value: "jenkins_installer_windows_oldstyle"
       - key: "ZIP_DIST_REPO"
-        value: "zip-dist-test/"
+        value: "<%= $zip_dist_repo %>"
+      - key: "MAVEN_PROFILE"
+        value: "-P<%= $maven_profile %>"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
@@ -138,12 +140,12 @@ jenkins:
       allowsSignup: true
       enableCaptcha: false
       users:
-      - id: "che"
-        name: "che"
+      - id: "<%= $user %>"
+        name: "<%= $user %>"
         properties:
         - "apiToken"
         - mailer:
-            emailAddress: "chhenrici@gmail.com"
+            emailAddress: "<%= $user_mail %>"
   slaveAgentPort: 0
   updateCenter:
     sites:
@@ -155,7 +157,7 @@ security:
     tokenGenerationOnCreationEnabled: false
     usageStatisticsEnabled: true
   sSHD:
-    port: -1
+    port: "<%= $cli_port %>"
   scriptApproval:
     approvedSignatures:
     - "field hudson.model.Executor executable"
@@ -189,7 +191,7 @@ unclassified:
   gitHubConfiguration:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:
-    hookUrl: "http://172.16.92.164:8080/github-webhook/"
+    hookUrl: "http://localhost:8080/github-webhook/"
   gitSCM:
     createAccountBasedOnEmail: false
     showEntireCommitSummaryInChanges: false

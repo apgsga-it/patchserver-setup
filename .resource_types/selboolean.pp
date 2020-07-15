@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-06-25 15:47:58 +0200.
+# This file was automatically generated on 2020-07-15 13:57:32 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manages SELinux booleans on systems with SELinux support.  The supported booleans

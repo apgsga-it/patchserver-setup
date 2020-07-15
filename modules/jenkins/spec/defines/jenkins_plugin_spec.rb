@@ -214,7 +214,7 @@ describe 'jenkins::plugin' do
         let(:version) { '1.2.3' }
         let(:params) { { update_url: update_url, version: version } }
         let(:expected_url) do
-          "#{update_url}/download/plugins/#{title}/#{version}/#{title}.hpi"
+          "#{update_url}/#{title}/#{version}/#{title}.hpi"
         end
 
         include_examples 'execute the right fetch command'
