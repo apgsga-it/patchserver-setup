@@ -72,7 +72,7 @@ And repeat accordingly for the following plans:
 
 The piper::jenkins_install plan necessarily as the last
 
-#### Defensive measures
+### Defensive measures
 
 If the **piper:jenkins_install** plan fails you need to start over again,
 since unfortunately the piper:jenkins_install cannot be run twice, the
@@ -90,11 +90,11 @@ With ruby installed you can do:
 The installation will take some time depending on the network speed,
 between 5 min and 45 min.
 
-#### After piper::jenkins_install
+### After piper::jenkins_install
 
 You need to follow the following steps to make your installation usable
 
-***1 Establish Jenkins End User***
+*1 Establish Jenkins End User*
 
 First Jenkins Login -> Create a User Account:
 
@@ -104,7 +104,7 @@ create a ne - When the piper::jenkins_install has been executed, you
 should be able to point to http:<ip>:8080 and get the User / Password
 page. Here you create a new user.
 
-***2 Configure Jenkins User / Public ssh Key***
+*2 Configure Jenkins User / Public ssh Key*
 
 In Order to be able to use the [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/) , the public rsa key of the
 host user most be copied to Jenkins User Configuration:
@@ -116,7 +116,7 @@ Paste from
 
 Some Helper Scripts use the [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/)
 
-***2 Create Jenkins system user rsa public key for cvs-t ssh***
+*2 Create Jenkins system user rsa public key for cvs-t ssh*
 
 In order for jenkins jobs to be able to co from cvs-t.apgsga.ch you need
 to do the following on the target mashine:
@@ -126,7 +126,7 @@ to do the following on the target mashine:
 3. `ssh-keygen  # generate a public for jenkins, you can use all defaults`
 4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
-***3 Create Jenkins Test Jobs ***
+*3 Create Jenkins Tests Build Jobs*
 
 
 
