@@ -40,7 +40,7 @@ use, needs to be cloned manually to /tmp/gradlehome:
 `git clone <user>@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git
 /tmp/gradlehome `
 
-#### Run Bolt Plans With Ruby installed
+### Run Bolt Plans With Ruby installed
 
 Run the setup with
 
@@ -56,7 +56,7 @@ To list all options, run :
 
 `./install.rb -h`
 
-#### Run Bolt Plans without Ruby
+### Run Bolt Plans without Ruby
 
 Run
 
