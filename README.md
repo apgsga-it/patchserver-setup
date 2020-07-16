@@ -28,7 +28,7 @@ Specially important the following parameters:
    maven
 
 
-#### Before running the Bolt Plans
+### Before running the Bolt Plans
 
 The current apg gradle home git repo , or the version you intend to use,
 needs to be copied to /tmp/gradlehome:
@@ -36,11 +36,11 @@ needs to be copied to /tmp/gradlehome:
 `git clone <user>@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git
 /tmp/gradlehome `
 
-##### With Ruby installed
+#### With Ruby installed
 
 Run the setup with
 
-`./install.rb -a -u <user> -p <pw? -t <target ipadress>`
+`./install.rb -a -u <user> -p <pw> -t <ip>`
 
 to run from scratch.
 
@@ -52,7 +52,9 @@ To list all options, run :
 
 `./install.rb -h`
 
-##### Without Ruby
+#### Without Ruby
+
+Run
 
 `bolt plan run piper::java_install --concurrency 10 --targets=<ip> -u <user> -p <pw>`
 
@@ -62,14 +64,14 @@ piper::jenkins_install
 
 The piper::jenkins_install plan being necessarily the last
 
-##### Defensive measures
+#### Defensive measures
 
 If the piper:jenkins_install plan fails you need to start over again,
-since unfortunately the piper:jenkins_install can not be run twice, the
+since unfortunately the piper:jenkins_install cannot be run twice, the
 other plans yes.
 
-So best is to run all except the piper::jenkins plan and then create a
-snapshot of the VM
+So best is to run all plans except the piper::jenkins plan and then
+create a snapshot of the VM
 
 And then run the piper::jenkins plan.
 
@@ -78,7 +80,7 @@ With ruby installed you can do:
 `./install.rb -x -a -u <user> -p <pw> -t <ip>`
 
 
-##### After piper::jenkins_install
+#### After piper::jenkins_install
 
 The installation will take some time depending on the network speed,
 between 5 min and 45 min.
