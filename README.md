@@ -109,7 +109,7 @@ point to http:<ip>:8080 and get the User / Password page.
 
 Create a new User.
 
-*2 Configure Jenkins User / Public ssh Key*
+***2 Configure Jenkins User / Public ssh Key***
 
 In Order to be able to use the
 [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/) , the
@@ -125,7 +125,7 @@ Paste from `cat ~/.ssh/id_rsa.pub` to
 Some Helper Scripts use the
 [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/)
 
-*2 Create Jenkins system user rsa public key for cvs-t ssh*
+***2 Create Jenkins system user rsa public key for cvs-t ssh***
 
 In order for jenkins jobs to be able to co from cvs-t.apgsga.ch you need
 to do the following on the target mashine:
@@ -136,7 +136,18 @@ to do the following on the target mashine:
    defaults`
 4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
-*3 Create Jenkins Tests Build Jobs*
+***3 Create Jenkins Tests Build Jobs***
+
+Note: Currently only Maven Job Creation is supported
+
+To create to Test Jobs in Jenkins run in the root directory of the repo:
+
+` ./create-jenkins-testjobs.rb -u <user? -t <ip> `
+
+The *inventory.yaml * file will be consulted for the modules
+
+For options and description run:
+![Maven Jobs](./images/createmavenjobs.png)
 
 
 ## Open Points / Todos
@@ -146,5 +157,6 @@ to do the following on the target mashine:
 - [ ] Automate User / Credentials Creation
 - [ ] Automate Public RSA Key exchanges for Jenkins User& Jenkins
 - [ ] Node credentials
+- [ ] Support additional Jobs Creation : Gradle / Job DsL Jobs
 
 
