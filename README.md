@@ -29,6 +29,8 @@ Before the installation this should be adpated accordingly.
 
 See in that file the tag vars:
 
+![Inventory File](./images/inventory.png)
+
 Specially important the following parameters:
 
 1. user => the jenkins user
@@ -145,6 +147,8 @@ To create to Test Jobs in Jenkins run in the root directory of the repo:
 ` ./create-jenkins-testjobs.rb -u <user? -t <ip> `
 
 The *inventory.yaml * file will be consulted for the modules
+
+![Inventory File](./images/inventory2.png)
 
 For options and description run:
 ![Maven Jobs](./images/createmavenjobs.png)
