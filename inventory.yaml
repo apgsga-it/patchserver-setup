@@ -1,6 +1,6 @@
 vars:
    user: che
-   maven_profile: artifactory-che,!artifactory
+   maven_profile: -P-artifactory,artifactory-che
    user_mail: chhenrici@gmail.com
    db_patch_repo: dbpatch-test/
    patch_db_folder: /var/opt/apg-patch-service-server/db/

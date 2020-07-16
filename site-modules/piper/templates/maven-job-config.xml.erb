@@ -55,12 +55,8 @@
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
-  <rootModule>
-    <groupId>com.apgsga.testapp</groupId>
-    <artifactId>dm-bom</artifactId>
-  </rootModule>
   <rootPOM><%= @module_name %>/pom.xml</rootPOM>
-  <goals>$MAVEN_PROFILE install  deploy</goals>
+  <goals>clean deploy $MAVEN_PROFILE</goals>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>false</incrementalBuild>
   <ignoreUpstremChanges>false</ignoreUpstremChanges>

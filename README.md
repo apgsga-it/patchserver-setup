@@ -162,5 +162,8 @@ For options and description run:
 - [ ] Automate Public RSA Key exchanges for Jenkins User& Jenkins
 - [ ] Node credentials
 - [ ] Support additional Jobs Creation : Gradle / Job DsL Jobs
+- [ ] Support Apscli and Piper Installation from Yum
+- [ ] Git rid of hard coded Profile in jenkins_install.pp
+
 
 
