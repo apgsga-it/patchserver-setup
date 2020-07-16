@@ -2,7 +2,7 @@
 
 Provides a mostly automated initial setup and configuration of the Apg
 Patch Server with Jenkins for Localtesting and Development.
-For Piper the the [Github Repo]() .
+For Piper see the [Github Repo]() .
 
 ## Preconditions
 
