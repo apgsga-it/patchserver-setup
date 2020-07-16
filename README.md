@@ -15,7 +15,7 @@ For Piper see the [Github Repo]() .
 
 ## Running the Setup
 
-#### Installation Parameters
+### Installation Parameters
 
 The installation parameters are keep in the inventory.yaml file in the
 root directory of the directory. See vars:
