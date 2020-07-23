@@ -1,13 +1,33 @@
+groups:
+   - name: testvms
+     targets:
+        - uri: 172.16.92.190
+          name:  testvm
+     config:
+        transport: ssh
+        ssh:
+           user: che
+           password:  che
 vars:
-   user: che
-   maven_profile: -P-artifactory,artifactory-che
-   user_mail: chhenrici@gmail.com
-   db_patch_repo: dbpatch-test/
-   patch_db_folder: /var/opt/apg-patch-service-server/db/
-   pipeline_error_mail_to:  4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch]
-   pipeline_mail_env: JENKINS-TEST
-   pipeline_mail_from: 5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms
-   releases_patch_repo: releases-test/
-   zip_dist_repo: zip-dist-test
-   cli_port: 53801
-   testapp_modules: testapp-bom testapp-module testapp-parentpom testapp-service
+  maven_profile: artifactory-che
+  gradle_home: /var/jenkins/gradle
+  maven_home: /var/jenkins/maven
+  db_patch_repo: dbpatch-test/
+  patch_db_folder: /var/opt/apg-patch-service-server/db/
+  pipeline_error_mail_to:  4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch]
+  pipeline_mail_env: JENKINS-TEST
+  pipeline_mail_from: 5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms
+  releases_patch_repo: releases-test/
+  zip_dist_repo: zip-dist-test
+  cli_port: 53801
+  testapps:
+      - name: testapp
+        rootdir: apg-gradle-plugins-testsmodules/testapp/
+        modules: testapp-bom testapp-parentpom testapp-module testapp-service
+        pkg: testapp-pkg
+      - name: testapp2
+        rootdir: apg-gradle-plugins-testsmodules-2/testapp-2/
+        modules: testapp-bom-2 testapp-parentpom-2 testapp-module-2 testapp-service-2
+        pkg: testapp-pkg-2
+  plugins_repo: http://ftp-chi.osuosl.org/pub/jenkins/plugins
+  temp_gradle: /tmp/gradlehome

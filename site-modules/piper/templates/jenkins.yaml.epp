@@ -69,7 +69,7 @@ jenkins:
       - key: "ARTIFACTORY_SERVER_ID"
         value: "artifactory4t4apgsga"
       - key: "CVS_ROOT"
-        value: ":ext:<%= $user %>@cvs-t.apgsga.ch:/var/local/cvs/root"
+        value: ":ext:<%= $jenkinsuser %>@cvs-t.apgsga.ch:/var/local/cvs/root"
       - key: "CVS_RSH"
         value: "ssh"
       - key: "DB_PATCH_REPO"
@@ -92,8 +92,6 @@ jenkins:
         value: "<%= $pipeline_mail_from %>"
       - key: "RELEASES_PATCH_REPO"
         value: "<%= $releases_patch_repo %>"
-      - key: "REPO_RO_PASSWD"
-        value: "dev1234-test"
       - key: "SMTP_HOST"
         value: "mailint.apgsga.ch"
       - key: "SMTP_PORT"
@@ -105,7 +103,7 @@ jenkins:
       - key: "ZIP_DIST_REPO"
         value: "<%= $zip_dist_repo %>"
       - key: "MAVEN_PROFILE"
-        value: "-P<%= $maven_profile %>"
+        value: "-P-artifactory,<%= $maven_profile %>"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
@@ -140,12 +138,12 @@ jenkins:
       allowsSignup: true
       enableCaptcha: false
       users:
-      - id: "<%= $user %>"
-        name: "<%= $user %>"
+      - id: "<%= $jenkinsuser %>"
+        name: "<%= $jenkinsuser %>"
         properties:
         - "apiToken"
         - mailer:
-            emailAddress: "<%= $user_mail %>"
+            emailAddress: "xxxx@yyyyyy%>"
   slaveAgentPort: 0
   updateCenter:
     sites:

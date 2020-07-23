@@ -23,7 +23,7 @@
             <modules>
               <hudson.scm.CvsModule>
                 <localName><%= @module_name %></localName>
-                <remoteName>apg-gradle-plugins-testsmodules/testapp/<%= @module_name %></remoteName>
+                <remoteName><%= @root_dir %><%= @module_name %></remoteName>
               </hudson.scm.CvsModule>
             </modules>
             <location class="hudson.scm.CvsRepositoryLocation$HeadRepositoryLocation">

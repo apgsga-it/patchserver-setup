@@ -12,8 +12,8 @@
           <hudson.scm.CvsRepositoryItem>
             <modules>
               <hudson.scm.CvsModule>
-                <localName>testapp-pkg</localName>
-                <remoteName>apg-gradle-plugins-testsmodules/testapp/testapp-pkg</remoteName>
+                <localName><%= @module_name %></localName>
+                <remoteName><%= @root_dir %><%= @module_name %></remoteName>
               </hudson.scm.CvsModule>
             </modules>
             <location class="hudson.scm.CvsRepositoryLocation$HeadRepositoryLocation">
@@ -49,13 +49,13 @@
     <hudson.plugins.gradle.Gradle plugin="gradle@1.36">
       <switches>--info --stacktrace  </switches>
       <tasks>-PbuildTyp=SNAPSHOT clean buildRpm </tasks>
-      <rootBuildScriptDir>testapp-pkg</rootBuildScriptDir>
+      <rootBuildScriptDir><%= @module_name %></rootBuildScriptDir>
       <buildFile></buildFile>
       <gradleName>(Default)</gradleName>
       <useWrapper>true</useWrapper>
       <makeExecutable>true</makeExecutable>
       <useWorkspaceAsHome>false</useWorkspaceAsHome>
-      <wrapperLocation>testapp-pkg</wrapperLocation>
+      <wrapperLocation><%= @module_name %></wrapperLocation>
       <passAllAsSystemProperties>false</passAllAsSystemProperties>
       <projectProperties></projectProperties>
       <passAllAsProjectProperties>false</passAllAsProjectProperties>

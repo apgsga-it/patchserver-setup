@@ -23,9 +23,9 @@ see the [Github Repo]() .
 ### Installation Parameters
 
 The installation parameters are kept in the **inventory.yaml** file in
-the root directory of the directory.
+the root directory git repository.
 
-Before the installation this should be adpated accordingly.
+Before the installation this file should be adpated accordingly.
 
 See in that file the tag vars:
 

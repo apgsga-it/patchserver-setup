@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require "slop"
-require "ipaddress"
+require 'yaml'
+require 'fileutils'
 
 opts = Slop.parse do |o|
-  o.string '-u', '--username', '--user', 'Target(s) host user'
-  o.string '-p', '--password', '--pw', 'Target(s) host user password'
-  o.string '-t', '--target', '--host', 'Target host(s) '
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ","
+  o.bool '-c', '--clone', 'clones gradle home locally '
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -20,8 +19,6 @@ opts = Slop.parse do |o|
     exit
   end
 end
-
-
 show_output = `bolt plan show --concurrency 20 `
 plans_available = []
 plans_to_execute = []
@@ -31,10 +28,15 @@ lines.each do |line|
     plans_available << line
   end
 end
-if !opts[:username] or !(opts[:password] or !opts[:target]) and (opts[:plans] or opts[:all])
-  puts "Missing options <username>, <password> and/or <target> to execute Bolt plan  "
-  puts opts
-  exit
+if opts[:clone]
+  bolt_inventory_file = File.join(File.dirname(__FILE__), "inventory.yaml")
+  inventory = YAML.load_file(bolt_inventory_file)
+  user = inventory['groups'].first['config']['ssh']['user']
+  temp_dir = inventory['vars']['temp_gradle']
+  if  File.exist?(temp_dir)
+    FileUtils.remove_dir(temp_dir, force = true)
+  end
+  system("git clone #{user}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
 end
 if !opts[:install].empty? and opts[:all]
   puts "Specify either  -a  or -i option, but not both. -a being all plans and -i being a filter on the available plan names "
@@ -56,12 +58,6 @@ end
 if opts[:install].empty? and !opts[:all]
   exit
 end
-if !IPAddress.valid? opts[:target]
-  puts "Ipaddress not valid: #{opts[:target]}, you can do better "
-  puts opts
-  exit
-end
-
 
 if !opts[:install].empty?
   plans = []
@@ -73,7 +69,7 @@ end
 
 def run(plan,opts)
   debug = opts[:debug] ? "--debug" : " "
-  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --targets=#{opts[:target]} -u #{opts[:user]} -p #{opts[:password]}"
+  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 -t testvms"
   puts "#{cmd}"
   system(cmd) unless opts[:dry]
   puts "Done: #{plan}"  unless opts[:dry]
