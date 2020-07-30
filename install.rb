@@ -53,7 +53,7 @@ if opts[:list]
   plans_available.each do
     | plan | puts plan
   end
-  puts "piper:jenkins_install will be executed last"
+  puts "piper:jenkins_install & piper_install will be executed last"
 end
 if opts[:install].empty? and !opts[:all]
   exit
@@ -85,17 +85,19 @@ if !plans_to_execute.empty?
   plans_after = []
   if opts[:xceptJenkins]
     plans_to_execute.delete('piper::jenkins_install')
+    plans_to_execute.delete('piper::piper_install')
   end
   if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
     plans_to_execute.delete('piper::java_install')
   end
-  if plans_to_execute.include? 'piper::ruby_install'
-    run('piper::ruby_install',opts)
-  end
   if plans_to_execute.include? 'piper::jenkins_install'
     plans_after = ['piper::jenkins_install']
     plans_to_execute.delete('piper::jenkins_install')
+  end
+  if plans_to_execute.include? 'piper::piper_install'
+    plans_after << 'piper::piper_install'
+    plans_to_execute.delete('piper::piper_install')
   end
   plans_to_execute.each do |plan|
     run(plan,opts)

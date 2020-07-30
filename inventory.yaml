@@ -1,7 +1,7 @@
 groups:
    - name: testvms
      targets:
-        - uri: 172.16.92.190
+        - uri: 172.16.92.192
           name:  testvm
      config:
         transport: ssh

@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-07-15 13:57:27 +0200.
+# This file was automatically generated on 2020-07-29 18:11:18 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manage Jenkins' number of executor slots

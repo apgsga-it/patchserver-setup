@@ -10,13 +10,25 @@ see the [Github Repo]() .
    [Minimal Centos 7](http://linuxsoft.cern.ch/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-minimal.iso)
    installation with user / password with sudo rights on the target
    machine running.
-2. Bolt installed on the Host machine. For Bolt installation see the
+2. Configuration of Bolt Hiera for passwords use , see seperate
+   description below
+3. Bolt installed on the Host machine. For Bolt installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-3. Ruby installed on the Host machine, see the
+4. Ruby installed on the Host machine, see the
    [Ruby Site](https://www.ruby-lang.org/de/documentation/installation/)
    , preferably with [Rbenv](https://github.com/rbenv/rbenv)
-4. At least the target host added as ssh known host to the user, which
+5. At least the target host added as ssh known host to the user, which
    the installation will be done.
+
+### Set-up Bolt Hiera Config for Passwords
+
+1. `cp templates/hiera.yaml ~/.puppetlabs/bolt`
+2. ` cp -R templates/data ~/.puppetlabs/bolt`
+3. `vim ~/.puppetlabs/bolt/data/common.yaml ` and change TOBECHANGED to
+   the correct value
+
+The location of the root configuration directory can be changed in
+bolt.yaml
 
 ## Running the Setup
 
@@ -33,11 +45,11 @@ See in that file the tag vars:
 
 Specially important the following parameters:
 
-1. user => the jenkins user
-2. user_mail => his mail adress
-3. maven_profile : the maven profile which will be used for gradle and
+1. target uri => the guest vm
+2. ssh user => the sudo user of the vm
+3. ssh password
+4. maven_profile : the maven profile which will be used for gradle and
    maven
-
 
 ### Before running the Bolt Plans
 
@@ -47,17 +59,21 @@ use, needs to be cloned manually to /tmp/gradlehome:
 `git clone <user>@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git
 /tmp/gradlehome `
 
+This step can be also automated with the ./install.rb script -c option,
+see below
+
 ### Run Bolt Plans With Ruby installed
 
 Run the setup with
 
-`./install.rb -a -u <user> -p <pw> -t <ip>`
+`./install.rb -a -c`
 
-to run from scratch.
+to run from scratch. The c option clones the above mentioned apg gradle
+home git repo automatically
 
-`./install.rb -t git,cvs,java -u <user> -p <pw> -t <target ipadress>`
+`./install.rb -t git,cvs,java `
 
-to run plans selectively. In this case git, cvs and java.
+To run plans selectively. In this case git, cvs and java.
 
 To list all options, run :
 
@@ -67,16 +83,17 @@ To list all options, run :
 
 Run
 
-`bolt plan run piper::java_install --concurrency 10 --targets=<ip> -u
-<user> -p <pw>`
+`bolt plan run piper::java_install --concurrency 10 -t testvms`
 
 And repeat accordingly for the following plans:
 
+- piper::apg_yum_repo
 - piper::cvs_install
 - piper::git_install
 - piper::gradle_install
+- piper::java_install
 - piper::maven_install
-- piper::jenkins_install
+- piper:jenkins_install
 
 The piper::jenkins_install plan necessarily as the last
 
@@ -93,17 +110,22 @@ And then run the piper::jenkins plan.
 
 With ruby installed you can do:
 
-`./install.rb -x -a -u <user> -p <pw> -t <ip>`
+`./install.rb -x -a`
+
+with runs all, except the jenkins_install.
+
+And then, create a Snapshot and after run
+
+`./install.rb -t jenkins`
 
 The installation will take some time depending on the network speed,
 between 5 min and 45 min.
 
-### After piper::jenkins_install
+## Post Installation
 
 You need to follow the following steps to make your installation usable
 
-*1 Establish Jenkins End User*
-
+### Establish Jenkins End User
 When the piper::jenkins_install has been executed, you should be able to
 point to http:<ip>:8080 and get the User / Password page.
 
@@ -111,7 +133,7 @@ point to http:<ip>:8080 and get the User / Password page.
 
 Create a new User.
 
-***2 Configure Jenkins User / Public ssh Key***
+### Configure Jenkins User / Public ssh Key
 
 In Order to be able to use the
 [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/) , the
@@ -127,7 +149,7 @@ Paste from `cat ~/.ssh/id_rsa.pub` to
 Some Helper Scripts use the
 [Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/)
 
-***2 Create Jenkins system user rsa public key for cvs-t ssh***
+### Create Jenkins system user rsa public key for cvs-t ssh
 
 In order for jenkins jobs to be able to co from cvs-t.apgsga.ch you need
 to do the following on the target mashine:
@@ -138,32 +160,46 @@ to do the following on the target mashine:
    defaults`
 4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
-***3 Create Jenkins Tests Build Jobs***
+### Utility Scripts
 
-Note: Currently only Maven Job Creation is supported
+The Utility Script described below should be run from
 
-To create to Test Jobs in Jenkins run in the root directory of the repo:
+`cd ruby-scripts`
 
-` ./create-jenkins-testjobs.rb -u <user? -t <ip> `
+#### Create Test Build Jobs
+
+We have a set off Test Modules and Applications in the following CVS
+modules:
+
+To create to Test Jobs in Jenkins, run in the root directory of the
+repo:
+
+` ./create-jenkins-testjobs.rb`
 
 The *inventory.yaml * file will be consulted for the modules
 
 ![Inventory File](./images/inventory2.png)
 
-For options and description run:
-![Maven Jobs](./images/createmavenjobs.png)
+For options and description run
 
+` ./create-jenkins-testjobs.rb -h'
+
+#### Initialize Jenkins VM Tests
+
+To initialize a test Series in the VM there is a script:
+
+![init-jenkins-tests.rb](./images/initialize1.png)
+
+The output of a dry run is :
+
+![init-jenkins-tests.rb](./images/initialize2.png)
 
 ## Open Points / Todos
 
-- [ ] Automate cloning of gradle home git repo
-- [ ] Decide on Jenkins User Generic vs Specific
 - [ ] Automate User / Credentials Creation
 - [ ] Automate Public RSA Key exchanges for Jenkins User& Jenkins
 - [ ] Node credentials
-- [ ] Support additional Jobs Creation : Gradle / Job DsL Jobs
 - [ ] Support Apscli and Piper Installation from Yum
-- [ ] Git rid of hard coded Profile in jenkins_install.pp
 
 
 

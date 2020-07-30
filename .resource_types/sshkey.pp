@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-07-15 13:57:33 +0200.
+# This file was automatically generated on 2020-07-29 18:11:24 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Installs and manages ssh host keys.  By default, this type will
