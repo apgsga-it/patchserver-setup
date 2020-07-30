@@ -82,7 +82,14 @@ def clean_repos(test_apps, opts)
   confirm = ask("About to delete: #{uris_to_delete}, ok, [Y/N] ") { |yn| yn.limit = 1, yn.validate = /[yn]/i }
   exit unless confirm.downcase == 'y'
   uris_to_delete.each do| uri |
-    puts "#{uri} will be deleted"
+    if !opts[:dry]
+      puts "#{uri} will be deleted"
+      client.delete("#{uri}")
+      puts "done"
+    else
+      puts "dry run: #{uri} would be deleted"
+    end
+
   end
   puts "done."
 end
