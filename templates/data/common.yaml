@@ -1,0 +1,2 @@
+yum::user:name: ops-test
+yum::user:pw: TOBECHANGED
