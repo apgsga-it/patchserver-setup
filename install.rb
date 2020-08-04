@@ -99,6 +99,10 @@ if !plans_to_execute.empty?
     plans_after << 'piper::piper_install'
     plans_to_execute.delete('piper::piper_install')
   end
+  if plans_to_execute.include? 'piper::clean_repo_caches'
+    plans_after << 'piper::clean_repo_caches'
+    plans_to_execute.delete('piper::clean_repo_caches')
+  end
   plans_to_execute.each do |plan|
     run(plan,opts)
   end

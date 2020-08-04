@@ -10,6 +10,8 @@ groups:
            password:  che
 vars:
   maven_profile: artifactory-che
+  artifactory_uri: https://artifactory4t4apgsga.jfrog.io/artifactory
+  yum_repo: multiservice_yumdev
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
   db_patch_repo: dbpatch-test/

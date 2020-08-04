@@ -1,25 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 require "slop"
-require 'sshkit'
-require 'sshkit/dsl'
-require "artifactory"
 require 'json'
 require 'readline'
 require 'highline/import'
-include SSHKit::DSL
 require_relative 'lib/jenkins'
-
-
-class InteractiveSudo
-  attr_reader :inventory
-  def initialize(data)
-    @inventory = data
-  end
-  def on_data(command, stream_name, data, channel)
-    channel.send_data("#{@inventory.pw}\n")
-  end
-end
+require_relative 'lib/artifactory'
 
 
 class TestAppsJobBuilder < Jenkins::BaseVisitor
@@ -43,16 +29,12 @@ class TestAppsJobBuilder < Jenkins::BaseVisitor
   end
 end
 
-def clean_caches(test_apps)
-  SSHKit::Backend::Netssh.config.pty = 1
-  on "#{test_apps.user}@#{test_apps.target}" do
-    within "#{test_apps.gradle_home}/home" do
-      execute(:sudo, :rm, '-Rf caches/*', :interaction_handler => INTERACTIVE_SUDO)
-    end
-    within "#{test_apps.maven_home}" do
-      execute(:sudo, :rm, '-Rf *', :interaction_handler => INTERACTIVE_SUDO)
-    end
+def clean_caches(opts)
+  cmd = "../install.rb -i clean_repo"
+  if (opts[:dry])
+    cmd << " --dry"
   end
+  system(cmd)
 end
 def buildJobs(test_apps,opts)
   # Starting and executing all Test Builds sequentially ana waiting on their output
@@ -60,37 +42,11 @@ def buildJobs(test_apps,opts)
 end
 
 def clean_repos(test_apps, opts)
-  artifactory_endpoint = 'https://artifactory4t4apgsga.jfrog.io/artifactory'
-  client = Artifactory::Client.new(endpoint: artifactory_endpoint, username: "#{opts[:user]}", password: "#{opts[:pw]}")
-  local_repos = client.get("/api/repositories", {'type' => 'local'})
-  repos_to_clean = []
-  local_repos.each do
-  |repo|
-    next unless repo['key'].start_with?("dev#{opts[:user]}")
-    repos_to_clean << repo['key']
-  end
-  uris_to_delete = []
-  repos_to_clean.each do
-  |repo_name|
-    storage = client.get("/api/storage/#{repo_name}")
-    children = storage['children']
-    children.each do
-    |child|
-      uris_to_delete << "#{artifactory_endpoint}/#{repo_name}#{child['uri']}"
-    end
-  end
-  confirm = ask("About to delete: #{uris_to_delete}, ok, [Y/N] ") { |yn| yn.limit = 1, yn.validate = /[yn]/i }
-  exit unless confirm.downcase == 'y'
-  uris_to_delete.each do| uri |
-    if !opts[:dry]
-      puts "#{uri} will be deleted"
-      client.delete("#{uri}")
-      puts "done"
-    else
-      puts "dry run: #{uri} would be deleted"
-    end
-
-  end
+  user = ask("Enter artifactory userid: ")
+  password = ask("Enter artifactory password: ") { |q| q.echo = false }
+  command = Artifactory::Cli.new(test_apps.artifactory_uri, user, password, opts[:dry])
+  user_filter = test_apps.maven_profile[test_apps.maven_profile.index('-')+1..-1]
+  command.clean_repositories(command.list_repositories(user_filter), opts[:dry])
   puts "done."
 end
 
@@ -108,8 +64,6 @@ def help(opts)
 end
 
 opts = Slop.parse do |o|
-  o.string '-u', '--user', 'User for Artifactory operations'
-  o.string '-p', '--pw', 'Password for Artifactory operations'
   o.bool '-y', '--dry', 'Dry run, without invoking Jenkins cli via ssh', default: false
   o.bool '-scc', '--skipCacheClean', 'Skip cleaning of Maven and Gradle Cache', default: false
   o.bool '-srj', '--skipRunJobs', 'Skip running of Build Jobs ', default: false
@@ -125,19 +79,18 @@ if opts[:dry]
 end
 # Cleaning up Local Gradle and Maven Cache
 test_apps = Jenkins::TestApps.new
-INTERACTIVE_SUDO = InteractiveSudo.new(test_apps)
 if !opts[:skipCacheClean]
-  clean_caches(test_apps)
+  clean_caches(opts)
 else
   puts "Skipping clean of Caches"
 end
-if !opts[:skipRunJobs]
-  buildJobs(test_apps,opts)
+if !opts[:skipReposClean]
+  clean_repos(test_apps, opts)
 else
   puts "Skipping Running of Build Jobs"
 end
-if !opts[:skipReposClean]
-  clean_repos(test_apps, opts)
+if !opts[:skipRunJobs]
+  buildJobs(test_apps,opts)
 else
   puts "Skipping Running of Build Jobs"
 end

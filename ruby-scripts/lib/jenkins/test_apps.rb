@@ -6,7 +6,7 @@ module Jenkins
     end
   end
   class TestApps
-    attr_reader :user,:pw, :target, :test_apps,:gradle_home, :maven_home
+    attr_reader :user,:pw, :target, :test_apps,:gradle_home, :maven_home, :artifactory_uri, :maven_profile
     include Visitable
 
     def initialize
@@ -21,6 +21,8 @@ module Jenkins
       @target = inventory['groups'].first['targets'].first['uri']
       @gradle_home = inventory["vars"]["gradle_home"]
       @maven_home = inventory["vars"]["maven_home"]
+      @artifactory_uri = inventory["vars"]["artifactory_uri"]
+      @maven_profile = inventory["vars"]["maven_profile"]
       @test_apps = []
       apps_config_context = inventory["vars"]["testapps"]
       apps_config_context.each do |app_config_context|
