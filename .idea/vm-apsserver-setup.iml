@@ -23,6 +23,8 @@
     <orderEntry type="library" scope="PROVIDED" name="net-ssh (v6.1.0, rbenv: jruby-9.2.11.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="slop (v4.8.1, rbenv: jruby-9.2.11.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sshkit (v1.21.0, rbenv: jruby-9.2.11.1) [gem]" level="application" />
+    <orderEntry type="library" name="groovy-3.0.2" level="application" />
+    <orderEntry type="library" name="groovy-3.0.2" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">
