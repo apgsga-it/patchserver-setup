@@ -81,7 +81,7 @@ end
 
 
 if !plans_to_execute.empty?
-  puts "Running with user=<#{opts[:user]}> the plans=<#{plans_to_execute}> on target:#{opts[:target]}"
+  puts "Running the plans=<#{plans_to_execute}>"
   plans_after = []
   if opts[:xceptJenkins]
     plans_to_execute.delete('piper::jenkins_install')

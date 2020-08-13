@@ -30,11 +30,15 @@ class TestAppsJobBuilder < Jenkins::BaseVisitor
 end
 
 def clean_caches(opts)
-  cmd = "../install.rb -i clean_repo"
+  current_dir = Dir.pwd
+  Dir.chdir("..")
+  cmd = "./install.rb -i clean_repo"
   if (opts[:dry])
     cmd << " --dry"
   end
+  puts cmd
   system(cmd)
+  Dir.chdir(current_dir)
 end
 def buildJobs(test_apps,opts)
   # Starting and executing all Test Builds sequentially ana waiting on their output

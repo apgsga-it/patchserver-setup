@@ -31,6 +31,7 @@ module Artifactory
       repositories.each do
       |repo_name|
         storage = client.get("/api/storage/#{repo_name}")
+        puts storage
         children = storage['children']
         children.each do
         |child|
