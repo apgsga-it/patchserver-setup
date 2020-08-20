@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-07-29 18:11:24 +0200.
+# This file was automatically generated on 2020-08-20 13:19:12 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manages system reboots.  The `reboot` type is typically

@@ -54,6 +54,7 @@ if opts[:list]
     | plan | puts plan
   end
   puts "piper:jenkins_install & piper_install will be executed last"
+  puts "piper:ruby_install & rbenv_install only , when selected explicitly"
 end
 if opts[:install].empty? and !opts[:all]
   exit
@@ -77,6 +78,9 @@ end
 
 if opts[:all]
   plans_to_execute = plans_available
+  plans_to_execute.delete('piper::ruby_install')
+  plans_to_execute.delete('piper::ruby_rbenv_install')
+  plans_to_execute.delete('piper::ruby_gem_server')
 end
 
 
@@ -86,6 +90,9 @@ if !plans_to_execute.empty?
   if opts[:xceptJenkins]
     plans_to_execute.delete('piper::jenkins_install')
     plans_to_execute.delete('piper::piper_install')
+    plans_to_execute.delete('piper::ruby_install')
+    plans_to_execute.delete('piper::ruby_rbenv_install')
+    plans_to_execute.delete('piper::ruby_gem_server')
   end
   if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
