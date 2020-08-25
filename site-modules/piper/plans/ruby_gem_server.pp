@@ -36,8 +36,7 @@ After=network.target
 [Service]
 User=geminabox
 WorkingDirectory=${app_dir}
-ExecStart=/opt/rbenv/shims/thin -R ${app_dir}/config.ru -o 0.0.0.0 -p 9292 start
-ExecStop=/opt/rbenv/shims/thin stop
+ExecStart=/opt/rbenv/shims/thin -R ${app_dir}/config.ru -a 0.0.0.0 -p 9292 start
 
 [Install]
 WantedBy=multi-user.target"
@@ -51,7 +50,8 @@ WantedBy=multi-user.target"
       ~> service {'geminabox':
          ensure => 'running',
       }
-      run_command('firewall-cmd --permanent --add-port=9292/tcp', $targets, '_catch_errors' => true, '_run_as' => 'root')
-      run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
+
   }
+  run_command('firewall-cmd --permanent --add-port=9292/tcp', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
 }
