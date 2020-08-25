@@ -46,6 +46,7 @@ WantedBy=multi-user.target"
           owner => 'geminabox',
           group =>'geminabox',
           mode   => '744',
+          enable => true,
       }
       ~> service {'geminabox':
          ensure => 'running',
