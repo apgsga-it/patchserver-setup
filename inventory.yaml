@@ -1,7 +1,7 @@
 groups:
    - name: testvms
      targets:
-        - uri: 172.16.92.193
+        - uri: 172.16.92.178
           name:  testvm
      config:
         transport: ssh
@@ -22,6 +22,14 @@ vars:
   releases_patch_repo: releases-test/
   zip_dist_repo: zip-dist-test
   cli_port: 53801
+  plugins_repo: http://ftp-chi.osuosl.org/pub/jenkins/plugins
+  pipeline_repo: https://github.com/apgsga-it/apg-jenkins-pipelines.git
+  github_credential_id: apgsga-jenkins
+  temp_gradle: /tmp/gradlehome
+  github_jenkins_version: master
+
+  ## TODO (che, 15.9) : this should moved into gem , see directory ruby-scripts
+  ## TODO (che, 15.9) : or the ruby-scripts to puppet , which would be tough a daunting task
   testapps:
       - name: testapp
         rootdir: apg-gradle-plugins-testsmodules/testapp/
@@ -31,5 +39,4 @@ vars:
         rootdir: apg-gradle-plugins-testsmodules-2/testapp-2/
         modules: testapp-bom-2 testapp-parentpom-2 testapp-module-2 testapp-service-2
         pkg: testapp-pkg-2
-  plugins_repo: http://ftp-chi.osuosl.org/pub/jenkins/plugins
-  temp_gradle: /tmp/gradlehome
+

@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-08-20 13:19:07 +0200.
+# This file was automatically generated on 2020-09-16 12:06:02 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # The client-side description of a zypper repository. Repository

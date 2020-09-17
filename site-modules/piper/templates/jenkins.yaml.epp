@@ -5,15 +5,15 @@ credentials:
       - usernamePassword:
           description: "jadas-e ssh credentials "
           id: "jadas-e-ssh"
-          password: "{AQAAABAAAAAQ8/wv4Gi0xbm6nbhsv4hR9GoS7E4PtSXv5TyphdzR/qI=}"
+          password: ""
           scope: GLOBAL
-          username: "che"
+          username: "<%= $jenkinsuser %>"
       - usernamePassword:
           description: "Github Zugang"
-          id: "chhexgithub"
-          password: "{AQAAABAAAABQKF1LnNOqCw8eBu22H88XfwFsfni7flX9DOWGvc7dOPVzfvkOEh7feOHDrZxnLOrM3jl38QzPsgAwLj3hlwtJQvlmXHCGP4/rvnt8f+rdk3q7q0xGO3NR0mpPGJoDOXUX}"
+          id: "apgsga-jenkins"
+          password: ""
           scope: GLOBAL
-          username: "chhex"
+          username: "<%= $jenkinsuser %>"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
@@ -75,7 +75,7 @@ jenkins:
       - key: "DB_PATCH_REPO"
         value: "<%= $db_patch_repo %>"
       - key: "GITHUB_JENKINS_VERSION"
-        value: "master"
+        value: "<%= $github_jenkins_version %>"
       - key: "GRADLE_OPTS"
         value: "-Dgradle.user.home=/var/jenkins/gradle/home -Dorg.gradle.daemon=false"
       - key: "JENKINS_MAVEN_AGENT_DISABLED"
@@ -154,6 +154,8 @@ security:
     creationOfLegacyTokenEnabled: false
     tokenGenerationOnCreationEnabled: false
     usageStatisticsEnabled: true
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
   sSHD:
     port: "<%= $cli_port %>"
   scriptApproval:
@@ -242,7 +244,7 @@ unclassified:
     localRepository: "default"
   pollSCM:
     pollingThreadCount: 10
-  timestamperConfig:
+  timestamper:
     allPipelines: false
     elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
     systemTimeFormat: "'<b>'HH:mm:ss'</b> '"

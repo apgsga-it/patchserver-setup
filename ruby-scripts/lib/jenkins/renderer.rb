@@ -16,9 +16,9 @@ module Jenkins
       @temp_dir = Dir.mktmpdir("jenkins")
     end
 
-    def render(module_name, root_dir)
-      output = renderer.new(module_name,root_dir).render()
-      job_name = job_name(module_name)
+    def render(module_name, attributes = {})
+      output = renderer.new(module_name, attributes).render()
+      job_name =  job_name(module_name)
       puts "Jobname : #{job_name}"
       job_xml_file = File.join(@temp_dir, "#{job_name}.xml")
       File.write(job_xml_file, output)
@@ -27,8 +27,11 @@ module Jenkins
   end
 
   class RenderData_
-    def initialize(module_name, root_dir)
-      @module_name = module_name;  @root_dir = root_dir
+    def initialize(module_name,attributes = {} )
+      @module_name = module_name
+      attributes.each do |k,v|
+        instance_variable_set "@#{k}".to_sym, v
+      end
     end
   end
 end

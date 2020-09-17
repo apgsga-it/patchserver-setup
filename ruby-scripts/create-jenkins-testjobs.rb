@@ -15,7 +15,7 @@ class TestAppsJobCreator < Jenkins::BaseVisitor
     @mavenRenderer = Jenkins::Renderer.new("maven-job-config.xml.erb")
   end
   def visit_MavenModule(subject)
-    result = @mavenRenderer.render(subject.name, subject.root_dir)
+    result = @mavenRenderer.render(subject.name, {:root_dir => subject.root_dir})
     if @opts[:delete]
       Jenkins::DeleteJob.new(subject.target,subject.user,result[:job_name],@opts[:dry]).run
     end
@@ -23,7 +23,7 @@ class TestAppsJobCreator < Jenkins::BaseVisitor
   end
   def visit_PkgModule(subject)
     renderer = Jenkins::Renderer.new("gradle-job-config.xml.erb")
-    result = renderer.render(subject.name, subject.root_dir)
+    result = renderer.render(subject.name, {:root_dir => subject.root_dir})
     if @opts[:delete]
       Jenkins::DeleteJob.new(subject.target,subject.user,result[:job_name],@opts[:dry]).run
     end

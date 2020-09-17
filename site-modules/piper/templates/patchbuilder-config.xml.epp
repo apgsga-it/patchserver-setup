@@ -17,22 +17,18 @@
         <hudson.model.StringParameterDefinition>
           <name>patchnumber</name>
           <description>Nummer des Patches, welcher gebaut werden soll</description>
-          <defaultValue>9050</defaultValue>
-          <trim>false</trim>
+          <defaultValue>9999</defaultValue>
+          <trim>true</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <jenkins.advancedqueue.jobinclusion.strategy.JobInclusionJobProperty plugin="PrioritySorter@3.6.0">
-      <useJobGroup>false</useJobGroup>
-      <jobGroupName>ProdPatch</jobGroupName>
-    </jenkins.advancedqueue.jobinclusion.strategy.JobInclusionJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.6.4">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.2">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/apgsga-it/jenkins-patch-scripts.git</url>
-        <credentialsId>apgsga-jenkins</credentialsId>
+        <url><%= $pipeline_repo %></url>
+        <credentialsId><%= $github_credential_id %></credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -52,13 +48,14 @@
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.66">
-      <targets>src/main/jenkins/server/patchbuilder.groovy</targets>
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.77">
+      <targets>src/main/groovy/patchBuilder.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
       <ignoreExisting>false</ignoreExisting>
       <ignoreMissingFiles>false</ignoreMissingFiles>
       <failOnMissingPlugin>false</failOnMissingPlugin>
+      <failOnSeedCollision>false</failOnSeedCollision>
       <unstableOnDeprecation>false</unstableOnDeprecation>
       <removedJobAction>IGNORE</removedJobAction>
       <removedViewAction>IGNORE</removedViewAction>
@@ -67,15 +64,6 @@
     </javaposse.jobdsl.plugin.ExecuteDslScripts>
   </builders>
   <publishers>
-    <hudson.tasks.BuildTrigger>
-      <childProjects>PatchPostBuilder</childProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-        <completeBuild>true</completeBuild>
-      </threshold>
-    </hudson.tasks.BuildTrigger>
   </publishers>
   <buildWrappers/>
 </project>
