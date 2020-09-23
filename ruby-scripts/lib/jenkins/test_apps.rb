@@ -31,16 +31,20 @@ module Jenkins
         modules_names.each do  |module_name|
           modules << MavenModule.new(module_name)
         end
-        pkg = PkgModule.new(app_config_context["pkg"])
-        @test_apps << TestApp.new(self,app_config_context["name"],app_config_context["rootdir"],modules,pkg)
+        pkg_names = app_config_context["pkg"].split(" ")
+        pkgs = []
+        pkg_names.each do |pkg|
+          pkgs << PkgModule.new(pkg)
+        end
+        @test_apps << TestApp.new(self,app_config_context["name"],app_config_context["rootdir"],modules,pkgs)
       end
     end
   end
 
   class TestApp
-    attr_reader :test_apps,:name, :root_dir, :modules, :pkg
+    attr_reader :test_apps,:name, :root_dir, :modules, :pkgs
     include Visitable
-    def initialize(test_apps,name,root_dir, modules, pkg)
+    def initialize(test_apps,name,root_dir, modules, pkgs)
       @test_apps = test_apps
       @name = name
       @root_dir = root_dir
@@ -48,8 +52,10 @@ module Jenkins
       @modules.each do |mod|
         mod.test_app = self
       end
-      @pkg = pkg
-      @pkg.test_app = self
+      @pkgs = pkgs
+      @pkgs.each do |pkg|
+        pkg.test_app = self
+      end
     end
     def user
       @test_apps.user
@@ -109,7 +115,9 @@ module Jenkins
       subject.modules.each do |mod|
         mod.accept(self)
       end
-      subject.pkg.accept(self)
+      subject.pkgs.each do |pkg|
+        pkg.accept(self)
+      end
     end
     def _visit_MavenModule(subject)
       visit_MavenModule(subject)
