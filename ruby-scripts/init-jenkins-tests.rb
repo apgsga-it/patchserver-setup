@@ -21,10 +21,19 @@ class TestAppsJobBuilder < Jenkins::BaseVisitor
   end
 
   def visit_MavenModule(subject)
+    if @opts[:a] && @opts[:a] != subject.test_app.name
+      return
+    end
     Jenkins::BuildJob.new(subject.target, subject.user, job_name(subject.name), @opts[:dry]).run
   end
 
   def visit_PkgModule(subject)
+    if @opts[:a] && @opts[:a] != subject.test_app.name
+      return
+    end
+    if @opts[:skipPkgs]
+      return
+    end
     Jenkins::BuildJob.new(subject.target, subject.user, job_name(subject.name), opts[:dry]).run
   end
 end
@@ -72,6 +81,8 @@ opts = Slop.parse do |o|
   o.bool '-scc', '--skipCacheClean', 'Skip cleaning of Maven and Gradle Cache', default: false
   o.bool '-srj', '--skipRunJobs', 'Skip running of Build Jobs ', default: false
   o.bool '-src', '--skipReposClean', 'Skip cleaning of Repos', default: false
+  o.string '-a', '--buildApp', 'build a specific TestApp of a <Testappname>'
+  o.bool '-spk' ,'--skipPkgs', 'Skip the builds of the Test Pkgs', default: false
   o.on '-h', '--help' do
     help(o)
     exit
