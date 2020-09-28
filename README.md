@@ -160,6 +160,26 @@ to do the following on the target mashine:
    defaults`
 4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
+### Configure Piper
+
+After Piper has been installed, we have to configure the following:
+
+1. vi /etc/opt/apg-patch-service-server/application.properties and
+
+    a. vcs.host=cvs-t.apgsga.ch
+    
+    b. jenkins.host=localhost
+    
+    c. jenkins.ssh.user=jhe # or the user define within your VM
+
+2. systemctl restart apg-patch-service-server
+3. logon as apg-patch-service-server (su apg-patch-service-server)
+4. run "ssh localhost -p 53801 (you might get an error, doesn't matter, important is to see : Permanently added '[localhost]:53801' (RSA) to the list of known hosts)
+5. run "ssh-keygen", accept all default
+6. run "ssh-copy-id apg-patch-service-server@localhost"
+7. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH Public keys" of the user configured for jenkins.ssh.user property within /etc/opt/apg-patch-service-server/application.properties.
+
+
 ### Utility Scripts
 
 The Utility Script described below should be run from
