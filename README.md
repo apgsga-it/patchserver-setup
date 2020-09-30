@@ -217,8 +217,9 @@ The output of a dry run is :
 ## Open Points / Todos
 
 - [ ] Automate User / Credentials Creation
-- [ ] Automate Public RSA Key exchanges for Jenkins User& Jenkins
+- [ ] Automate Public RSA Key exchanges for Jenkins User & Jenkins
 - [ ] Node credentials
+- [ ] Align User/Groups to Apg Standard
 - [x] Support Apscli and Piper Installation from Yum
 
 
