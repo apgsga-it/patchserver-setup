@@ -24,7 +24,7 @@ plans_available = []
 plans_to_execute = []
 lines = show_output.split("\n")
 lines.each do |line|
-  if (line.match(/piper::/))
+  if (line.match(/piper::/) or line.match(/pipertest::/))
     plans_available << line
   end
 end
@@ -53,8 +53,8 @@ if opts[:list]
   plans_available.each do
     | plan | puts plan
   end
-  puts "piper:jenkins_install & piper_install will be executed last"
-  puts "piper:ruby_install & rbenv_install only , when selected explicitly"
+  puts "The ordering of the plan execution will be respected with the --all option"
+  puts "With the -i option, the order of the input defines the execution order of the plans"
 end
 if opts[:install].empty? and !opts[:all]
   exit
@@ -77,10 +77,8 @@ def run(plan,opts)
 end
 
 if opts[:all]
+  plans_available.delete('pipertest::clean_repo')
   plans_to_execute = plans_available
-  plans_to_execute.delete('piper::ruby_install')
-  plans_to_execute.delete('piper::ruby_rbenv_install')
-  plans_to_execute.delete('piper::ruby_gem_server')
 end
 
 
@@ -90,9 +88,6 @@ if !plans_to_execute.empty?
   if opts[:xceptJenkins]
     plans_to_execute.delete('piper::jenkins_install')
     plans_to_execute.delete('piper::piper_install')
-    plans_to_execute.delete('piper::ruby_install')
-    plans_to_execute.delete('piper::ruby_rbenv_install')
-    plans_to_execute.delete('piper::ruby_gem_server')
   end
   if plans_to_execute.include? 'piper::java_install'
     run('piper::java_install',opts)
@@ -106,9 +101,13 @@ if !plans_to_execute.empty?
     plans_after << 'piper::piper_install'
     plans_to_execute.delete('piper::piper_install')
   end
-  if plans_to_execute.include? 'piper::clean_repo_caches'
-    plans_after << 'piper::clean_repo_caches'
-    plans_to_execute.delete('piper::clean_repo_caches')
+  if plans_to_execute.include? 'piper::jenkins_create_jobs'
+    plans_after << 'piper::jenkins_create_jobs'
+    plans_to_execute.delete('piper::jenkins_create_jobs')
+  end
+  if plans_to_execute.include? 'pipertest::clean_repo'
+    plans_after << 'pipertest::clean_repo'
+    plans_to_execute.delete('pipertest::clean_repo')
   end
   plans_to_execute.each do |plan|
     run(plan,opts)

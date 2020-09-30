@@ -1,4 +1,4 @@
-plan piper::clean_repo (
+plan pipertest::clean_repo (
   TargetSpec $targets
 ) {
   $targets.apply_prep

@@ -139,7 +139,7 @@ plan piper::jenkins_install(
           config_hash => {
             'JENKINS_JAVA_OPTIONS' => { value => '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=100 -Dpermissive-script-security.enabled=no_security'
             },
-            'PATH' => { value => '/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/opt/rbenv/bin'},
+            'PATH' => { value => '/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin'},
             'CASC_JENKINS_CONFIG' => { value => '/etc/jenkins/casc'}
           },
           install_java => false,
