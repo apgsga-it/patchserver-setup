@@ -219,7 +219,7 @@ The output of a dry run is :
 - [ ] Automate User / Credentials Creation
 - [ ] Automate Public RSA Key exchanges for Jenkins User& Jenkins
 - [ ] Node credentials
-- [ ] Support Apscli and Piper Installation from Yum
+- [x] Support Apscli and Piper Installation from Yum
 
 
 
