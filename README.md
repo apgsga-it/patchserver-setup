@@ -220,6 +220,7 @@ The output of a dry run is :
 - [ ] Automate Public RSA Key exchanges for Jenkins User & Jenkins
 - [ ] Node credentials
 - [ ] Align User/Groups to Apg Standard
+- [ ] Move Target, User , Password from inventory.yaml back to commandline 
 - [x] Support Apscli and Piper Installation from Yum
 
 
