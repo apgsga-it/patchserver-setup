@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-09-16 12:06:06 +0200.
+# This file was automatically generated on 2020-10-06 15:58:04 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manages loading and unloading of SELinux policy modules

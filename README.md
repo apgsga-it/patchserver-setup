@@ -174,45 +174,15 @@ After Piper has been installed, we have to configure the following:
 
 2. systemctl restart apg-patch-service-server
 3. logon as apg-patch-service-server (su apg-patch-service-server)
-4. run "ssh localhost -p 53801 (you might get an error, doesn't matter, important is to see : Permanently added '[localhost]:53801' (RSA) to the list of known hosts)
+4. run "ssh localhost -p 53801 (you might get an error, doesn't matter,
+   important is to see : Permanently added 'localhost:53801' (RSA) to
+   the list of known hosts)
 5. run "ssh-keygen", accept all default
 6. run "ssh-copy-id apg-patch-service-server@localhost"
-7. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH Public keys" of the user configured for jenkins.ssh.user property within /etc/opt/apg-patch-service-server/application.properties.
+7. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH
+   Public keys" of the user configured for jenkins.ssh.user property
+   within /etc/opt/apg-patch-service-server/application.properties.
 
-
-### Utility Scripts
-
-The Utility Script described below should be run from
-
-`cd ruby-scripts`
-
-#### Create Test Build Jobs
-
-We have a set off Test Modules and Applications in the following CVS
-modules:
-
-To create to Test Jobs in Jenkins, run in the root directory of the
-repo:
-
-` ./create-jenkins-testjobs.rb`
-
-The *inventory.yaml * file will be consulted for the modules
-
-![Inventory File](./images/inventory2.png)
-
-For options and description run
-
-` ./create-jenkins-testjobs.rb -h'
-
-#### Initialize Jenkins VM Tests
-
-To initialize a test Series in the VM there is a script:
-
-![init-jenkins-tests.rb](./images/initialize1.png)
-
-The output of a dry run is :
-
-![init-jenkins-tests.rb](./images/initialize2.png)
 
 ## Open Points / Todos
 

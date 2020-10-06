@@ -1,3 +1,0 @@
-require_relative 'artifactory/artifactory_cli'
-module Artifactory
-end

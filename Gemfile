@@ -1,6 +1,2 @@
 source 'https://rubygems.org'
 gem 'slop'
-gem 'ipaddress'
-gem  'highline'
-gem 'artifactory', '~> 3.0.5'
-gem 'artcli'

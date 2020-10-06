@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-09-16 12:06:07 +0200.
+# This file was automatically generated on 2020-10-06 15:58:05 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manage zfs. Create destroy and set properties on zfs instances.

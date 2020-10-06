@@ -1,4 +1,4 @@
-# This file was automatically generated on 2020-09-16 12:06:02 +0200.
+# This file was automatically generated on 2020-10-06 15:57:59 +0200.
 # Use the 'puppet generate types' command to regenerate this file.
 
 # Manage Jenkins' user account information
