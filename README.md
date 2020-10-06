@@ -1,4 +1,4 @@
-# Apg Piper Server Setup
+# Apg Patch Server Setup
 
 Provides a mostly automated initial setup and configuration of the Apg
 Patch Server with Jenkins for Localtesting and Development. For Piper
