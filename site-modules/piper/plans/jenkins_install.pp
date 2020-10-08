@@ -4,22 +4,59 @@ plan piper::jenkins_install(
   $targets.apply_prep
 
   ## User Setup
-  run_command('groupadd -f -r jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('useradd -r -m -c "jenkins user" jenkins -g jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('mkdir /home/jenkins/.m2', $targets, '_catch_errors' => false, '_run_as' => 'root')
-
-  ## Jenkins JCasc Setup
-  run_command('mkdir "/etc/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('mkdir "/etc/jenkins/casc"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  # run_command('groupadd -f -r jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  group( "$targets.jenkins":
+    name => "jenkins",
+    ensure => present,
+    ;
+  }
+  # run_command('useradd -r -m -c "jenkins user" jenkins -g jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  user( "$targets.jenkins":
+    name => "jenkins",
+    ensure => present,
+    gid => "jenkins",
+    shell => "/bin/bash",
+    managehome => yes,
+    require => Group["$targets.jenkins"],
+    ;
+  }
+  # run_command('mkdir /home/jenkins/.m2', $targets, '_catch_errors' => false, '_run_as' => 'root')
+  file {
+    "/home/jenkins/.m2":
+      ensure => directory,
+      mode => 774,
+      owner => 'jenkins',
+      group => 'jenkins',
+    ;
+    ## Jenkins JCasc Setup
+    # run_command('mkdir "/etc/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+    "/etc/jenkins":
+      ensure => directory,
+      mode => 664,
+      owner => 'jenkins',
+      group => 'jenkins',
+    ;
+    # run_command('mkdir "/etc/jenkins/casc"', $targets, '_catch_errors' => false, '_run_as' => 'root')
+    "/etc/jenkins/casc":
+      ensure => directory,
+      mode => 664,
+      owner => 'jenkins',
+      group => 'jenkins',
+    ;
+  }
+      
   $targetall = get_targets('all')[0]
   apply($targets) {
     file { '/etc/jenkins/casc/jenkins.yaml':
       ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" })
+      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" }),
+      mode => 664,
+      owner => 'jenkins',
+      group => 'jenkins',
     }
   }
-  run_command('chown -R jenkins:jenkins /etc/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command('chmod 0664 /etc/jenkins/casc/*', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  # run_command('chown -R jenkins:jenkins /etc/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
+  # run_command('chmod 0664 /etc/jenkins/casc/*', $targets, '_catch_errors' => true, '_run_as' => 'root')
 
   ## Jenkins Gradle and Maven Home Setup
   run_command('mkdir "/var/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
