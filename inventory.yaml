@@ -21,10 +21,20 @@ vars:
   pipeline_mail_from: 5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms
   releases_patch_repo: releases-test/
   zip_dist_repo: zip-dist-test
-  cli_port: 53801
+  jenkins_cli_port: 53801
   plugins_repo: http://ftp-chi.osuosl.org/pub/jenkins/plugins
   pipeline_repo: https://github.com/apgsga-it/apg-jenkins-pipelines.git
   github_credential_id: apgsga-jenkins
   temp_gradle: /tmp/gradlehome
   github_jenkins_version: master
-
+  # Piper application.properties
+  piper_bind_address:  # empty for local testing
+  piper_server_port: 9010
+  piper_cvs_remote_host: cvs-t.apgsga.ch
+  piper_cvs_user: svcCvsClient # Does this work for cvs-t?
+  piper_jenkins_host: localhost
+  jenkins_ssh_user: che # Redundant to bolt ssh config
+  jenkins_builder_pipeline_repo: apgsga-it/apg-jenkins-pipeline-testlibs
+  jenkins_builder_pipeline_repo_branch: master
+  jenkins_install_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
+  jenkins_assembly_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
