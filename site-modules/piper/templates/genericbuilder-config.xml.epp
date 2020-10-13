@@ -33,15 +33,15 @@
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>github_repo</name>
-          <description>The Pipeline Github repo of Pipeline Job created</description>
-          <defaultValue>apgsga-it/apg-jenkins-pipeline-testlibs</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
           <name>github_repo_branch</name>
           <description>The Pipeline Github repo branch  of Pipeline Job created</description>
           <defaultValue>master</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+         <hudson.model.StringParameterDefinition>
+          <name>github_repo</name>
+          <description>The Pipeline Github repo of Pipeline Job created</description>
+          <defaultValue>apgsga-it/apg-jenkins-pipeline-testlibs</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -57,12 +57,12 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/apgsga-it/apg-jenkins-pipelines.git</url>
+        <url><%= $pipeline_repo %></url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>*/master</name>
+        <name>${GITHUB_JENKINS_VERSION}</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>

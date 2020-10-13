@@ -1,7 +1,7 @@
 groups:
    - name: testvms
      targets:
-        - uri: 172.16.92.206
+        - uri: 172.16.92.207
           name:  testvm
      config:
         transport: ssh
@@ -27,3 +27,4 @@ vars:
   github_credential_id: apgsga-jenkins
   temp_gradle: /tmp/gradlehome
   github_jenkins_version: master
+
