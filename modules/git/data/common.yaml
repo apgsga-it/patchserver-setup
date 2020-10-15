@@ -1,7 +1,0 @@
----
-git::sources_manage: false
-git::sources_ensure: present
-git::sources_repo: ''
-git::package_manage: true
-git::package_ensure: latest
-git::package_name: 'git'
