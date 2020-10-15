@@ -2,6 +2,6 @@
 /modules/*
 .idea
 /.resource_types/*
-Gemfile.lock.iml
+Gemfile.lock
 *.iml
 *.log
