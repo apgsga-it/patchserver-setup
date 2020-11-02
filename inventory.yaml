@@ -1,7 +1,7 @@
 groups:
    - name: testvms
      targets:
-        - uri: 172.16.92.207
+        - uri: centpatch
           name:  testvm
      config:
         transport: ssh

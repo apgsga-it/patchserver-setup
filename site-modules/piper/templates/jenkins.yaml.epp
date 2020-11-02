@@ -157,7 +157,7 @@ security:
   globalJobDslSecurityConfiguration:
     useScriptSecurity: false
   sSHD:
-    port: "<%= $cli_port %>"
+    port: "<%= $jenkins_cli_port %>"
   scriptApproval:
     approvedSignatures:
     - "field hudson.model.Executor executable"
