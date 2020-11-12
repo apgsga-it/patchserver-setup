@@ -8,6 +8,24 @@ groups:
         ssh:
            user: che
            password:  che
+     vars:
+       # Piper application.properties , local tests specific
+        piper_spring_profiles: live,remotecvs
+        piper_bind_address:  # empty for local testing
+        piper_server_port: 9010
+        piper_cvs_remote_host: cvs-t.apgsga.ch
+        piper_cvs_user: che # Does this work for cvs-t?
+        piper_jenkins_host: localhost
+        jenkins_ssh_user: che # Redundant to bolt ssh config
+        jenkins_authkey: 22136e2c863d782f50b568f2c2dfdac0
+        jenkins_builder_pipeline_repo: apgsga-it/apg-jenkins-pipeline-testlibs
+        jenkins_builder_pipeline_repo_branch: master
+        jenkins_install_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
+        jenkins_assemble_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
+        cm_db_host: chti212.apgsga.ch
+        cm_db_instance: chti212
+        cm_db_piper_user: cm_example_user
+        cm_db_piper_pw: cm_example_user_pw
 vars:
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
