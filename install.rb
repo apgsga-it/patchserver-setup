@@ -86,7 +86,7 @@ unless plans_to_execute.empty?
   puts "Running the plans=<#{plans_to_execute}>"
   plans_after = []
   if opts[:xceptJenkins]
-    plans_to_execute.delete('piper::jenkins_install')
+    plans_to_execute.delete('piper::jenkins_service_install')
     plans_to_execute.delete('piper::piper_install')
     plans_to_execute.delete('piper::jenkins_create_jobs')
   end
@@ -94,9 +94,9 @@ unless plans_to_execute.empty?
     run('piper::java_install',opts)
     plans_to_execute.delete('piper::java_install')
   end
-  if plans_to_execute.include? 'piper::jenkins_install'
-    plans_after = ['piper::jenkins_install']
-    plans_to_execute.delete('piper::jenkins_install')
+  if plans_to_execute.include? 'piper::jenkins_service_install'
+    plans_after = ['piper::jenkins_service_install']
+    plans_to_execute.delete('piper::jenkins_service_install')
   end
   if plans_to_execute.include? 'piper::piper_install'
     plans_after << 'piper::piper_install'
