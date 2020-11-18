@@ -10,6 +10,7 @@ groups:
            password:  che
      vars:
        # Piper application.properties , local tests specific
+        admin_user_email : chhenrici@gmail.com
         piper_spring_profiles: live,remotecvs
         piper_bind_address:  # empty for local testing
         piper_server_port: 9010
@@ -27,6 +28,7 @@ groups:
         cm_db_piper_user: cm_example_user
         cm_db_piper_pw: cm_example_user_pw
 vars:
+  # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
   yum_repo: multiservice_yumdev

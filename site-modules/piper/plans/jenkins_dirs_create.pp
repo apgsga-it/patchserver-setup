@@ -6,8 +6,13 @@ plan piper::jenkins_dirs_create (
   $temp_dir = "/tmp/${$timestamp}"
   $targetall = get_targets('all')[0]
   $jenkins_user = "jenkins"
+  $dl_result = download_file("/home/${targetall.config[ssh][user]}/.ssh/id_rsa.pub/", 'target', $targets)
+  $user_rsa_target = file::read($dl_result.first['path'])
+  $home_dir = system::env('HOME')
+  $user_rsa_local = file::read("${$home_dir}/.ssh/id_rsa.pub")
+  $ssh_keys = "${user_rsa_target}\n${user_rsa_local}"
   apply($targets) {
-  file { $temp_dir:
+    file { $temp_dir:
       ensure => directory,
       owner => $jenkins_user,
       group => $jenkins_user,
@@ -27,7 +32,7 @@ plan piper::jenkins_dirs_create (
     }
     file { '/etc/jenkins/casc/jenkins.yaml':
       ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" }),
+      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" , 'authorized_keys' => $ssh_keys }),
       owner => $jenkins_user,
       group => $jenkins_user,
       mode => '0644',

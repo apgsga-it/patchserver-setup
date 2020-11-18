@@ -9,14 +9,12 @@ see the [Github Repo]() .
 1. A
    [Minimal Centos 7](http://linuxsoft.cern.ch/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-minimal.iso)
    installation with user / password with sudo rights on the target
-   machine running.
+   machine running. The user should also have a public rsa key.
 2. Configuration of Bolt Hiera for passwords use , see seperate
    description below
 3. Bolt installed on the Host machine. For Bolt installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-4. Ruby installed on the Host machine, see the
-   [Ruby Site](https://www.ruby-lang.org/de/documentation/installation/)
-   , preferably with [Rbenv](https://github.com/rbenv/rbenv)
+4. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
 5. At least the target host added as ssh known host to the user, which
    the installation will be done.
 
@@ -64,38 +62,28 @@ see below
 
 ### Run Bolt Plans With Ruby installed
 
-Run the setup with
-
-`./install.rb -a -c`
-
-to run from scratch. The c option clones the above mentioned apg gradle
-home git repo automatically
-
-`./install.rb -t git,cvs,java `
-
-To run plans selectively. In this case git, cvs and java.
-
 To list all options, run :
 
 `./install.rb -h`
 
-### Run Bolt Plans without Ruby
+To see, which plans are available and in which order they should be
+exectued, run:
 
-Run
+`./install.rb -a -c --dry`
 
-`bolt plan run piper::java_install --concurrency 10 -t testvms`
+The Installation process still needs some manual steps, therefore it is
+best to run first:
 
-And repeat accordingly for the following plans:
+`./install.rb -a -c -x`
 
-- piper::apg_yum_repo
-- piper::cvs_install
-- piper::git_install
-- piper::gradle_install
-- piper::java_install
-- piper::maven_install
-- piper:jenkins_install
+Which runs all plans needed to install jenkins, except the jenkins
+specific plans and the plans dependent on jenkins.
 
-The piper::jenkins_install plan necessarily as the last
+The jenkins plans can be run. To List them run
+
+`./install.rb -t jenkins --dry
+
+TODO Manual steps and Piper
 
 ### Defensive measures
 

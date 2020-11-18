@@ -135,15 +135,20 @@ jenkins:
   scmCheckoutRetryCount: 0
   securityRealm:
     local:
-      allowsSignup: true
+      allowsSignup: false
       enableCaptcha: false
       users:
       - id: "<%= $jenkinsuser %>"
         name: "<%= $jenkinsuser %>"
+        password: "<%= $jenkinsuser %>"
         properties:
         - "apiToken"
         - mailer:
-            emailAddress: "xxxx@yyyyyy%>"
+            emailAddress: "<%= $admin_user_email %>"
+        - preferredProvider:
+            providerId: "default"
+        - sshPublicKey:
+            authorizedKeys:  "<%= $authorized_keys %>"
   slaveAgentPort: 0
   updateCenter:
     sites:
