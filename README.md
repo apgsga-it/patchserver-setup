@@ -11,12 +11,13 @@ see the [Github Repo]() .
    installation
 2. User / password with sudo rights for the target machine running. This
    user should also have a public rsa key in the default location.
-3. Bolt installed on the Host machine. For Bolt installation see the
+3. A ssh public key in the user home on the host machine
+4. Bolt installed on the Host machine. For Bolt installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-4. Configuration of Bolt Hiera for passwords use , see seperate
+5. Configuration of Bolt Hiera for passwords use , see seperate
    description below
-5. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
-6. The target host added as ssh known host to the user, which the
+6. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
+7. The target host added as ssh known host to the user, which the
    installation will be done.
 
 ### Set-up Bolt Hiera Config for Passwords
@@ -57,6 +58,15 @@ Import are the following parameters:
 
 Note : The global property *maven_profile* must also be adapted
 accordingly. This should not be a global property.
+
+### User creation and management
+
+The setup assumes the that platform sudo user and the user which creates
+and executes the Jenkins Jobs are the same.
+
+A corresponding user is created as Jenkins admin. The ssh keys of the
+user on the target machine and on the local machine are used for jenkins are
+used for jenkins authorization.
 
 ### Before running the Bolt Plans
 
