@@ -8,15 +8,16 @@ see the [Github Repo]() .
 
 1. A
    [Minimal Centos 7](http://linuxsoft.cern.ch/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-minimal.iso)
-   installation with user / password with sudo rights on the target
-   machine running. The user should also have a public rsa key.
-2. Configuration of Bolt Hiera for passwords use , see seperate
-   description below
+   installation
+2. User / password with sudo rights for the target machine running. This
+   user should also have a public rsa key in the default location.
 3. Bolt installed on the Host machine. For Bolt installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-4. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
-5. At least the target host added as ssh known host to the user, which
-   the installation will be done.
+4. Configuration of Bolt Hiera for passwords use , see seperate
+   description below
+5. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
+6. The target host added as ssh known host to the user, which the
+   installation will be done.
 
 ### Set-up Bolt Hiera Config for Passwords
 
@@ -41,13 +42,21 @@ See in that file the tag vars:
 
 ![Inventory File](./images/inventory.png)
 
-Specially important the following parameters:
+The structure of the **inventory.yaml** file supports multiple target
+groups, which can have differing parameters. Currently, only the testvm
+group has been tested. This group and configuration is intended for
+local test vms.
+
+Import are the following parameters:
 
 1. target uri => the guest vm
 2. ssh user => the sudo user of the vm
 3. ssh password
 4. maven_profile : the maven profile which will be used for gradle and
    maven
+
+Note : The global property *maven_profile* must also be adapted
+accordingly. This should not be a global property.
 
 ### Before running the Bolt Plans
 
@@ -60,126 +69,97 @@ use, needs to be cloned manually to /tmp/gradlehome:
 This step can be also automated with the ./install.rb script -c option,
 see below
 
-### Run Bolt Plans With Ruby installed
+### Run Bolt Plans
 
 To list all options, run :
 
 `./install.rb -h`
 
 To see, which plans are available and in which order they should be
-exectued, run:
+executed, run:
 
 `./install.rb -a -c --dry`
 
-The Installation process still needs some manual steps, therefore it is
-best to run first:
+You will the following output:
+
+![Bolt Puppet Plans](./images/plans.png)
+
+These are all the Bolt Puppet Plans which need to be executed in the
+correct order.
+
+The plans can be executed manually or via the ./install.rb script
+depending on the --dry option. This options outputs the bolt command
+needed to be run.
+
+
+Since running all the plans takes quite some time and also may fails
+(resources not available, network slow etc), it is advisable to split
+the plan execution into reasonable groups. Also VM Snapshots can be
+taken.
+
+For example:
 
 `./install.rb -a -c -x`
 
 Which runs all plans needed to install jenkins, except the jenkins
 specific plans and the plans dependent on jenkins.
 
-The jenkins plans can be run. To List them run
+Then the  jenkins plans can be run. To List them run
 
-`./install.rb -t jenkins --dry
+`./install.rb -i jenkins`
 
-TODO Manual steps and Piper
+The -i option takes a plan name filter, which is matched against the
+plan names. So the above parameter will produce with the --dry option
+the following output:
 
-### Defensive measures
+![Jenkins Plans](./images/jenkins.png)
 
-If the **piper:jenkins_install** plan fails you need to start over
-again, since unfortunately the piper:jenkins_install cannot be run
-twice, the other plans yes.
+And then the piper server specific plans:
 
-So best is to run all plans except the piper::jenkins plan and then
-create a **snapshot** of the VM
-
-And then run the piper::jenkins plan.
-
-With ruby installed you can do:
-
-`./install.rb -x -a`
-
-with runs all, except the jenkins_install.
-
-And then, create a Snapshot and after run
-
-`./install.rb -t jenkins`
-
-The installation will take some time depending on the network speed,
-between 5 min and 45 min.
+`./install.rb -i piper_service`
 
 ## Post Installation
 
 You need to follow the following steps to make your installation usable
 
-### Establish Jenkins End User
-When the piper::jenkins_install has been executed, you should be able to
-point to http:<ip>:8080 and get the User / Password page.
-
-![Jenkins Login](./images/login.png)
-
-Create a new User.
-
-### Configure Jenkins User / Public ssh Key
-
-In Order to be able to use the
-[Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/) , the
-public rsa key of the host user most be copied to Jenkins User
-Configuration:
-
-![User Configuration](./images/navuser.png)
-
-Paste from `cat ~/.ssh/id_rsa.pub` to
-
-![Public Key](./images/rsakey.png)
-
-Some Helper Scripts use the
-[Jenkins Cli](https://www.jenkins.io/doc/book/managing/cli/)
-
-### Create Jenkins system user rsa public key for cvs-t ssh
+### Copy the Jenkins user ssh key to the cvs server
 
 In order for jenkins jobs to be able to co from cvs-t.apgsga.ch you need
-to do the following on the target mashine:
+to copy the public ssh key to the user with which the jenkins jobs are
+to run:
 
-1. `sudo passwd jenkins -f # Set a password for the jenkins user`
-2. `su - jenkins # Login in as jenkins`
-3. `ssh-keygen # generate a public for jenkins, you can use all
-   defaults`
 4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
 ### Configure Piper
 
+TODO (che, 19.11) : needs to be revised and automated with bolt plans
+
 After Piper has been installed, we have to configure the following:
 
-1. vi /etc/opt/apg-patch-service-server/application.properties and
-
-    a. vcs.host=cvs-t.apgsga.ch
-    
-    b. jenkins.host=localhost
-    
-    c. jenkins.ssh.user=jhe # or the user define within your VM
-
-2. systemctl restart apg-patch-service-server
-3. logon as apg-patch-service-server (su apg-patch-service-server)
-4. run "ssh localhost -p 53801 (you might get an error, doesn't matter,
+1. logon as apg-patch-service-server (su apg-patch-service-server)
+2. run "ssh localhost -p 53801 (you might get an error, doesn't matter,
    important is to see : Permanently added 'localhost:53801' (RSA) to
    the list of known hosts)
-5. run "ssh-keygen", accept all default
-6. run "ssh-copy-id apg-patch-service-server@localhost"
-7. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH
+3. run "ssh-keygen", accept all default
+4. run "ssh-copy-id apg-patch-service-server@localhost"
+5. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH
    Public keys" of the user configured for jenkins.ssh.user property
    within /etc/opt/apg-patch-service-server/application.properties.
 
 
 ## Open Points / Todos
 
-- [ ] Automate User / Credentials Creation
-- [ ] Automate Public RSA Key exchanges for Jenkins User & Jenkins
-- [ ] Node credentials
-- [ ] Align User/Groups to Apg Standard
+- [ ] Revise inventory.xml parameters (completeness, naming, necessary
+      etc)
+- [ ] Move maven_profile inventory.xml property to target group specfic
+- [ ] Production Target Group properties in inventory.xml
+- [ ] Revise Jenkins User(s) configuration and setup
+- [ ] Revise Piper User configuration and setup
+- [ ] Move Testscripts in patchserver-testscripts back to
+      patchserver-setup repository
+- [ ] Further automate manual steps for Piper Setup
 - [ ] Move Target, User , Password from inventory.yaml back to commandline 
-- [x] Support Apscli and Piper Installation from Yum
+
 
 
 

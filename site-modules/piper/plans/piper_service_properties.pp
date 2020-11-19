@@ -1,4 +1,4 @@
-plan piper::piper_properties (
+plan piper::piper_service_properties (
      TargetSpec $targets
    ) {
      $targets.apply_prep

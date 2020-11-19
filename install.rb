@@ -33,8 +33,8 @@ plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'pip
 plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::jenkins_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 20, 'name' => 'piper::jenkins_create_jobs')
 plans_installation_order << OpenStruct.new('install_order' => 30, 'name' => 'piper::yum_repo')
-plans_installation_order << OpenStruct.new('install_order' => 31, 'name' => 'piper::piper_install')
-plans_installation_order << OpenStruct.new('install_order' => 32, 'name' => 'piper::piper_properties')
+plans_installation_order << OpenStruct.new('install_order' => 31, 'name' => 'piper::piper_service_install')
+plans_installation_order << OpenStruct.new('install_order' => 32, 'name' => 'piper::piper_service_properties')
 
 plans_available = []
 plans_to_execute = []
@@ -99,13 +99,12 @@ end
 
 
 unless plans_to_execute.empty?
-  puts "Running the plans=<#{plans_to_execute}>"
   if opts[:xceptJenkins]
     plans_to_execute.delete('piper::jenkins_service_install')
     plans_to_execute.delete('piper::jenkins_account_create')
     plans_to_execute.delete('piper::jenkins_dirs_create')
-    plans_to_execute.delete('piper::piper_install')
-    plans_to_execute.delete('piper::piper_properties')
+    plans_to_execute.delete('piper::piper_service_install')
+    plans_to_execute.delete('piper::piper_service_properties')
     plans_to_execute.delete('piper::jenkins_create_jobs')
   end
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
