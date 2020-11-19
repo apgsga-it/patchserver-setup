@@ -158,7 +158,11 @@ After Piper has been installed, we have to configure the following:
 - [ ] Move Testscripts in patchserver-testscripts back to
       patchserver-setup repository
 - [ ] Further automate manual steps for Piper Setup
-- [ ] Move Target, User , Password from inventory.yaml back to commandline 
+- [ ] Move Target, User , Password from inventory.yaml back to commandline
+- [ ] Piper default Install, currently the rpm produces a installation,
+      which does not run, but assumes that the *.intitial properties
+      will be adapted
+- [ ] Test Piper apscli  scenarios
 
 
 
