@@ -120,7 +120,6 @@ the following output:
 
 ![Jenkins Plans](./images/jenkins.png)
 
-
 ## Post Installation
 
 You need to follow the following steps to make your installation usable
@@ -189,16 +188,6 @@ Ssh Jenkins Commandline Port
 
 Currently the apg-patch-service-server (C.) daemon and the local test
 user (B.) and the Host user (A.) access the ssh port for the Jenkins Cli
-
-**G. Open Points**
-
-Specific User for the cvs daemon accesses (jenkins and the
-apg-patch-service-server)
-
-Specific User for apg-patch-service-server for the Jenkins Cli ssh port
-
-Probably we have a ssh-id-copy missing -> for apg-patch-service-server
-access of the cvs server.
 
 ## Open Points / Todos
 
