@@ -1,4 +1,4 @@
-plan piper::piper_install (
+plan piper::piper_service_install (
      TargetSpec $targets
    ) {
      $targets.apply_prep

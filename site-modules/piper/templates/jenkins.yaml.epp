@@ -77,7 +77,7 @@ jenkins:
       - key: "GITHUB_JENKINS_VERSION"
         value: "<%= $github_jenkins_version %>"
       - key: "GRADLE_OPTS"
-        value: "-Dgradle.user.home=/var/jenkins/gradle/home -Dorg.gradle.daemon=false"
+        value: "-Dgradle.user.home=/<%= $gradle_home %>/home -Dorg.gradle.daemon=false"
       - key: "JENKINS_MAVEN_AGENT_DISABLED"
         value: "true"
       - key: "PATCH_DB_FOLDER"
@@ -135,15 +135,20 @@ jenkins:
   scmCheckoutRetryCount: 0
   securityRealm:
     local:
-      allowsSignup: true
+      allowsSignup: false
       enableCaptcha: false
       users:
       - id: "<%= $jenkinsuser %>"
         name: "<%= $jenkinsuser %>"
+        password: "<%= $jenkinsuser %>"
         properties:
         - "apiToken"
         - mailer:
-            emailAddress: "xxxx@yyyyyy%>"
+            emailAddress: "<%= $admin_user_email %>"
+        - preferredProvider:
+            providerId: "default"
+        - sshPublicKey:
+            authorizedKeys:  "<%= $authorized_keys %>"
   slaveAgentPort: 0
   updateCenter:
     sites:

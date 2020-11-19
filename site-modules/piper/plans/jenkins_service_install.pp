@@ -1,42 +1,11 @@
-plan piper::jenkins_install(
+plan piper::jenkins_service_install(
   TargetSpec $targets
 ) {
   $targets.apply_prep
-
-  ## User Setup
-  run_command('groupadd -f -r jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('useradd -r -m -c "jenkins user" jenkins -g jenkins', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('mkdir /home/jenkins/.m2', $targets, '_catch_errors' => false, '_run_as' => 'root')
-
-  ## Jenkins JCasc Setup
-  run_command('mkdir "/etc/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command('mkdir "/etc/jenkins/casc"', $targets, '_catch_errors' => false, '_run_as' => 'root')
   $targetall = get_targets('all')[0]
-  apply($targets) {
-    file { '/etc/jenkins/casc/jenkins.yaml':
-      ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" })
-    }
-  }
-  run_command('chown -R jenkins:jenkins /etc/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command('chmod 0664 /etc/jenkins/casc/*', $targets, '_catch_errors' => true, '_run_as' => 'root')
-
-  ## Jenkins Gradle and Maven Home Setup
-  run_command('mkdir "/var/jenkins"', $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command("mkdir ${targetall.vars[gradle_home]}", $targets, '_catch_errors' => false, '_run_as' => 'root')
-  run_command("mkdir ${targetall.vars[maven_home]}", $targets, '_catch_errors' => false, '_run_as' => 'root')
-  upload_file('/tmp/gradlehome',"${targetall.vars[gradle_home]}/", $targets,  '_catch_errors' => false,'_run_as' => 'root' )
-  run_command("mv ${targetall.vars[gradle_home]}/gradle ${targetall.vars[gradle_home]}/home", $targets, '_catch_errors' => true, '_run_as' => 'root') #Bolt Issue makes mv necessary
-  run_command("chmod u+x ${targetall.vars[gradle_home]}/home/initGradleProfile.sh", $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command("cd ${targetall.vars[gradle_home]}/home ; ./initGradleProfile.sh  /home/jenkins/.m2 ${targetall.vars[maven_profile]} ${targetall.vars[maven_home]} copySettingsXml", $targets, '_catch_errors' => true, '_run_as' => 'root')
-  # Owner Ship and Groups
-  run_command('chown -R jenkins:jenkins /home/jenkins/.m2', $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command("chmod -R 777 ${targetall.vars[gradle_home]}", $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command("chmod -R 777 ${targetall.vars[maven_home]}", $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command('chown -R jenkins:jenkins /var/jenkins', $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command('firewall-cmd --permanent --add-port=8080/tcp', $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command("firewall-cmd --permanent --add-port=${targetall.vars[cli_port]}/tcp", $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command("firewall-cmd --permanent --add-port=${targetall.vars[jenkins_cli_port]}/tcp", $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
   apply($targets) {
       node default {
