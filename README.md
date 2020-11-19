@@ -139,7 +139,7 @@ After Piper has been installed, we have to configure the following:
 2. ssh-copy-id apg-patch-service-server@localhost
 
 
-### User creation and management
+## User creation and management
 
 **A.User, which runs Installation**
 
