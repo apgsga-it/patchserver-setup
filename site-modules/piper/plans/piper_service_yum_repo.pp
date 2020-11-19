@@ -1,4 +1,4 @@
-plan piper::yum_repo (
+plan piper::piper_service_yum_repo (
      TargetSpec $targets
    ) {
      $targets.apply_prep

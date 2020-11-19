@@ -141,24 +141,15 @@ You need to follow the following steps to make your installation usable
 In order for jenkins jobs to be able to co from cvs-t.apgsga.ch you need
 to copy the public ssh key to the user with which the jenkins jobs are
 to run:
-
-4. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
+1. `su - jenkins`
+2. `ssh-copy-id <user>@cvs-t.apgsga.ch #copy the key using your id`
 
 ### Configure Piper
 
-TODO (che, 19.11) : needs to be revised and automated with bolt plans
-
 After Piper has been installed, we have to configure the following:
-
-1. logon as apg-patch-service-server (su apg-patch-service-server)
-2. run "ssh localhost -p 53801 (you might get an error, doesn't matter,
-   important is to see : Permanently added 'localhost:53801' (RSA) to
-   the list of known hosts)
-3. run "ssh-keygen", accept all default
-4. run "ssh-copy-id apg-patch-service-server@localhost"
-5. run "cat ~/.ssh/id_rsa.pub" -> copy the output within Jenkins "SSH
-   Public keys" of the user configured for jenkins.ssh.user property
-   within /etc/opt/apg-patch-service-server/application.properties.
+# TODO (che, 19.11) needs to be verified
+1. login as sudo user of target
+2. ssh-copy-id apg-patch-service-server@localhost
 
 
 ## Open Points / Todos
@@ -167,11 +158,11 @@ After Piper has been installed, we have to configure the following:
       etc)
 - [ ] Move maven_profile inventory.xml property to target group specfic
 - [ ] Production Target Group properties in inventory.xml
+- [ ] Very plans and properties in terms of Production target
 - [ ] Review (and Revise) Jenkins User(s) configuration and setup
 - [ ] Review (and Revise) Piper User configuration and setup
 - [ ] Move Testscripts in patchserver-testscripts back to
       patchserver-setup repository
-- [ ] Automate manual steps for Piper Setup => ssh key management
 - [ ] Move Target, User , Password from inventory.yaml back to commandline
 - [ ] Piper Service default Install, currently the rpm produces a
       installation, which does not run, but assumes that the *.intitial
@@ -188,6 +179,13 @@ After Piper has been installed, we have to configure the following:
 - [ ] Which data should be managed with Puppet Hiera
 - [ ] More detail described of what is done in the individual plans,
       specially in the non - trivial ones
+- [ ] Should the secrets resp the default passwords for the accounts,
+      which are created , modified handled in a better way?
+- [ ] Gradle Home for Jenkins: pulled directly from git or copied and
+      git stripped
+- [ ] Specific ssh local ssh user for Piper ssh commands? Currently the
+      sudo of the test vm is used
+
 
 
 

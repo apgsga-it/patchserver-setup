@@ -2,15 +2,35 @@ plan piper::jenkins_dirs_create (
   TargetSpec $targets
 ) {
   $targets.apply_prep
+  $piper_user = "apg-patch-service-server"
+  $piper_home_dir = "/home/${piper_user}"
+  $piper_ssh_dir = "${piper_home_dir}/.ssh"
+  apply($targets) {
+  # TODO (che, 19.11) hmmm, this should'nt be necessary? But the download , see below croaks
+    file { $piper_home_dir:
+      ensure => directory,
+      mode   => '0755',
+    }
+    file { $piper_ssh_dir:
+      ensure => directory,
+      mode   => '0755',
+    }
+  }
   $timestamp = Timestamp.new().strftime('gradlehome%Y%m%d%H%M%S')
   $temp_dir = "/tmp/${$timestamp}"
   $targetall = get_targets('all')[0]
   $jenkins_user = "jenkins"
-  $dl_result = download_file("/home/${targetall.config[ssh][user]}/.ssh/id_rsa.pub/", 'target', $targets)
-  $user_rsa_target = file::read($dl_result.first['path'])
+  # Sudu User's public rsa key on target
+  $dl_user_result = download_file("/home/${targetall.config[ssh][user]}/.ssh/id_rsa.pub", 'user', $targets)
+  $user_rsa_target = file::read($dl_user_result.first['path'])
+  # apg-patch-service-server user on target
+  $dl_patch_result = download_file("${piper_ssh_dir}/id_rsa.pub", 'piper', $targets)
+  $patch_rsa_target = file::read($dl_patch_result.first['path'])
+  # User public rsa key on target on Host
+  # TODO (che, 19.11) is this disireable of production target
   $home_dir = system::env('HOME')
   $user_rsa_local = file::read("${$home_dir}/.ssh/id_rsa.pub")
-  $ssh_keys = "${user_rsa_target}\n${user_rsa_local}"
+  $ssh_keys = "${user_rsa_target}\n${user_rsa_local}\n${patch_rsa_target}"
   apply($targets) {
     file { $temp_dir:
       ensure => directory,

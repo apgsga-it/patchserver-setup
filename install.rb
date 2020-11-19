@@ -28,13 +28,15 @@ plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'pipe
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::java_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::gradle_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::maven_install')
-plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::jenkins_account_create')
-plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'piper::jenkins_dirs_create')
-plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::jenkins_service_install')
-plans_installation_order << OpenStruct.new('install_order' => 20, 'name' => 'piper::jenkins_create_jobs')
-plans_installation_order << OpenStruct.new('install_order' => 30, 'name' => 'piper::yum_repo')
-plans_installation_order << OpenStruct.new('install_order' => 31, 'name' => 'piper::piper_service_install')
-plans_installation_order << OpenStruct.new('install_order' => 32, 'name' => 'piper::piper_service_properties')
+## Needs to run before jenkins account creations
+plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::piper_service_account_create')
+plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'piper::jenkins_account_create')
+plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::jenkins_dirs_create')
+plans_installation_order << OpenStruct.new('install_order' => 20, 'name' => 'piper::jenkins_service_install')
+plans_installation_order << OpenStruct.new('install_order' => 30, 'name' => 'piper::jenkins_create_jobs')
+plans_installation_order << OpenStruct.new('install_order' => 40, 'name' => 'piper::piper_service_yum_repo')
+plans_installation_order << OpenStruct.new('install_order' => 42, 'name' => 'piper::piper_service_install')
+plans_installation_order << OpenStruct.new('install_order' => 43, 'name' => 'piper::piper_service_properties')
 
 plans_available = []
 plans_to_execute = []
@@ -104,6 +106,7 @@ unless plans_to_execute.empty?
     plans_to_execute.delete('piper::jenkins_account_create')
     plans_to_execute.delete('piper::jenkins_dirs_create')
     plans_to_execute.delete('piper::piper_service_install')
+    plans_to_execute.delete('piper::piper_service_account_create')
     plans_to_execute.delete('piper::piper_service_properties')
     plans_to_execute.delete('piper::jenkins_create_jobs')
   end
