@@ -36,7 +36,7 @@ bolt.yaml
 The installation parameters are kept in the **inventory.yaml** file in
 the root directory git repository.
 
-Before the installation this file should be adpated accordingly.
+Before the installation this file should be adapted accordingly.
 
 See in that file the tag vars:
 
@@ -71,7 +71,10 @@ see below
 
 ### Run Bolt Plans
 
-To list all options, run :
+To run the plans , you use the script ./install.rb in the root directory
+of the repo.
+
+To list all availabe options, run :
 
 `./install.rb -h`
 
@@ -87,17 +90,18 @@ You will the following output:
 These are all the Bolt Puppet Plans which need to be executed in the
 correct order.
 
+Without the --dry option all plans are executed sequentially.
+
 The plans can be executed manually or via the ./install.rb script
-depending on the --dry option. This options outputs the bolt command
+depending on the --dry option. These options outputs the bolt commands
 needed to be run.
 
-
-Since running all the plans takes quite some time and also may fails
+Since running all the plans takes quite some time and may fail
 (resources not available, network slow etc), it is advisable to split
-the plan execution into reasonable groups. Also VM Snapshots can be
+the plan execution into reasonable groups. Also, VM Snapshots can be
 taken.
 
-For example:
+For example run:
 
 `./install.rb -a -c -x`
 
@@ -153,16 +157,24 @@ After Piper has been installed, we have to configure the following:
       etc)
 - [ ] Move maven_profile inventory.xml property to target group specfic
 - [ ] Production Target Group properties in inventory.xml
-- [ ] Revise Jenkins User(s) configuration and setup
-- [ ] Revise Piper User configuration and setup
+- [ ] Review (and Revise) Jenkins User(s) configuration and setup
+- [ ] Review (and Revise) Piper User configuration and setup
 - [ ] Move Testscripts in patchserver-testscripts back to
       patchserver-setup repository
-- [ ] Further automate manual steps for Piper Setup
+- [ ] Automate manual steps for Piper Setup => ssh key management
 - [ ] Move Target, User , Password from inventory.yaml back to commandline
-- [ ] Piper default Install, currently the rpm produces a installation,
-      which does not run, but assumes that the *.intitial properties
-      will be adapted
-- [ ] Test Piper apscli  scenarios
+- [ ] Piper Service default Install, currently the rpm produces a
+      installation, which does not run, but assumes that the *.intitial
+      properties will be adapted
+- [ ] Parameterization of the plans, currently the plans have a uniform
+      parameter = targets, which is taken from the inventory.xml. Some
+      plans could be parametrized individually, which the parameters
+      passed through command line, eg the jenkins_account_create.pp a
+      list of users could be passed
+- [ ] Test Piper apscli scenarios
+- [ ] To discuss : Static IP Pool for Test VM's
+- [ ] To discuss : Initial Test Image (Centos Minial , plus eg chronyd,
+      viscocity client service etc, test user) provided?
 
 
 
