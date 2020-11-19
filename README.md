@@ -61,12 +61,150 @@ accordingly. This should not be a global property.
 
 ### User creation and management
 
-The setup assumes the that platform sudo user and the user which creates
-and executes the Jenkins Jobs are the same.
+A.User, which runs Installation
 
-A corresponding user is created as Jenkins admin. The ssh keys of the
-user on the target machine and on the local machine are used for jenkins are
-used for jenkins authorization.
+B. Platform User with sudo rights: The test user. This user is a
+precondition.
+
+C. Local Platform Users for the daemon processes are:
+
+jenkins
+apg-patch-service-server
+
+Both are created via Bolt plans. The piper rpm now checks in the pre
+install step , if apg-patch-service-server exists and omits user
+creation if yes.
+
+D. Public Keys:
+
+The publics rsa keys of A. und B. are precondition with their default
+location ($HOME/.ssh/)
+
+The public rsa key of C. are created upon setup
+
+E. Jenkins Admin User
+
+The same user name / password as the Platform user , see A. The public
+rsa key of A., B. and C. are held in the User Configuration. This allows
+the User to interact via ssh with the Jenkins Cli, example:
+
+ssh -l <user> -p 53801 <targethost> help # Apg Patch Server Setup
+
+Provides a mostly automated initial setup and configuration of the Apg
+Patch Server with Jenkins for Localtesting and Development. For Piper
+see the [Github Repo]() .
+
+## Preconditions
+
+1. A
+   [Minimal Centos 7](http://linuxsoft.cern.ch/centos/6.10/isos/x86_64/CentOS-6.10-x86_64-minimal.iso)
+   installation
+2. User / password with sudo rights for the target machine running. This
+   user should also have a public rsa key in the default location.
+3. A ssh public key in the user home on the host machine
+4. Bolt installed on the Host machine. For Bolt installation see the
+   [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
+5. Configuration of Bolt Hiera for passwords use , see seperate
+   description below
+6. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
+7. The target host added as ssh known host to the user, which the
+   installation will be done.
+
+### Set-up Bolt Hiera Config for Passwords
+
+1. `cp templates/hiera.yaml ~/.puppetlabs/bolt`
+2. ` cp -R templates/data ~/.puppetlabs/bolt`
+3. `vim ~/.puppetlabs/bolt/data/common.yaml ` and change TOBECHANGED to
+   the correct value
+
+The location of the root configuration directory can be changed in
+bolt.yaml
+
+## Running the Setup
+
+### Installation Parameters
+
+The installation parameters are kept in the **inventory.yaml** file in
+the root directory git repository.
+
+Before the installation this file should be adapted accordingly.
+
+See in that file the tag vars:
+
+![Inventory File](./images/inventory.png)
+
+The structure of the **inventory.yaml** file supports multiple target
+groups, which can have differing parameters. Currently, only the testvm
+group has been tested. This group and configuration is intended for
+local test vms.
+
+Import are the following parameters:
+
+1. target uri => the guest vm
+2. ssh user => the sudo user of the vm
+3. ssh password
+4. maven_profile : the maven profile which will be used for gradle and
+   maven
+
+Note : The global property *maven_profile* must also be adapted
+accordingly. This should not be a global property.
+
+### User creation and management
+
+A.User, which runs Installation
+
+B. Target Platform User with sudo rights  
+The test user. This user is a precondition for the installation
+
+C. Local Target Platform Users for the daemon processes are:
+
+jenkins
+apg-patch-service-server
+
+Both are created via Bolt plans. The piper rpm now checks in the pre
+install step , if apg-patch-service-server exists and omits user
+creation if yes.
+
+D. Public Keys:
+
+The public rsa keys of A. und B. are precondition with the default
+location ($HOME/.ssh/)
+
+The public rsa key of C. are created upon setup
+
+E. Jenkins Admin User
+
+The same user name / password as the Platform user , see B. The public
+rsa key of A., B. and C. are held in the Jenkins User Configuration.
+This allows the User to interact via ssh with the Jenkins Cli, example:
+
+`ssh -l <user> -p 53801 <targethost> help`
+
+This User is created via setup
+
+F. External Resources
+
+Cvs Server (cvs-t.apgsga.com):
+
+Currently jenkins and the apg-patch-service-server daemon access the cvs
+server with the current test user for the Installation, see B. eg. jhe ,
+che, uge
+
+Ssh Jenkins Commandline Port
+
+Currently the apg-patch-service-server (C.) daemon and the local test
+user (B.) and the Host user (A.) access the ssh port for the Jenkins Cli
+
+Open Points:
+
+Specific User for the cvs daemon accesses (jenkins and the
+apg-patch-service-server)
+
+Specific User for apg-patch-service-server for the Jenkins Cli ssh port
+
+Probably we have a ssh-id-copy missing -> for apg-patch-service-server
+access of the cvs server.
+
 
 ### Before running the Bolt Plans
 
@@ -147,7 +285,6 @@ to run:
 ### Configure Piper
 
 After Piper has been installed, we have to configure the following:
-# TODO (che, 19.11) needs to be verified
 1. login as sudo user of target
 2. ssh-copy-id apg-patch-service-server@localhost
 
@@ -159,9 +296,9 @@ After Piper has been installed, we have to configure the following:
 - [ ] Move maven_profile inventory.xml property to target group specfic
 - [ ] Production Target Group properties in inventory.xml
 - [ ] Very plans and properties in terms of Production target
-- [ ] Review (and Revise) Jenkins User(s) configuration and setup
-- [ ] Review (and Revise) Piper User configuration and setup
-- [ ] Move Testscripts in patchserver-testscripts back to
+      requirements
+- [ ] Review (and Revise) User Management and assumptions of the Setuo
+- [ ] Move Testscripts in the patchserver-testscripts git repo back to
       patchserver-setup repository
 - [ ] Move Target, User , Password from inventory.yaml back to commandline
 - [ ] Piper Service default Install, currently the rpm produces a
@@ -183,10 +320,10 @@ After Piper has been installed, we have to configure the following:
       which are created , modified handled in a better way?
 - [ ] Gradle Home for Jenkins: pulled directly from git or copied and
       git stripped
-- [ ] Specific ssh local ssh user for Piper ssh commands? Currently the
-      sudo of the test vm is used
-
-
-
-
+- [ ] Specific User for the cvs daemon accesses (jenkins and the
+      apg-patch-service-server). Currently the local test user.
+- [ ] Specific User for apg-patch-service-server for the Jenkins Cli ssh
+      port. Currently the local test user.
+- [ ] Probably we have a ssh-id-copy missing -> for
+      apg-patch-service-server access of the cvs server.
 
