@@ -23,7 +23,7 @@
         <hudson.model.StringParameterDefinition>
           <name>stages</name>
           <description>CSV Liste von Standard Produktion stages</description>
-          <defaultValue>E,T,P</defaultValue>
+          <defaultValue>Informatiktest,Anwendertest,Produktion</defaultValue>
           <trim>true</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
