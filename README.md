@@ -185,6 +185,7 @@ After Piper has been installed, we have to configure the following:
 - [ ] To discuss : Static IP Pool for Test VM's
 - [ ] To discuss : Initial Test Image (Centos Minial , plus eg chronyd,
       viscocity client service etc, test user) provided?
+- [ ] Which data should be managed with Puppet Hiera
 - [ ] More detail described of what is done in the individual plans,
       specially in the non - trivial ones
 
