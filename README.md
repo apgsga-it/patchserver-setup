@@ -191,39 +191,27 @@ user (B.) and the Host user (A.) access the ssh port for the Jenkins Cli
 
 ## Open Points / Todos
 
-- [ ] Revise inventory.xml parameters (completeness, naming, necessary
-      etc)
+- [ ] Move Target, User , Password from inventory.yaml back to
+      commandline
+- [ ] Review (and Revise) User Management and assumptions of the Setuo:
+      Specific User for apg-patch-service-server for the Jenkins Cli ssh
+      port. Currently the local test user. Specific User for the cvs daemon accesses (jenkins and the
+      apg-patch-service-server). Currently the local test user.
 - [ ] Move maven_profile inventory.xml property to target group specfic
-- [ ] Production Target Group properties in inventory.xml
-- [ ] Very plans and properties in terms of Production target
-      requirements
-- [ ] Review (and Revise) User Management and assumptions of the Setuo
+- [ ] Production Target Group properties in inventory.xml. Very plans
+      and properties in terms of Production target requirements
 - [ ] Move Testscripts in the patchserver-testscripts git repo back to
       patchserver-setup repository
-- [ ] Move Target, User , Password from inventory.yaml back to commandline
-- [ ] Piper Service default Install, currently the rpm produces a
-      installation, which does not run, but assumes that the *.intitial
-      properties will be adapted
 - [ ] Parameterization of the plans, currently the plans have a uniform
       parameter = targets, which is taken from the inventory.xml. Some
       plans could be parametrized individually, which the parameters
       passed through command line, eg the jenkins_account_create.pp a
       list of users could be passed
-- [ ] Test Piper apscli scenarios
-- [ ] To discuss : Static IP Pool for Test VM's
-- [ ] To discuss : Initial Test Image (Centos Minial , plus eg chronyd,
-      viscocity client service etc, test user) provided?
-- [ ] Which data should be managed with Puppet Hiera
-- [ ] More detail described of what is done in the individual plans,
-      specially in the non - trivial ones
-- [ ] Should the secrets resp the default passwords for the accounts,
-      which are created , modified handled in a better way?
+- [ ] Secrets/ Passwords : Which data should be managed with Puppet
+      Hiera. Should the secrets resp the default passwords for the
+      accounts, which are created , modified handled in a better way?
 - [ ] Gradle Home for Jenkins: pulled directly from git or copied and
       git stripped
-- [ ] Specific User for the cvs daemon accesses (jenkins and the
-      apg-patch-service-server). Currently the local test user.
-- [ ] Specific User for apg-patch-service-server for the Jenkins Cli ssh
-      port. Currently the local test user.
 - [ ] Probably we have a ssh-id-copy missing -> for
       apg-patch-service-server access of the cvs server.
 
