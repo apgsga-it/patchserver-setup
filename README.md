@@ -69,21 +69,21 @@ use, needs to be cloned manually to /tmp/gradlehome:
 `git clone <user>@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git
 /tmp/gradlehome `
 
-This step is also the ./install.rb script -c option, see below
+This step is also the ./patchserver-setup.rb script -c option, see below
 
 ### Run Bolt Plans
 
-To run the plans , you use the script ./install.rb in the root directory
+To run the plans , you use the script ./patchserver-setup.rb in the root directory
 of the repo.
 
 To list all availabe options, run :
 
-`./install.rb -h`
+`./patchserver-setup.rb -h`
 
 To see, which plans are available and in which order they should be
 executed, run:
 
-`./install.rb -a -c --dry`
+`./patchserver-setup.rb -a -c --dry`
 
 You will the following output:
 
@@ -94,7 +94,7 @@ correct order.
 
 Without the --dry option all plans are executed sequentially.
 
-The plans can be executed manually or via the ./install.rb script
+The plans can be executed manually or via the ./patchserver-setup.rb script
 depending on the --dry option. These options outputs the bolt commands
 needed to be run.
 
@@ -105,14 +105,14 @@ taken.
 
 For example run:
 
-`./install.rb -a -c -x`
+`./patchserver-setup.rb -a -c -x`
 
 Which runs all plans needed to install jenkins, except the jenkins
 specific plans and the plans dependent on jenkins.
 
 Then the jenkins and piper plans can be run. To List them run
 
-`./install.rb -i jenkins,piper_service`
+`./patchserver-setup.rb -i jenkins,piper_service`
 
 The -i option takes a plan name filter, which is matched against the
 plan names. So the above parameter will produce with the --dry option
@@ -189,6 +189,107 @@ Ssh Jenkins Commandline Port
 Currently the apg-patch-service-server (C.) daemon and the local test
 user (B.) and the Host user (A.) access the ssh port for the Jenkins Cli
 
+## Testsript for initializing Tests on a Patchserver Target
+
+This repo contains a [script](patchserver-tests-setup.rb), which has
+different options for
+- Deleting the Maven Local and the gradle Cache on the target host
+- Emptying the Artifactory test repos according the Maven Profile
+  settings
+- Creating the Testjobs according to  [testappsconfig.yaml](./testappsconfig.yaml),
+  all or selectively by Testapp
+- Deleting Testjobs according to [testappsconfig.yaml](./testappsconfig.yaml), all or
+  selectively by Testapp
+- Running all Testjobs according to
+  [testappsconfig.yaml](./testappsconfig.yaml),, all or selectively
+
+The configuration is pulled from the
+[Bolt inventory file](./inventory.yaml) of the Puppet Setup of the
+Target and the local
+[Configuration of the Testapp Metadata](./testappsconfig.yaml)
+
+The Artifactory admin user needs to be configured in the above file.
+
+Preconditions:
+- Jenkins running in the target VM running on the IP Address, according
+  to [testappsconfig.yaml](./testappsconfig.yaml)
+- The
+  [Bolt Inventory file](https://github.com/apgsga-it/patchserver-setup/blob/master/inventory.yaml)
+  needs to reflect the running Target Server and accessible  on the local
+  file system
+- Ssh access for the Jenkins CLI ist setup
+- The Testapps are assumed to be in cvs.apgsga.ch
+
+## Installation required gems
+
+The required gems are specified in the [Gemfile](Gemfile)<!-- @IGNORE PREVIOUS: link --> File.
+
+To install these dependencies locally, execute
+
+    $ bundle install
+
+Note: You'll probably have to add the authentication information first within GemFile. To do this, edit the GemFile file, and update the following line:
+
+- source 'https://artifactory4t4apgsga.jfrog.io/artifactory/api/gems/apgGems' do
+
+with:
+
+- source 'https://\<artifactoryUser>:\<artifactoryUserPwd>@artifactory4t4apgsga.jfrog.io/artifactory/api/gems/apgGems' do
+
+## Usage
+
+with the -h or --help option, you see the following
+
+![Help Text](./images/help.png)
+
+
+### Configuration
+
+The Configuration is taken from the file
+[testappsconfig.yaml](./testappsconfig.yaml) and from the Bolt Puppet
+[Inventory file](https://github.com/apgsga-it/patchserver-setup/blob/master/inventory.yaml)
+of the
+[Patch Server Setup](https://github.com/apgsga-it/patchserver-setup).
+
+
+Both must reflect the current state of the running target.
+
+The Artifactory user is configured also in the file
+[testappsconfig.yaml](./testappsconfig.yaml) , see
+
+`artifactory:
+  admin: che`
+
+for example
+
+### Usage Scenarios
+
+Clean the local Maven and Gradle Repositories on the Target in Dry Mode:
+
+`./init-jenkins-tests.rb --cleanCache --dry `
+
+Empty the test specific Artifactory  Repositories
+
+`./init-jenkins-tests.rb --cleanArtifactory`
+
+Create all Tests Jobs according to
+[testappsconfig.yaml](./testappsconfig.yaml)
+
+
+`./init-jenkins-tests.rb --createAllJobs`
+
+Create Tests Jobs for a specific Testapp according to
+[testappsconfig.yaml](./testappsconfig.yaml)
+
+`./init-jenkins-tests.rb --createAppJobs testapp`
+
+
+The options can be combined
+
+`./init-jenkins-tests.rb --cleanCache --cleanArtifactory --createAllJobs --verbose`
+
+If uncertain about the effects of the script best use the `--dry` option
+
 ## Open Points / Todos
 
 - [ ] Move Target, User , Password from inventory.yaml back to
@@ -200,8 +301,6 @@ user (B.) and the Host user (A.) access the ssh port for the Jenkins Cli
 - [ ] Move maven_profile inventory.xml property to target group specfic
 - [ ] Production Target Group properties in inventory.xml. Very plans
       and properties in terms of Production target requirements
-- [ ] Move Testscripts in the patchserver-testscripts git repo back to
-      patchserver-setup repository
 - [ ] Parameterization of the plans, currently the plans have a uniform
       parameter = targets, which is taken from the inventory.xml. Some
       plans could be parametrized individually, which the parameters

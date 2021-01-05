@@ -1,0 +1,66 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.CVSSCM" plugin="cvs@2.16">
+    <flatten>true</flatten>
+    <repositories>
+      <hudson.scm.CvsRepository>
+        <cvsRoot>$CVS_ROOT</cvsRoot>
+        <repositoryItems>
+          <hudson.scm.CvsRepositoryItem>
+            <modules>
+              <hudson.scm.CvsModule>
+                <localName><%= @module_name %></localName>
+                <remoteName><%= @root_dir %><%= @module_name %></remoteName>
+              </hudson.scm.CvsModule>
+            </modules>
+            <location class="hudson.scm.CvsRepositoryLocation$HeadRepositoryLocation">
+              <locationType>HEAD</locationType>
+              <useHeadIfNotFound>false</useHeadIfNotFound>
+            </location>
+          </hudson.scm.CvsRepositoryItem>
+        </repositoryItems>
+        <compressionLevel>-1</compressionLevel>
+        <excludedRegions>
+          <hudson.scm.ExcludedRegion>
+            <pattern></pattern>
+          </hudson.scm.ExcludedRegion>
+        </excludedRegions>
+        <passwordRequired>false</passwordRequired>
+      </hudson.scm.CvsRepository>
+    </repositories>
+    <canUseUpdate>true</canUseUpdate>
+    <skipChangeLog>false</skipChangeLog>
+    <pruneEmptyDirectories>true</pruneEmptyDirectories>
+    <disableCvsQuiet>false</disableCvsQuiet>
+    <cleanOnFailedUpdate>false</cleanOnFailedUpdate>
+    <forceCleanCopy>false</forceCleanCopy>
+    <checkoutCurrentTimestamp>false</checkoutCurrentTimestamp>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.gradle.Gradle plugin="gradle@1.36">
+      <switches>--info --stacktrace  </switches>
+      <tasks>-PbuildTyp=SNAPSHOT clean buildPkg </tasks>
+      <rootBuildScriptDir><%= @module_name %></rootBuildScriptDir>
+      <buildFile></buildFile>
+      <gradleName>(Default)</gradleName>
+      <useWrapper>true</useWrapper>
+      <makeExecutable>true</makeExecutable>
+      <useWorkspaceAsHome>false</useWorkspaceAsHome>
+      <wrapperLocation><%= @module_name %></wrapperLocation>
+      <passAllAsSystemProperties>false</passAllAsSystemProperties>
+      <projectProperties></projectProperties>
+      <passAllAsProjectProperties>false</passAllAsProjectProperties>
+    </hudson.plugins.gradle.Gradle>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

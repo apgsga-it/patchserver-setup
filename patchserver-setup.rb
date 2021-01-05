@@ -7,7 +7,7 @@ require 'ostruct'
 
 opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
-  o.bool '-c', '--clone', 'clones gradle home locally '
+  o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -46,7 +46,7 @@ lines.each do |line|
     plans_available << line
   end
 end
-if opts[:clone]
+if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
   inventory = YAML.load_file(bolt_inventory_file)
   user = inventory['groups'].first['config']['ssh']['user']
