@@ -48,7 +48,7 @@
   <builders>
     <hudson.plugins.gradle.Gradle plugin="gradle@1.36">
       <switches>--info --stacktrace  </switches>
-      <tasks>-PbuildTyp=SNAPSHOT clean buildPkg </tasks>
+      <tasks>-PbuildTyp=SNAPSHOT $GRADLE_OPTS clean buildPkg </tasks>
       <rootBuildScriptDir><%= @module_name %></rootBuildScriptDir>
       <buildFile></buildFile>
       <gradleName>(Default)</gradleName>
