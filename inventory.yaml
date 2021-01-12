@@ -17,7 +17,7 @@ groups:
         piper_cvs_user: che # TODO (che, 7.1) -> svcCvsClient
         jenkins_ssh_user: che # TODO (che, 7.1)  -> apg-patch-service-server
         install_ssh_user: # TODO (che, 07.1)  -> apg_install
-        jenkins_authkey: 22136e2c863d782f50b568f2c2dfdac0
+        artifactory_repo: devche-repo
         cm_db_host: chti212.apgsga.ch
         cm_db_instance: chti212
         cm_db_piper_user: cm_example_user
@@ -27,6 +27,8 @@ vars:
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
+  artifactory_user: dev
+  artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
   yum_repo: multiservice_yumdev
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
@@ -44,8 +46,8 @@ vars:
   pipeline_repo: https://github.com/apgsga-it/apg-jenkins-pipelines.git
   jenkins_builder_pipeline_repo: apgsga-it/apg-jenkins-pipeline-testlibs
   jenkins_builder_pipeline_repo_branch: master
-  jenkins_install_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
-  jenkins_assemble_pipeline_script_path: src/main/jenkins/mockWithParameter.groovy
+  jenkins_install_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
+  jenkins_assemble_pipeline_script_path: src/main/groovy/installPipeline.groovy
   github_credential_id: apgsga-jenkins
   temp_gradle: /tmp/gradlehome
   github_jenkins_version: master
