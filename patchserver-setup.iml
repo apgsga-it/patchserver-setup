@@ -17,6 +17,9 @@
       <excludeFolder url="file://$MODULE_DIR$/modules/rbenv" />
       <excludeFolder url="file://$MODULE_DIR$/modules/ruby" />
       <excludeFolder url="file://$MODULE_DIR$/modules/wget" />
+      <excludeFolder url="file://$MODULE_DIR$/.resource_types" />
+      <excludeFolder url="file://$MODULE_DIR$/downloads" />
+      <excludeFolder url="file://$MODULE_DIR$/modules" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
