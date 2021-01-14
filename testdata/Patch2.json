@@ -1,8 +1,7 @@
 {
-  "patchNumber": "",
+  "patchNumber": "2",
   "dbPatchBranch": null,
   "prodBranch": "prod",
-  "patchTag": "",
   "developerBranch": "",
   "tagNr": 0,
   "dbObjects": [],
