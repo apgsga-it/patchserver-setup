@@ -120,7 +120,7 @@
       "name": "DEV-CHEI212",
       "services": [
         {
-          "installationHost": "chetest",
+          "installationHost": "192.168.1.12",
           "serviceName": "testapp-service",
           "serviceType": "linuxservice"
         }

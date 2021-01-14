@@ -46,8 +46,8 @@ vars:
   pipeline_repo: https://github.com/apgsga-it/apg-jenkins-pipelines.git
   jenkins_builder_pipeline_repo: apgsga-it/apg-jenkins-pipelines
   jenkins_builder_pipeline_repo_branch: master
-  jenkins_install_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
-  jenkins_assemble_pipeline_script_path: src/main/groovy/installPipeline.groovy
+  jenkins_install_pipeline_script_path: src/main/groovy/installPipeline.groovy
+  jenkins_assemble_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
   github_credential_id: apgsga-jenkins
   temp_gradle: /tmp/gradlehome
   github_jenkins_version: master

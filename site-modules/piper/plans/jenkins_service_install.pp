@@ -104,6 +104,7 @@ plan piper::jenkins_service_install(
             'git-server' => { version =>   '1.9' }, # GIT server Plugin
             'handlebars' => { version =>   '1.1.1' }, # JavaScript GUI Lib: Handlebars bundle plugin
             'cvs' => { version =>   '2.16' }, # CVS Plug-in
+            'file-operations' => { version =>   '1.11' }, # File Operations Plugin
           },
           config_hash => {
             'JENKINS_JAVA_OPTIONS' => { value => '-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=100 -Dpermissive-script-security.enabled=no_security'
