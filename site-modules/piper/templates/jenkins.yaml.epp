@@ -78,6 +78,8 @@ jenkins:
         value: "<%= $github_jenkins_version %>"
       - key: "GRADLE_OPTS"
         value: "-Dgradle.user.home=<%= $gradle_home %>/home -Dorg.gradle.daemon=false"
+      - key: "GRADLE_USER_HOME_PATH"
+        value: "<%= $gradle_home %>/home"
       - key: "REVISIONS_FILES_PATH"
         value: "<%= $gradle_home %>/home"
       - key: "JENKINS_MAVEN_AGENT_DISABLED"
