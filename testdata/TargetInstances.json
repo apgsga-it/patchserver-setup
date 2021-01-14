@@ -117,7 +117,7 @@
       ]
     },
     {
-      "name": "DEV-CHEI212",
+      "name": "CHEI212",
       "services": [
         {
           "installationHost": "192.168.1.12",
