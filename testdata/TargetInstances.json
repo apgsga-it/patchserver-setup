@@ -111,7 +111,7 @@
       ,
         {
           "installationHost": "chetest",
-          "serviceName": "testapp-service",
+          "serviceName": "echoservice",
           "serviceType": "linuxservice"
         }
       ]
@@ -121,7 +121,17 @@
       "services": [
         {
           "installationHost": "192.168.1.12",
-          "serviceName": "testapp-service",
+          "serviceName": "echoservice",
+          "serviceType": "linuxservice"
+        }
+      ]
+    },
+    {
+      "name": "CHEI211",
+      "services": [
+        {
+          "installationHost": "192.168.1.12",
+          "serviceName": "echoservice",
           "serviceType": "linuxservice"
         }
       ]

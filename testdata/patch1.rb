@@ -5,12 +5,12 @@ require 'apscli'
 dbPatch = Apscli::ApsApi::DBPatch.builder().build()
 patch = Apscli::ApsApi::Patch
           .builder()
-          .patchNumber("1")
+          .patchNumber("3")
           .dbPatch(dbPatch)
           .services(Apscli::ApsApi::Lists.newArrayList(
            Apscli::ApsApi::Service
              .builder()
-             .serviceName("testapp-service")
+             .serviceName("echoservice")
              .artifactsToPatch(Apscli::ApsApi::Lists.newArrayList(
                Apscli::ApsApi::MavenArtifact
                  .builder()
@@ -20,5 +20,5 @@ patch = Apscli::ApsApi::Patch
              )).build()
          ))
 om = Apscli::ApsApi::ObjectMapper.new()
-output = Apscli::ApsApi::File.new("PatchTest.json")
+output = Apscli::ApsApi::File.new("Patch3.json")
 om.writeValue(output, patch.build())
