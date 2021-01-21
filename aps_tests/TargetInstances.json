@@ -133,6 +133,11 @@
           "installationHost": "192.168.1.12",
           "serviceName": "echoservice",
           "serviceType": "linuxservice"
+        },
+        {
+          "installationHost": "192.168.1.12",
+          "serviceName": "calctestservice",
+          "serviceType": "linuxservice"
         }
       ]
     }
