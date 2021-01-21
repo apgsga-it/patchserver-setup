@@ -2,13 +2,17 @@ require 'apscli'
 module TestCases
   class PatchBuilder
     attr_reader :testcases
+
     def initialize
       @testcases = {}
       @testcases['EchoServiceAll'] = EchoServiceAll
       @testcases['EchoServiceSingleModule'] = EchoServiceSingleModule
       @testcases['EchoAndCalcServiceSingleModules'] = EchoAndCalcServiceSingleModules
+      @testcases['CalcServiceAll'] = CalcServiceAll
+
     end
-    def make(name,patch_number)
+
+    def make(name, patch_number)
       if !@testcases.key?(name)
         puts "Testcase : <#{name}> does not exit"
         puts "Available Testcases : #{self.list.to_s}"
@@ -17,6 +21,7 @@ module TestCases
       testcase = @testcases[name]
       testcase.make(patch_number)
     end
+
     def list
       @testcases
     end
@@ -49,6 +54,7 @@ module TestCases
       patch.build()
     end
   end
+
   class EchoServiceSingleModule
     def self.make(patch_number)
       dbPatch = Aps::Api::DBPatch.builder().build()
@@ -71,6 +77,7 @@ module TestCases
       patch.build()
     end
   end
+
   class EchoAndCalcServiceSingleModules
     def self.make(patch_number)
       dbPatch = Aps::Api::DBPatch.builder().build()
@@ -103,6 +110,7 @@ module TestCases
       patch.build()
     end
   end
+
   class CalcServiceAll
     def self.make(patch_number)
       dbPatch = Aps::Api::DBPatch.builder().build()
@@ -110,7 +118,7 @@ module TestCases
                 .builder()
                 .patchNumber(patch_number)
                 .dbPatch(dbPatch)
-                .services(
+                .services(Aps::Api::Lists.newArrayList(
                   Aps::Api::Service
                     .builder()
                     .serviceName("calctestservice")
@@ -126,8 +134,9 @@ module TestCases
                         .groupId("com.apgsga.testapp2")
                         .version("1.0.1.DEV-ADMIN-UIMIG-SNAPSHOT").build()
                     )).build()
-                )
-      patch.build()
+                ))
+        patch.build().
+        end
     end
   end
 end
