@@ -138,6 +138,16 @@
           "installationHost": "192.168.1.12",
           "serviceName": "calctestservice",
           "serviceType": "linuxservice"
+        },
+        {
+          "installationHost": "192.168.1.12",
+          "serviceName": "test-ui",
+          "serviceType": "linuxbasedwindowsfilesystem"
+        },
+        {
+          "installationHost": "192.168.1.12",
+          "serviceName": "test-jadas",
+          "serviceType": "linuxservice"
         }
       ]
     }

@@ -139,4 +139,33 @@ module TestCases
         end
     end
   end
+
+  class UIServiceSome
+    def self.make(patch_number)
+      dbPatch = Aps::Api::DBPatch.builder().build()
+      patch = Aps::Api::Patch
+                .builder()
+                .patchNumber(patch_number)
+                .dbPatch(dbPatch)
+                .services(Aps::Api::Lists.newArrayList(
+                  Aps::Api::Service
+                    .builder()
+                    .serviceName("it21-test-ui")
+                    .artifactsToPatch(Aps::Api::makeList(
+                      Aps::Api::MavenArtifact
+                        .builder()
+                        .artifactId("testapp-module-3")
+                        .groupId("om.apgsga.testapp")
+                        .version("1.0.3.DEV-ADMIN-UIMIG-SNAPSHOT").build(),
+                      Aps::Api::MavenArtifact
+                        .builder()
+                        .artifactId("testapp-server-3")
+                        .groupId("om.apgsga.testapp")
+                        .version("1.0.3.DEV-ADMIN-UIMIG-SNAPSHOT").build(),
+                    )).build()
+                ))
+      patch.build().
+        end
+    end
+  end
 end
