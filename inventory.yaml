@@ -15,9 +15,7 @@ groups:
              _plugin: prompt
              message: Enter the SSH user password to access the target VM
         git:
-          user:
-            _plugin: prompt
-            message: Enter the username to access git.apgsga.ch repositories
+          user: <changeForGitUser>
      vars:
        # Local Test Vm specific configuration properties
         admin_user_email : chhenrici@gmail.com
