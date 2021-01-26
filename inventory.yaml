@@ -1,13 +1,23 @@
 groups:
    - name: testvms
      targets:
-        - uri: centpatch
+        - uri:
+            _plugin: prompt
+            message: Enter the IP or DNS name of the target VM
           name:  testvm
      config:
         transport: ssh
         ssh:
-           user: che
-           password:  che
+           user:
+             _plugin: prompt
+             message: Enter the SSH user name to access the target VM
+           password:
+             _plugin: prompt
+             message: Enter the SSH user password to access the target VM
+        git:
+          user:
+            _plugin: prompt
+            message: Enter the username to access git.apgsga.ch repositories
      vars:
        # Local Test Vm specific configuration properties
         admin_user_email : chhenrici@gmail.com

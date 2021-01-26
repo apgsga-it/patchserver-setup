@@ -49,7 +49,7 @@ end
 if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
   inventory = YAML.load_file(bolt_inventory_file)
-  user = inventory['groups'].first['config']['ssh']['user']
+  user = inventory['groups'].first['config']['git']['user']
   temp_dir = inventory['vars']['temp_gradle']
   if  File.exist?(temp_dir)
     FileUtils.remove_dir(temp_dir, force = true)
