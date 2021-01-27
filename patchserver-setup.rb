@@ -9,7 +9,7 @@ opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.string '-u', '--user', 'SSH Username to access destination VM', required: true
-  o.string '-t', '--target', 'Target host on which bolt plan will be executed', required: true
+  o.string '-t', '--target', 'Target(s) host on which bolt plan will be executed. Multiple targets can be separated with comma', required: true
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -90,7 +90,7 @@ end
 
 def run(plan,opts)
   debug = opts[:debug] ? '--debug' : ' '
-  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --user #{[opts[:user]} --targets #{[opts[target]} --password-prompt"
+  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --user #{opts[:user]} --targets #{opts[:target]} --password-prompt"
   puts "#{cmd}"
   system(cmd) unless opts[:dry]
   puts "Done: #{plan}"  unless opts[:dry]
