@@ -10,6 +10,7 @@ opts = Slop.parse do |o|
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.string '-u', '--user', 'SSH Username to access destination VM', required: true
   o.string '-t', '--target', 'Target(s) host on which bolt plan will be executed. Multiple targets can be separated with comma', required: true
+  o.string 'gu', '--gitUser', 'Git user to access git.apgsga.ch. Used only during installation process -> provide your own user'
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -51,12 +52,11 @@ end
 if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
   inventory = YAML.load_file(bolt_inventory_file)
-  user = inventory['groups'].first['config']['git']['user']
   temp_dir = inventory['vars']['temp_gradle']
   if  File.exist?(temp_dir)
     FileUtils.remove_dir(temp_dir, force = true)
   end
-  system("git clone #{user}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
+  system("git clone #{opts[:gitUser]}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
 end
 if !opts[:install].empty? and opts[:all]
   puts 'Specify either  -a  or -i option, but not both. -a being all plans and -i being a filter on the available plan names '

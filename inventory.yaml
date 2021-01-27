@@ -2,8 +2,6 @@ groups:
    - name: testvms
      config:
         transport: ssh
-        git:
-          user: <changeForGitUser>
      vars:
        # Local Test Vm specific configuration properties
         admin_user_email : chhenrici@gmail.com
