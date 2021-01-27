@@ -10,7 +10,7 @@ opts = Slop.parse do |o|
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.string '-u', '--user', 'SSH Username to access destination VM', required: true
   o.string '-t', '--target', 'Target(s) host on which bolt plan will be executed. Multiple targets can be separated with comma', required: true
-  o.string 'gu', '--gitUser', 'Git user to access git.apgsga.ch. Used only during installation process -> provide your own user'
+  o.string '-gu', '--gitUser', 'Git user to access git.apgsga.ch. Used only during installation process -> provide your own user'
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
