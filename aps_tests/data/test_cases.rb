@@ -9,6 +9,7 @@ module TestCases
       @testcases['EchoServiceSingleModule'] = EchoServiceSingleModule
       @testcases['EchoAndCalcServiceSingleModules'] = EchoAndCalcServiceSingleModules
       @testcases['CalcServiceAll'] = CalcServiceAll
+      @testcases['UIServiceSome'] = UIServiceSome
 
     end
 
@@ -154,18 +155,22 @@ module TestCases
                     .artifactsToPatch(Aps::Api::makeList(
                       Aps::Api::MavenArtifact
                         .builder()
-                        .artifactId("testapp-module-3")
-                        .groupId("om.apgsga.testapp")
+                        .artifactId("testapp-jadas-appstarter-3")
+                        .groupId("com.apgsga.testapp")
                         .version("1.0.3.DEV-ADMIN-UIMIG-SNAPSHOT").build(),
                       Aps::Api::MavenArtifact
                         .builder()
-                        .artifactId("testapp-server-3")
-                        .groupId("om.apgsga.testapp")
+                        .artifactId("testapp-module-3")
+                        .groupId("com.apgsga.testapp")
+                        .version("1.0.3.DEV-ADMIN-UIMIG-SNAPSHOT").build(),
+                      Aps::Api::MavenArtifact
+                        .builder()
+                        .artifactId("testapp-jadas-frameworkstarter-3")
+                        .groupId("com.apgsga.testapp")
                         .version("1.0.3.DEV-ADMIN-UIMIG-SNAPSHOT").build(),
                     )).build()
                 ))
-      patch.build().
-        end
+      patch.build()
     end
   end
 end
