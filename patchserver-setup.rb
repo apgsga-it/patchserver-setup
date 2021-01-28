@@ -9,8 +9,7 @@ opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.string '-u', '--user', 'SSH Username to access destination VM', required: true
-  o.string '-t', '--target', 'Target(s) host on which bolt plan will be executed. Multiple targets can be separated with comma', required: true
-  o.string '-gu', '--gitUser', 'Git user to access git.apgsga.ch. Used only during installation process -> provide your own user'
+  o.string '-t', '--target', 'Target group and host (separated by comma) on which bolt plan will be executed. Parameter example (test->group,test.apgsga.ch->target): test,test.apgsga.ch  ', required: true
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -56,7 +55,8 @@ if !opts[:skipClone]
   if  File.exist?(temp_dir)
     FileUtils.remove_dir(temp_dir, force = true)
   end
-  system("git clone #{opts[:gitUser]}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
+  # TODO JHE : git user, currently hardcoded with jhe -> IT-36770 and IT-36776
+  system("git clone jhe@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
 end
 if !opts[:install].empty? and opts[:all]
   puts 'Specify either  -a  or -i option, but not both. -a being all plans and -i being a filter on the available plan names '
