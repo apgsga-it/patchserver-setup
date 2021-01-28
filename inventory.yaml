@@ -27,8 +27,6 @@ vars:
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
-  artifactory_user: dev
-  artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
   yum_repo: multiservice_yumdev
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven

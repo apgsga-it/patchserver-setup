@@ -14,7 +14,10 @@ plan piper::piper_service_properties (
           $result = download_file("/etc/opt/apg-patch-service-server/${type}_properties.initial", 'piper', $targets)
           out::message($result)
           $applyResult = apply($targets) {
-            $content = epp($result.first['path'], { 'piper_cvs_user' => "${targetall.config[ssh][user]}", 'jenkins_ssh_user' => "${targetall.config[ssh][user]}" })
+            $content = epp($result.first['path'], { 'piper_cvs_user' => "${targetall.config[ssh][user]}",
+                                                    'jenkins_ssh_user' => "${targetall.config[ssh][user]}",
+                                                    'cm_db_piper_user' => "${lookup('cm::db::piper:user')}",
+                                                    'cm_db_piper_pw' => "${lookup('cm::db::piper:pw')}" })
             file { "/etc/opt/apg-patch-service-server/${type}.properties":
               ensure  => present,
               backup => ".puppet.bk.${timestamp}",

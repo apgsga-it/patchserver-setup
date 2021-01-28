@@ -1,2 +1,4 @@
 yum::user:name: ops-test
 yum::user:pw: TOBECHANGED
+cm::db::piper:user: cm
+cm::db::piper:pw: TOBECHANGED
