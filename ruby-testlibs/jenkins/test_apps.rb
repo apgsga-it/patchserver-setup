@@ -28,7 +28,7 @@ module Jenkins
       @gradle_home = inventory['vars']['gradle_home']
       @maven_home = inventory['vars']['maven_home']
       @artifactory_uri = inventory['vars']['artifactory_uri']
-      @maven_profile = inventory['vars']['maven_profile']
+      @maven_profile = inventory['groups'].first['vars']['maven_profile']
       @test_apps = []
       config = YAML.load_file(config_file)
       @artifactory_admin = config['artifactory']['admin']

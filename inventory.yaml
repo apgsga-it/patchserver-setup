@@ -22,10 +22,10 @@ groups:
         cm_db_instance: chti212
         cm_db_piper_user: cm_example_user
         cm_db_piper_pw: cm_example_user_pw
+        maven_profile: artifactory-che
 vars:
   # Global configuration for all targets
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
-  maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
   artifactory_user: dev
   artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
