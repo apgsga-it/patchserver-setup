@@ -19,6 +19,7 @@ plan piper::jenkins_dirs_create (
   $timestamp = Timestamp.new().strftime('gradlehome%Y%m%d%H%M%S')
   $temp_dir = "/tmp/${$timestamp}"
   $targetall = get_targets('all')[0]
+  $targettest = get_target('test')
   $jenkins_user = "jenkins"
   # Sudu User's public rsa key on target
   $dl_user_result = download_file("/home/${targetall.config[ssh][user]}/.ssh/id_rsa.pub", 'user', $targets)
@@ -81,7 +82,7 @@ plan piper::jenkins_dirs_create (
   upload_file('/tmp/gradlehome' ,"${temp_dir}", $targets,  '_catch_errors' => false,'_run_as' => 'root' )
   run_command("rsync -P -r --ignore-existing --include=*/ --exclude=.git* ${temp_dir}/gradlehome/* ${targetall.vars[gradle_home]}/home", $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command("chmod u+x ${targetall.vars[gradle_home]}/home/initGradleProfile.sh", $targets, '_catch_errors' => true, '_run_as' => 'root')
-  run_command("cd ${targetall.vars[gradle_home]}/home ; ./initGradleProfile.sh  /home/jenkins/.m2 ${targetall.vars[maven_profile]} ${targetall.vars[maven_home]} copySettingsXml", $targets, '_catch_errors' => true, '_run_as' => 'root')
+  run_command("cd ${targetall.vars[gradle_home]}/home ; ./initGradleProfile.sh  /home/jenkins/.m2 ${targettest.vars[maven_profile]} ${targetall.vars[maven_home]} copySettingsXml", $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command("chown -R ${jenkins_user}:${jenkins_user} ${targetall.vars[gradle_home]}/home", $targets, '_catch_errors' => true, '_run_as' => 'root')
 
 
