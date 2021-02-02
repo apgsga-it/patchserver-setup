@@ -112,20 +112,6 @@ jenkins:
   mode: NORMAL
   myViewsTabBar: "standard"
   nodes:
-  - permanent:
-      labelString: "jenkins_installer_windows jenkins_installer_windows_oldstyle"
-      launcher:
-        jnlp:
-          workDirSettings:
-            disabled: false
-            failIfWorkDirIsMissing: false
-            internalDir: "remoting"
-      mode: EXCLUSIVE
-      name: "apg-jdv-e-001"
-      nodeDescription: "windows test installer"
-      numExecutors: 3
-      remoteFS: "C:\\Software\\jenkinsWork"
-      retentionStrategy: "always"
   numExecutors: 7
   primaryView:
     all:
