@@ -3,12 +3,6 @@ credentials:
     domainCredentials:
     - credentials:
       - usernamePassword:
-          description: "jadas-e ssh credentials "
-          id: "jadas-e-ssh"
-          password: ""
-          scope: GLOBAL
-          username: "<%= $jenkinsuser %>"
-      - usernamePassword:
           description: "Github Zugang"
           id: "apgsga-jenkins"
           password: ""
@@ -60,7 +54,11 @@ jenkins:
       excludeClientIPFromCrumb: false
   disableRememberMe: false
   disabledAdministrativeMonitors:
+  - "jenkins.security.csrf.CSRFAdministrativeMonitor"
+  - "hudson.model.UpdateCenter$CoreUpdateMonitor"
+  - "jenkins.diagnostics.SecurityIsOffMonitor"
   - "jenkins.diagnostics.RootUrlNotSetMonitor"
+  - "jenkins.security.UpdateSiteWarningsMonitor"
   - "jenkins.security.QueueItemAuthenticatorMonitor"
   - "hudson.diagnosis.ReverseProxySetupMonitor"
   globalNodeProperties:

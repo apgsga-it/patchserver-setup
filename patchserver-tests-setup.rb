@@ -22,17 +22,22 @@ def run_remote_sudo_cmd(user, pw, target, cmd, opts)
   puts pipe.readlines
 end
 
-def clean_caches(testsapps, opts)
-  verbose = if opts[:verbose]
-              'v'
-            else
-              ''
-            end
-  run_remote_sudo_cmd(testsapps.user, testsapps.pw, testsapps.target, "rm -Rf#{verbose} #{testsapps.maven_home}/*", opts)
-  run_remote_sudo_cmd(testsapps.user, testsapps.pw, testsapps.target, "rm -Rf#{verbose} #{testsapps.gradle_home}/home/caches/*", opts)
+def clean_maven_cache(test_apps, opts)
+  verbose = 'v' if opts[:verbose]
+  run_remote_sudo_cmd(test_apps.user, test_apps.pw, test_apps.target, "rm -Rf#{verbose} #{test_apps.maven_home}/*", opts)
 end
 
-def clean_repos(test_apps, opts)
+def clean_gradle_cache(test_apps, opts)
+  verbose = 'v' if opts[:verbose]
+  run_remote_sudo_cmd(test_apps.user, test_apps.pw, test_apps.target, "rm -Rf#{verbose} #{test_apps.gradle_home}/home/caches/*", opts)
+end
+
+def clean_revisions(test_apps, opts)
+  verbose = 'v' if opts[:verbose]
+  run_remote_sudo_cmd(test_apps.user, test_apps.pw, test_apps.target, "rm -Rf#{verbose} #{test_apps.gradle_home}/home/Revision*", opts)
+end
+
+def clean_artifactory_repos(test_apps, opts)
   secrets = Secrets::Store.new("Patchservertests")
   secrets.prompt_only_when_not_exists(test_apps.user, 'Enter artifactory password and enter return:', opts[:force])
   command = Artcli::Cli.new(test_apps.artifactory_uri, test_apps.artifactory_admin, secrets.retrieve(test_apps.user), opts[:dry])
@@ -58,8 +63,12 @@ opts = Slop.parse do |o|
   o.string '-i', '--inventory', 'Location Bolt Puppet Inventory File to Patchserver Setup, default: "./inventory.yaml"', default: './inventory.yaml'
   o.string '-c', '--config', 'Location Testapps Metadata config, default: "./testappsconfig.yaml"', default: './testappsconfig.yaml'
   o.bool '-y', '--dry', 'Dry run, the effective and rsspective commands will not be executed, default: false', default: false
-  o.bool '-cc', '--cleanCache', 'Cleans Maven and Gradle Cache, default: false', default: false
-  o.bool '-ca', '--cleanArtifactory', 'Cleans the specific repos in Artifactory according to Profile, default: false', default: false
+  o.bool '-cc', '--cleanRepoCaches', 'Cleans Maven and Gradle Cache, default: false', default: false
+  o.bool '-cm', '--cleanMavenCache', 'Cleans Maven, default: false', default: false
+  o.bool '-cg', '--cleanGradleCache', 'Cleans Maven, default: false', default: false
+  o.bool '-ct', '--cleanArtifactory', 'Cleans the specific repos in Artifactory according to Profile, default: false', default: false
+  o.bool '-cr', '--cleanRevisions', 'Remove all revision files, default: false', default: false
+  o.bool '-ca', '--cleanAll', 'Execute all clean options, default: false', default: false
   o.bool '-rjs', '--runAllJobs', 'Run all the Testsapps Jobs, default: false', default: false
   o.bool '-djs', '--deleteAllJobs', 'Delete all the Testsapps Jobs , default: false', default: false
   o.bool '-cjs', '--createAllJobs', 'Create all the Testsapps Jobs , default: false', default: false
@@ -104,8 +113,10 @@ end
 # Main line
 puts 'Dry run! No changes will be made' if opts[:dry]
 test_apps = Jenkins::TestApps.new(inventory_file, config_file)
-clean_caches(test_apps, opts) if opts[:cleanCache]
-clean_repos(test_apps, opts) if opts[:cleanArtifactory]
+clean_maven_cache(test_apps, opts) if opts[:cleanRepoCaches] or  opts[:cleanAll] or  opts[:cleanMavenCache]
+clean_gradle_cache(test_apps, opts) if opts[:cleanRepoCaches] or  opts[:cleanAll] or  opts[:cleanGradleCache]
+clean_artifactory_repos(test_apps, opts) if opts[:cleanArtifactory] or  opts[:cleanAll]
+clean_revisions(test_apps, opts) if opts[:cleanRevisions] or  opts[:cleanAll]
 test_apps.accept(Jenkins::TestAppsPrinter.new) if opts[:print]
 test_apps.accept(Jenkins::TestAppsJobDeleter.new(opts)) if opts[:deleteAllJobs] or opts[:deleteAppJobs]
 test_apps.accept(Jenkins::TestAppsJobCreator.new(opts)) if opts[:createAllJobs] or opts[:createAppJobs]
