@@ -2,4 +2,3 @@
 ssh:
    run-as: root
    tty: true
-hiera-config: "~/.puppetlabs/bolt/hiera.yaml"

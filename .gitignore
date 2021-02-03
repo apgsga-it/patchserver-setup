@@ -6,3 +6,4 @@ Gemfile.lock
 *.iml
 *.log
 /downloads/
+/hiera-data/common.yaml

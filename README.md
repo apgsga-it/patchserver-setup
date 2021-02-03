@@ -25,19 +25,19 @@ Piper see the [Github Repo]() .
 
 ### Set-up Bolt Hiera Config for Passwords
 
-1. `cp templates/hiera.yaml ~/.puppetlabs/bolt`
-2. ` cp -R templates/data ~/.puppetlabs/bolt`
-3. `vim ~/.puppetlabs/bolt/data/common.yaml ` and change TOBECHANGED to
-   the correct value
+The initial hiera configuration file
+[common.yaml.initial](./hiera-data/common.yaml.initial) in the directory
+[hiera-data](./hiera-data) needs to be copied to the same directory to
+common.yaml. This later file is ignored by git.
 
-The location of the root configuration directory can be changed in
-bolt.yaml
+In this file the values with TOBECHANGED needs to be adopted accordingly
+.
 
 ## Running the Setup
 
 ### Installation Parameters
 
-The installation parameters are kept in the **inventory.yaml** file in
+The installation parameters are kept in th **inventory.yaml** file in
 the root directory git repository.
 
 Before the installation this file should be adapted accordingly.
