@@ -1,5 +1,6 @@
 plan piper::jenkins_dirs_create (
-  TargetSpec $targets
+  TargetSpec $targets,
+  String $user
 ) {
   $targets.apply_prep
   $piper_user = "apg-patch-service-server"
@@ -21,7 +22,7 @@ plan piper::jenkins_dirs_create (
   $targetall = get_targets('all')[0]
   $jenkins_user = "jenkins"
   # Sudu User's public rsa key on target
-  $dl_user_result = download_file("/home/${targetall.config[ssh][user]}/.ssh/id_rsa.pub", 'user', $targets)
+  $dl_user_result = download_file("/home/${user}/.ssh/id_rsa.pub", 'user', $targets)
   $user_rsa_target = file::read($dl_user_result.first['path'])
   # apg-patch-service-server user on target
   $dl_patch_result = download_file("${piper_ssh_dir}/id_rsa.pub", 'piper', $targets)
@@ -52,7 +53,7 @@ plan piper::jenkins_dirs_create (
     }
     file { '/etc/jenkins/casc/jenkins.yaml':
       ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${targetall.config[ssh][user]}" , 'authorized_keys' => $ssh_keys }),
+      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${user}" , 'authorized_keys' => $ssh_keys }),
       owner => $jenkins_user,
       group => $jenkins_user,
       mode => '0644',

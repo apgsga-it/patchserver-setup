@@ -4,11 +4,12 @@ require 'slop'
 require 'yaml'
 require 'fileutils'
 require 'ostruct'
+require 'apgsecrets'
 
 opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
-  o.string '-u', '--user', 'SSH Username to access destination VM', required: true
+  o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
   o.string '-t', '--target', 'Target group and host (separated by comma) on which bolt plan will be executed. Parameter example (test->group,test.apgsga.ch->target): test,test.apgsga.ch  ', required: true
   o.separator ''
   o.separator 'other options:'
@@ -22,6 +23,10 @@ opts = Slop.parse do |o|
     exit
   end
 end
+plans_with_user_param = []
+plans_with_user_param << 'piper::jenkins_create_jobs'
+plans_with_user_param << 'piper::jenkins_dirs_create'
+plans_with_user_param << 'piper::piper_service_properties'
 show_output = `bolt plan show --concurrency 20 `
 plans_installation_order = []
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::cvs_install')
@@ -48,6 +53,8 @@ lines.each do |line|
     plans_available << line
   end
 end
+secrets = Secrets::Store.new("Patschserversetup",7200)
+secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
 if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
   inventory = YAML.load_file(bolt_inventory_file)
@@ -55,8 +62,7 @@ if !opts[:skipClone]
   if  File.exist?(temp_dir)
     FileUtils.remove_dir(temp_dir, force = true)
   end
-  # TODO JHE : git user, currently hardcoded with jhe -> IT-36770 and IT-36776
-  system("git clone jhe@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
+  system("git clone #{opts[:user]}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
 end
 if !opts[:install].empty? and opts[:all]
   puts 'Specify either  -a  or -i option, but not both. -a being all plans and -i being a filter on the available plan names '
@@ -88,11 +94,12 @@ unless opts[:install].empty?
   plans_to_execute = plans
 end
 
-def run(plan,opts)
+def run(plan,opts,secrets,parm)
   debug = opts[:debug] ? '--debug' : ' '
-  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --user #{opts[:user]} --targets #{opts[:target]} --password-prompt"
+  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --user #{opts[:user]} --password xxxxxx --targets #{opts[:target]} #{parm}"
   puts "#{cmd}"
-  system(cmd) unless opts[:dry]
+  cmd_to_execute = cmd.sub('xxxxxx', secrets.retrieve(opts[:user]))
+  system(cmd_to_execute) unless opts[:dry]
   puts "Done: #{plan}"  unless opts[:dry]
 end
 
@@ -115,7 +122,8 @@ unless plans_to_execute.empty?
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
   sorted_plans.each do |plan|
     if plans_to_execute.include? plan.name
-      run(plan.name,opts)
+      parm = plans_with_user_param.include?(plan.name) ? " user=#{opts[:user]} " : ""
+      run(plan.name,opts,secrets,parm)
     end
   end
 
