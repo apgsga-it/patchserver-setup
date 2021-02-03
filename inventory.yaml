@@ -1,13 +1,7 @@
 groups:
    - name: testvms
-     targets:
-        - uri: centpatch
-          name:  testvm
      config:
         transport: ssh
-        ssh:
-           user: che
-           password:  che
      vars:
        # Local Test Vm specific configuration properties
         admin_user_email : chhenrici@gmail.com
