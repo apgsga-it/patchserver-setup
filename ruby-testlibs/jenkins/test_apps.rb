@@ -19,20 +19,19 @@ module Jenkins
     attr_reader :user, :pw, :target, :test_apps, :gradle_home, :maven_home, :artifactory_admin, :artifactory_uri, :maven_profile
     include Visitable
 
-    def initialize(inventory_file, config_file)
+    def initialize(usr, secrets, inventory_file, local_inventory_file)
       inventory = YAML.load_file(inventory_file)
-      @user = inventory['groups'].first['config']['ssh']['user']
-      # We could encrypted this , as secret .... but since this only for local testing
-      @pw = inventory['groups'].first['config']['ssh']['password']
-      @target = inventory['groups'].first['targets'].first['uri']
+      inventory_local = YAML.load_file(local_inventory_file)
+      @user = usr
+      @secrets = secrets
+      @target = inventory_local['targets'].first['uri']
       @gradle_home = inventory['vars']['gradle_home']
       @maven_home = inventory['vars']['maven_home']
       @artifactory_uri = inventory['vars']['artifactory_uri']
       @maven_profile = inventory['vars']['maven_profile']
       @test_apps = []
-      config = YAML.load_file(config_file)
-      @artifactory_admin = config['artifactory']['admin']
-      apps_config_context = config['testapps']
+      @artifactory_admin = inventory_local['artifactory']['admin']
+      apps_config_context = inventory_local['testapps']
       apps_config_context.each do |app_config_context|
         modules_names = app_config_context['modules'].split(' ')
         modules = []
@@ -46,6 +45,9 @@ module Jenkins
         end
         @test_apps << TestApp.new(self, app_config_context['name'], app_config_context['rootdir'], modules, pkgs)
       end
+    end
+    def pw
+      @secrets.retrieve(@user)
     end
   end
   #  Testapp Class , which contains all Data for a Testapp

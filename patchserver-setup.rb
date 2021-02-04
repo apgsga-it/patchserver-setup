@@ -60,7 +60,7 @@ if !targets.include?(opts[:target])
   exit
 end
 puts "Running target group with name : #{opts[:target]} "
-secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",7200)
+secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
 secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
 if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
