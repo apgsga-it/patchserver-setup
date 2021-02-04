@@ -196,23 +196,25 @@ different options for
 - Deleting the Maven Local and the gradle Cache on the target host
 - Emptying the Artifactory test repos according the Maven Profile
   settings
-- Creating the Testjobs according to  [testappsconfig.yaml](./testappsconfig.yaml),
-  all or selectively by Testapp
-- Deleting Testjobs according to [testappsconfig.yaml](./testappsconfig.yaml), all or
-  selectively by Testapp
+- Creating the Testjobs according to
+  [inventory-local.yaml](./inventory-local.yaml), all or selectively by
+  Testapp
+- Deleting Testjobs according to
+  [inventory-local.yaml](./inventory-local.yaml), all or selectively by
+  Testapp
 - Running all Testjobs according to
-  [testappsconfig.yaml](./testappsconfig.yaml),, all or selectively
+  [inventory-local.yaml](./inventory-local.yaml),, all or selectively
 
 The configuration is pulled from the
 [Bolt inventory file](./inventory.yaml) of the Puppet Setup of the
 Target and the local
-[Configuration of the Testapp Metadata](./testappsconfig.yaml)
+[Configuration of the Testapp Metadata](./inventory-local.yaml)
 
 The Artifactory admin user needs to be configured in the above file.
 
 Preconditions:
 - Jenkins running in the target VM running on the IP Address, according
-  to [testappsconfig.yaml](./testappsconfig.yaml)
+  to [inventory-local.yamll](./inventory-local.yaml)
 - The
   [Bolt Inventory file](https://github.com/apgsga-it/patchserver-setup/blob/master/inventory.yaml)
   needs to reflect the running Target Server and accessible  on the local
@@ -246,21 +248,13 @@ with the -h or --help option, you see the following
 ### Configuration
 
 The Configuration is taken from the file
-[testappsconfig.yaml](./testappsconfig.yaml) and from the Bolt Puppet
+[inventory-local.yaml](./inventory-local.yaml) and from the Bolt Puppet
 [Inventory file](https://github.com/apgsga-it/patchserver-setup/blob/master/inventory.yaml)
 of the
 [Patch Server Setup](https://github.com/apgsga-it/patchserver-setup).
 
 
 Both must reflect the current state of the running target.
-
-The Artifactory user is configured also in the file
-[testappsconfig.yaml](./testappsconfig.yaml) , see
-
-`artifactory:
-  admin: che`
-
-for example
 
 ### Usage Scenarios
 
@@ -273,13 +267,13 @@ Empty the test specific Artifactory  Repositories
 `./init-jenkins-tests.rb --cleanArtifactory`
 
 Create all Tests Jobs according to
-[testappsconfig.yaml](./testappsconfig.yaml)
+[inventory-local.yaml](./inventory-local.yaml)
 
 
 `./init-jenkins-tests.rb --createAllJobs`
 
 Create Tests Jobs for a specific Testapp according to
-[testappsconfig.yaml](./testappsconfig.yaml)
+[inventory-local.yaml](./inventory-local.yaml)
 
 `./init-jenkins-tests.rb --createAppJobs testapp`
 

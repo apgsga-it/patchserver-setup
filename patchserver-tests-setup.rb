@@ -38,9 +38,10 @@ def clean_revisions(test_apps, opts)
 end
 
 def clean_artifactory_repos(test_apps, opts)
-  secrets = Secrets::Store.new("Patchservertests")
-  secrets.prompt_only_when_not_exists(test_apps.user, 'Enter artifactory password and enter return:', opts[:force])
-  command = Artcli::Cli.new(test_apps.artifactory_uri, test_apps.artifactory_admin, secrets.retrieve(test_apps.user), opts[:dry])
+  secrets = Secrets::Store.new("Patchservertestsetup-artifactory-local")
+  admin_user = opts[:artifactoryAdmin] ? opts[:artifactoryAdmin] :  test_apps.user
+  secrets.prompt_only_when_not_exists(admin_user, "Enter artifactory password for admin user: #{admin_user} and enter return:", opts[:force])
+  command = Artcli::Cli.new(test_apps.artifactory_uri, admin_user, secrets.retrieve(admin_user), opts[:dry])
   user_filter = test_apps.maven_profile[test_apps.maven_profile.index('-') + 1..-1]
   command.clean_repositories_interactive(user_filter)
 end
@@ -61,6 +62,7 @@ end
 
 opts = Slop.parse do |o|
   o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
+  o.string '-au', '--artifactoryAdmin', 'User for Artifactory operations, if not present eq -u user', required: false
   o.bool '-y', '--dry', 'Dry run, the effective and rsspective commands will not be executed, default: false', default: false
   o.bool '-cc', '--cleanRepoCaches', 'Cleans Maven and Gradle Cache, default: false', default: false
   o.bool '-cm', '--cleanMavenCache', 'Cleans Maven, default: false', default: false
@@ -101,7 +103,7 @@ if !File.exist?(inventory_local_file) || !File.readable?(inventory_local_file)
 end
 
 # Main line
-secrets = Secrets::Store.new("Patschserversetup-local",86400)
+secrets = Secrets::Store.new("Patchservertestsetup-target-local",86400)
 secrets.prompt_only_when_not_exists(opts[:user], "Please enter pw for user: #{opts[:user]} for local vm test and hit return:",opts[:force])
 puts 'Dry run! No changes will be made' if opts[:dry]
 test_apps = Jenkins::TestApps.new(opts[:user],secrets, inventory_file, inventory_local_file)
