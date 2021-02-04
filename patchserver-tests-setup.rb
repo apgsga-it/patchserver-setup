@@ -46,22 +46,21 @@ def clean_artifactory_repos(test_apps, opts)
 end
 
 def help(opts)
-  puts "This script initializes Tests for Piper in the Target VM as defined in the testappsconfig.yaml file and the Bolt Puppet Inventory File\n\n" \
+  puts "This script initializes Tests for Piper in the Target VM as defined in the Bolt Puppet Inventory Files : inventory.yaml and inventory-local.yaml\n\n" \
        "Preconditions: \n" \
   "- Jenkins is running on the Target host and ssh access works for the Jenkins Cli\n" \
-  "- The test modules as specified in testappsconfig.yaml need to be in cvs.apgsga.ch\n\n" \
+  "- The test modules as specified in inventory-local.yaml need to be in cvs.apgsga.ch\n\n" \
   "Functionality as options: \n" \
   "- Deletes mavenLocal and the gradle Cache on the the target host \n" \
   "- Empties the Artifactory according the Maven Profile settings \n" \
-  "- Creates the Testjobs according to testappsconfig.yaml  \n" \
-  "- Deletes all Testjobs according to  testappsconfig.yam\n" \
-  "- Runs all Testjobs according to  testappsconfig.yaml \n\n"
+  "- Creates the Testjobs according to inventory-local.yaml  \n" \
+  "- Deletes all Testjobs according to inventory-local.yaml\n" \
+  "- Runs all Testjobs according to  inventory-local.yaml \n\n"
   puts opts
 end
 
 opts = Slop.parse do |o|
-  o.string '-i', '--inventory', 'Location Bolt Puppet Inventory File to Patchserver Setup, default: "./inventory.yaml"', default: './inventory.yaml'
-  o.string '-c', '--config', 'Location Testapps Metadata config, default: "./testappsconfig.yaml"', default: './testappsconfig.yaml'
+  o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
   o.bool '-y', '--dry', 'Dry run, the effective and rsspective commands will not be executed, default: false', default: false
   o.bool '-cc', '--cleanRepoCaches', 'Cleans Maven and Gradle Cache, default: false', default: false
   o.bool '-cm', '--cleanMavenCache', 'Cleans Maven, default: false', default: false
@@ -87,32 +86,25 @@ end
 
 # Preconditions
 # Bolt Inventory File check
-inventory_path = Pathname.new(opts[:inventory])
-inventory_file = if inventory_path.absolute?
-                   File.dirname(inventory_path)
-                 else
-                   File.join(File.dirname(__FILE__), inventory_path)
-                 end
+inventory_file = File.join(File.dirname(__FILE__), "inventory.yaml")
 if !File.exist?(inventory_file) || !File.readable?(inventory_file)
   help(opts)
-  puts "The Bolt inventory file #{inventory_path} does not exist or isn't a file"
+  puts "The Bolt inventory file #{inventory_file} does not exist or isn't a file"
   exit
 end
-# Testapps Config File
-config_path = Pathname.new(opts[:config])
-config_file = if config_path.absolute?
-                File.dirname(config_path)
-              else
-                File.join(File.dirname(__FILE__), config_path)
-              end
-if !File.exist?(config_file) || !File.readable?(config_file)
+# Bolt Inventory File check
+inventory_local_file = File.join(File.dirname(__FILE__), "inventory-local.yaml")
+if !File.exist?(inventory_local_file) || !File.readable?(inventory_local_file)
   help(opts)
-  puts "The Testapp Config file #{config_path} does not exist or isn't a file"
+  puts "The Bolt local inventory file #{inventory_local_file} does not exist or isn't a file"
   exit
 end
+
 # Main line
+secrets = Secrets::Store.new("Patschserversetup-local",86400)
+secrets.prompt_only_when_not_exists(opts[:user], "Please enter pw for user: #{opts[:user]} for local vm test and hit return:",opts[:force])
 puts 'Dry run! No changes will be made' if opts[:dry]
-test_apps = Jenkins::TestApps.new(inventory_file, config_file)
+test_apps = Jenkins::TestApps.new(opts[:user],secrets, inventory_file, inventory_local_file)
 clean_maven_cache(test_apps, opts) if opts[:cleanRepoCaches] or  opts[:cleanAll] or  opts[:cleanMavenCache]
 clean_gradle_cache(test_apps, opts) if opts[:cleanRepoCaches] or  opts[:cleanAll] or  opts[:cleanGradleCache]
 clean_artifactory_repos(test_apps, opts) if opts[:cleanArtifactory] or  opts[:cleanAll]
