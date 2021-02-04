@@ -10,7 +10,7 @@ opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
   o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
-  o.string '-t', '--target', 'Target group and host (separated by comma) on which bolt plan will be executed. Parameter example (test->group,test.apgsga.ch->target): test,test.apgsga.ch  ', required: true
+  o.string '-t', '--target', 'One of the Puppet inventory Files predefined Target group names, which will be executed. Values: local,test and prod', default: 'local'
   o.separator ''
   o.separator 'other options:'
   o.bool '-l', '--list', 'List all Installation Bolt plans '
@@ -23,6 +23,7 @@ opts = Slop.parse do |o|
     exit
   end
 end
+targets = %w[local test prod]
 plans_with_user_param = []
 plans_with_user_param << 'piper::jenkins_create_jobs'
 plans_with_user_param << 'piper::jenkins_dirs_create'
@@ -53,7 +54,13 @@ lines.each do |line|
     plans_available << line
   end
 end
-secrets = Secrets::Store.new("Patschserversetup",7200)
+if !targets.include?(opts[:target])
+  puts "Invalid target group name : #{opts[:target]}, please enter one of : #{targets.to_s} "
+  puts opts
+  exit
+end
+puts "Running target group with name : #{opts[:target]} "
+secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",7200)
 secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
 if !opts[:skipClone]
   bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')

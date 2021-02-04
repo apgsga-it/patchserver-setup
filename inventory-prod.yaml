@@ -1,0 +1,19 @@
+name: prod
+targets:
+  - appl-patch.apgsga.ch
+config:
+  transport: ssh
+vars:
+  admin_user_email : chhenrici@gmail.com
+  piper_bind_address:  localhost
+  piper_cvs_remote_host: cvs.apgsga.ch
+  piper_spring_profiles: live,remotecvs, patchOMat
+  piper_cvs_user: che # TODO (che, 7.1) -> svcCvsClient
+  jenkins_ssh_user: che # TODO (che, 7.1)  -> apg-patch-service-server
+  install_ssh_user: # TODO (che, 07.1)  -> apg_install
+  artifactory_repo: repo
+  cm_db_host: chti212.apgsga.ch
+  cm_db_instance: chti212
+  cm_db_piper_user: cm_example_user
+  cm_db_piper_pw: cm_example_user_pw
+  yum_repo: multiservice_yumdev

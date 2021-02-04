@@ -1,29 +1,18 @@
 groups:
-   - name: testvms
-     config:
-        transport: ssh
-     vars:
-       # Local Test Vm specific configuration properties
-        admin_user_email : chhenrici@gmail.com
-        piper_bind_address:  # empty for local testing
-        piper_cvs_remote_host: cvs-t.apgsga.ch
-        piper_spring_profiles: live,remotecvs, patchOMock
-        piper_cvs_user: che # TODO (che, 7.1) -> svcCvsClient
-        jenkins_ssh_user: che # TODO (che, 7.1)  -> apg-patch-service-server
-        install_ssh_user: # TODO (che, 07.1)  -> apg_install
-        artifactory_repo: devche-repo
-        cm_db_host: chti212.apgsga.ch
-        cm_db_instance: chti212
-        cm_db_piper_user: cm_example_user
-        cm_db_piper_pw: cm_example_user_pw
+  - _plugin: yaml
+    filepath: ./inventory-local.yaml
+  - _plugin: yaml
+    filepath: ./inventory-test.yaml
+  - _plugin: yaml
+    filepath: ./inventory-prod.yaml
 vars:
   # Global configuration for all targets
+  admin_user_email : # TODO
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
   artifactory_user: dev
   artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
-  yum_repo: multiservice_yumdev
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
   db_patch_repo: dbpatch-test/
