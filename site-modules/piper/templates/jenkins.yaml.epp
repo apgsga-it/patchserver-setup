@@ -193,37 +193,92 @@ unclassified:
     durabilityHint: MAX_SURVIVABILITY
   globalLibraries:
     libraries:
-    - defaultVersion: "master"
-      implicit: true
-      name: "testlib-functions"
-      retriever:
-        modernSCM:
-          scm:
-            github:
-              configuredByUrl: true
-              credentialsId: "apgsga-jenkins"
-              id: "70017d8d-d161-4e1f-896b-ee4f2338f931"
-              repoOwner: "apgsga-it"
-              repository: "apg-jenkins-pipeline-testlibs"
-              repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-testlibs.git"
-              traits:
-              - gitHubBranchDiscovery:
-                  strategyId: 3
-    - defaultVersion: "master"
-      implicit: true
-      name: "patchlibs"
-      retriever:
-        modernSCM:
-          scm:
-            github:
-              configuredByUrl: true
-              id: "eb12cea2-fad6-4eb2-89ab-49981ba9a0c3"
-              repoOwner: "apgsga-it"
-              repository: "apg-jenkins-pipeline-libs"
-              repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs"
-              traits:
+      - defaultVersion: "master"
+        implicit: true
+        includeInChangesets: false
+        name: "assembleAndDeployPatchFunctions.groovy"
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                configuredByUrl: true
+                credentialsId: "apgsga-jenkins"
+                id: "8cb272ad-c305-4e1a-b315-8ba8b090438e"
+                repoOwner: "apgsga-it"
+                repository: "apg-jenkins-pipeline-libs"
+                repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs.git"
+                traits:
                 - gitHubBranchDiscovery:
-                    strategyId: 3
+                    strategyId: 1
+                - gitHubPullRequestDiscovery:
+                    strategyId: 1
+                - gitHubForkDiscovery:
+                    strategyId: 1
+                    trust: "gitHubTrustPermissions"
+      - defaultVersion: "master"
+        implicit: true
+        includeInChangesets: false
+        name: "commonPatchFunction.groovy"
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                configuredByUrl: true
+                credentialsId: "apgsga-jenkins"
+                id: "8cb272ad-c305-4e1a-b315-8ba8b090438e"
+                repoOwner: "apgsga-it"
+                repository: "apg-jenkins-pipeline-libs"
+                repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs.git"
+                traits:
+                - gitHubBranchDiscovery:
+                    strategyId: 1
+                - gitHubPullRequestDiscovery:
+                    strategyId: 1
+                - gitHubForkDiscovery:
+                    strategyId: 1
+                    trust: "gitHubTrustPermissions"
+      - defaultVersion: "master"
+        name: "installPatchFunction.groovy"
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                configuredByUrl: true
+                credentialsId: "apgsga-jenkins"
+                id: "8cb272ad-c305-4e1a-b315-8ba8b090438e"
+                repoOwner: "apgsga-it"
+                repository: "apg-jenkins-pipeline-libs"
+                repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs.git"
+                traits:
+                - gitHubBranchDiscovery:
+                    strategyId: 1
+                - gitHubPullRequestDiscovery:
+                    strategyId: 1
+                - gitHubForkDiscovery:
+                    strategyId: 1
+                    trust: "gitHubTrustPermissions"
+      - defaultVersion: "master"
+        implicit: true
+        includeInChangesets: false
+        name: "patchfunctions.groovy"
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                configuredByUrl: true
+                credentialsId: "apgsga-jenkins"
+                id: "8cb272ad-c305-4e1a-b315-8ba8b090438e"
+                repoOwner: "apgsga-it"
+                repository: "apg-jenkins-pipeline-libs"
+                repositoryUrl: "https://github.com/apgsga-it/apg-jenkins-pipeline-libs.git"
+                traits:
+                - gitHubBranchDiscovery:
+                    strategyId: 1
+                - gitHubPullRequestDiscovery:
+                    strategyId: 1
+                - gitHubForkDiscovery:
+                    strategyId: 1
+                    trust: "gitHubTrustPermissions"
   ivyBuildTrigger:
     extendedVersionMatching: false
   location:
