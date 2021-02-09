@@ -19,8 +19,6 @@ vars:
   yum_repo: multiservice_yumdev
 
 # For Testing , see ./patchserver-tests-setup.rb
-artifactory:
-  admin: che
 testapps:
   - name: testapp
     rootdir: apg-gradle-plugins-testsmodules/testapp/

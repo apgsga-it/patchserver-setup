@@ -19,10 +19,10 @@ module Jenkins
     attr_reader :user, :pw, :target, :test_apps, :gradle_home, :maven_home, :artifactory_admin, :artifactory_uri, :maven_profile
     include Visitable
 
-    def initialize(usr, secrets, inventory_file, local_inventory_file)
+    def initialize(user, secrets, inventory_file, local_inventory_file)
       inventory = YAML.load_file(inventory_file)
       inventory_local = YAML.load_file(local_inventory_file)
-      @user = usr
+      @user = user
       @secrets = secrets
       @target = inventory_local['targets'].first['uri']
       @gradle_home = inventory['vars']['gradle_home']
@@ -30,7 +30,6 @@ module Jenkins
       @artifactory_uri = inventory['vars']['artifactory_uri']
       @maven_profile = inventory['vars']['maven_profile']
       @test_apps = []
-      @artifactory_admin = inventory_local['artifactory']['admin']
       apps_config_context = inventory_local['testapps']
       apps_config_context.each do |app_config_context|
         modules_names = app_config_context['modules'].split(' ')
