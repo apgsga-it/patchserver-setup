@@ -3,6 +3,8 @@ targets:
   - uri: centpatch
 config:
   transport: ssh
+  ssh:
+    run-as: root
 vars:
  # Local Test Vm specific configuration properties
   piper_bind_address:  # empty for local testing

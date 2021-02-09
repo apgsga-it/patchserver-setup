@@ -1,4 +1,0 @@
----
-ssh:
-   run-as: root
-   tty: true

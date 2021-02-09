@@ -5,6 +5,27 @@ require 'yaml'
 require 'fileutils'
 require 'ostruct'
 require 'apgsecrets'
+require 'json'
+
+def parse_show_plans_output(output,opts)
+  plans_available = []
+  if opts[:jsonOutput]
+    show_plans = JSON.parse(output)
+    show_plans['plans'].each do |plan|
+      if plan.first.start_with?("piper")
+        plans_available << plan.first
+      end
+    end
+  else
+    lines = output.split("\n")
+    lines.each do |line|
+      if line.match(/piper::/)
+        plans_available << line
+      end
+    end
+  end
+  plans_available
+end
 
 opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
@@ -18,6 +39,7 @@ opts = Slop.parse do |o|
   o.bool '-x', '--xceptJenkins', 'Execute all Bolt plans', default: false
   o.bool '--dry', '--dry-run','Only print all Bolt plans commands', default: false
   o.bool '--debug', 'Enable bolt debug optin', default: false
+  o.bool '--jsonOutput', 'Bolt output format json', default: false
   o.on '-h', '--help' do
     puts o
     exit
@@ -28,7 +50,6 @@ plans_with_user_param = []
 plans_with_user_param << 'piper::jenkins_create_jobs'
 plans_with_user_param << 'piper::jenkins_dirs_create'
 plans_with_user_param << 'piper::piper_service_properties'
-show_output = `bolt plan show --concurrency 20 `
 plans_installation_order = []
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::cvs_install')
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::git_install')
@@ -46,14 +67,9 @@ plans_installation_order << OpenStruct.new('install_order' => 40, 'name' => 'pip
 plans_installation_order << OpenStruct.new('install_order' => 42, 'name' => 'piper::piper_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 43, 'name' => 'piper::piper_service_properties')
 
-plans_available = []
 plans_to_execute = []
-lines = show_output.split("\n")
-lines.each do |line|
-  if line.match(/piper::/)
-    plans_available << line
-  end
-end
+show_output = `bolt plan show`
+plans_available = parse_show_plans_output(show_output,opts)
 if !targets.include?(opts[:target])
   puts "Invalid target group name : #{opts[:target]}, please enter one of : #{targets.to_s} "
   puts opts
@@ -101,20 +117,21 @@ unless opts[:install].empty?
   plans_to_execute = plans
 end
 
-def run(plan,opts,secrets,parm)
-  debug = opts[:debug] ? '--debug' : ' '
-  cmd = "bolt plan run #{plan} #{debug} --concurrency 10 --user #{opts[:user]} --password xxxxxx --targets #{opts[:target]} #{parm}"
-  puts "#{cmd}"
-  cmd_to_execute = cmd.sub('xxxxxx', secrets.retrieve(opts[:user]))
-  system(cmd_to_execute) unless opts[:dry]
-  puts "Done: #{plan}"  unless opts[:dry]
-end
+
 
 if opts[:all]
   plans_available.delete('pipertest::clean_repo')
   plans_to_execute = plans_available
 end
 
+def run(plan,opts,secrets,parm)
+  debug = opts[:debug] ? '--debug' : ' '
+  cmd = "bolt plan run #{plan} #{debug} --user #{opts[:user]} --password xxxxxx --targets #{opts[:target]} #{parm}"
+  puts "#{cmd}"
+  cmd_to_execute = cmd.sub('xxxxxx', secrets.retrieve(opts[:user]))
+  system(cmd_to_execute) unless opts[:dry]
+  puts "Done: #{plan}"  unless opts[:dry]
+end
 
 unless plans_to_execute.empty?
   if opts[:xceptJenkins]

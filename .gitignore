@@ -1,9 +1,13 @@
 .DS_Store
-/modules/*
+/.modules/*
 .idea
 /.resource_types/*
 Gemfile.lock
+Puppetfile
 *.iml
 *.log
 /downloads/
 /hiera-data/common.yaml
+/.plan_cache.json
+/.rerun.json
+/.plugin_cache.json
