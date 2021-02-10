@@ -1,7 +1,9 @@
 version: 5
 hierarchy:
-  - name: Common
-    path: common.yaml
+  - name: "Common Data"
+    path: "common.yaml"
+  - name: "Environment"
+    path: "environment/%{::group}.yaml"
 defaults:
   data_hash: yaml_data
-  datadir: hiera-data
+  datadir: /Users/chhex/git/patchserver/patchserver-setup-hiera/data
