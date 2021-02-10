@@ -8,6 +8,10 @@ groups:
 vars:
   # Global configuration for all targets
   admin_user_email : # TODO
+  hiera_data_repo_path : /Users/chhex/git/patchserver/patchserver-setup-hiera/data
+  cvs_user: svcCvsClient
+  install_ssh_user: # TODO (che, 07.1)  -> apg_install
+
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
@@ -18,7 +22,6 @@ vars:
   db_patch_repo: dbpatch-test/
   patch_db_folder: /var/opt/apg-patch-service-server/db/
   pipeline_error_mail_to:  4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch]
-  pipeline_mail_env: JENKINS-TEST
   pipeline_mail_from: 5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms
   releases_patch_repo: releases-test/
   zip_dist_repo: zip-dist-test

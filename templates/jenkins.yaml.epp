@@ -69,7 +69,7 @@ jenkins:
       - key: "ARTIFACTORY_SERVER_ID"
         value: "artifactory4t4apgsga"
       - key: "CVS_ROOT"
-        value: ":ext:<%= $jenkinsuser %>@cvs-t.apgsga.ch:/var/local/cvs/root"
+        value: ":ext:<%= $cvs_user %>@cvs-t.apgsga.ch:/var/local/cvs/root"
       - key: "CVS_RSH"
         value: "ssh"
       - key: "DB_PATCH_REPO"

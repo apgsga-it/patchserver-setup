@@ -60,12 +60,15 @@ plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'pipe
 ## Needs to run before jenkins account creations
 plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::piper_service_account_create')
 plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'piper::jenkins_account_create')
-plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::jenkins_dirs_create')
+plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::accounts_sshkeys')
+plans_installation_order << OpenStruct.new('install_order' => 13, 'name' => 'piper::jenkins_dirs_create')
 plans_installation_order << OpenStruct.new('install_order' => 20, 'name' => 'piper::jenkins_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 30, 'name' => 'piper::jenkins_create_jobs')
 plans_installation_order << OpenStruct.new('install_order' => 40, 'name' => 'piper::piper_service_yum_repo')
 plans_installation_order << OpenStruct.new('install_order' => 42, 'name' => 'piper::piper_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 43, 'name' => 'piper::piper_service_properties')
+plans_installation_order << OpenStruct.new('install_order' => 44, 'name' => 'piper::apscli_remote_test_config')
+
 
 plans_to_execute = []
 show_output = `bolt plan show`

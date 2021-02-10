@@ -13,7 +13,6 @@ plan piper::piper_service_account_create (
         password => '$1$7odv7BNP$yxQKgUXRd2MIFY5Clc7lf1',
 
       }
-      ssh_keygen { $user: }
       ssh::config_entry { $user:
         host  => '*',
         ensure => present,
