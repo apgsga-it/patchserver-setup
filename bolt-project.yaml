@@ -1,0 +1,47 @@
+# bolt-project.yaml
+apply-settings:
+  evaltrace: true
+  show_diff: true
+  trace: true
+color: true
+compile-concurrency: 5
+concurrency: 50
+disable-warnings:
+  - cli_overrides
+  - unknown_group_keys
+format: rainbow
+log:
+  console:
+    level: error
+modulepath:
+  - "~/.puppetlabs/bolt/modules"
+  - "~/.puppetlabs/bolt/site-modules"
+modules:
+  - puppetlabs-stdlib
+  - puppetlabs-java
+  - puppet-archive
+  - puppet-jenkins
+  - puppet-zypprepo
+  - camptocamp-systemd
+  - puppetlabs-transition
+  - rehan-git
+  - puppet-yum
+  - jdowning-rbenv
+  - puppetlabs-ruby
+  - puppet-ssh_keygen
+  - puppetlabs-accounts
+  - rehan-wget
+  - ghoneycutt-ssh
+  - puppetlabs-concat
+  - encore-inventory_utils
+  - puppetlabs-facts
+name: piper
+plugin-hooks:
+  puppet_library:
+    plugin: puppet_agent
+    _run_as: root
+plugins:
+  pkcs7:
+    keysize: 1024
+save-rerun: false
+spinner: true

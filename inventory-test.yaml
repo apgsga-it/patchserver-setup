@@ -3,6 +3,8 @@ targets:
   - appl-patch.apgsga.ch
 config:
   transport: ssh
+  ssh:
+    run-as: root
 vars:
  # Local Test Vm specific configuration properties
   piper_bind_address:  localhost

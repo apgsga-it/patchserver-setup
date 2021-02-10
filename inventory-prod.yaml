@@ -3,6 +3,8 @@ targets:
   - appl-patch.apgsga.ch
 config:
   transport: ssh
+  ssh:
+    run-as: root
 vars:
   admin_user_email : it.architektur@apgsga.ch
   piper_bind_address:  localhost # TODO verify
