@@ -20,6 +20,8 @@ vars:
   yum_repo: multiservice_yumdev
   pipeline_mail_env: JENKINS-LOCAL
   number_jenkins_executors: 10
+facts:
+  environment: development
 
 # For Testing , see ./patchserver-tests-setup.rb
 testapps:

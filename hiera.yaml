@@ -3,7 +3,8 @@ hierarchy:
   - name: "Common Data"
     path: "common.yaml"
   - name: "Environment"
-    path: "environment/%{::group}.yaml"
+    path: "environment/%{facts.environment}/config.yaml"
 defaults:
   data_hash: yaml_data
   datadir: /Users/chhex/git/patchserver/patchserver-setup-hiera/data
+

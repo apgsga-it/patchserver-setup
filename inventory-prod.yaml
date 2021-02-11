@@ -20,3 +20,5 @@ vars:
   yum_repo: multiservice_yumprod
   pipeline_mail_env: JENKINS-PROD
   number_jenkins_executors: 12
+facts:
+  environment: production

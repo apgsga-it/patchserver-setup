@@ -21,3 +21,5 @@ vars:
   pipeline_mail_env: JENKINS-TEST
   number_jenkins_executors: 12
 
+facts:
+  environment: integration

@@ -26,28 +26,28 @@ plan piper::accounts_sshkeys (
       }
       file { $jenkins_public:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/${lookup('jenkins::ssh::path::public')}"),
+        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('jenkins::ssh::path::public')}"),
         owner => $jenkins_user,
         group => $jenkins_user,
         mode => '0644',
       }
       file { $jenkins_private:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/${lookup('jenkins::ssh::path::private')}"),
+        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('jenkins::ssh::path::private')}"),
         owner => $jenkins_user,
         group => $jenkins_user,
         mode => '0600',
       }
       file { $piper_public:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/${lookup('piper::ssh::path::public')}"),
+        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('piper::ssh::path::public')}"),
         owner => $piper_user,
         group => $piper_user,
         mode => '0644',
       }
       file { $piper_private:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/${lookup('piper::ssh::path::private')}"),
+        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('piper::ssh::path::private')}"),
         owner => $piper_user,
         group => $piper_user,
         mode => '0600',
