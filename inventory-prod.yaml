@@ -19,3 +19,4 @@ vars:
   cm_db_piper_pw: cm_example_user_pw # TODO  TODO (che, 10.2)  -> hiera?
   yum_repo: multiservice_yumprod
   pipeline_mail_env: JENKINS-PROD
+  number_jenkins_executors: 12

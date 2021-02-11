@@ -19,6 +19,7 @@ vars:
   cm_db_piper_pw: cm_example_user_pw
   yum_repo: multiservice_yumdev
   pipeline_mail_env: JENKINS-LOCAL
+  number_jenkins_executors: 10
 
 # For Testing , see ./patchserver-tests-setup.rb
 testapps:

@@ -114,7 +114,7 @@ jenkins:
   mode: NORMAL
   myViewsTabBar: "standard"
   nodes:
-  numExecutors: 7
+  numExecutors: <%= $number_jenkins_executors %>
   primaryView:
     all:
       name: "all"

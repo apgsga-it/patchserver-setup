@@ -19,4 +19,5 @@ vars:
   cm_db_piper_pw: cm_example_user_pw
   yum_repo: multiservice_yumdev
   pipeline_mail_env: JENKINS-TEST
+  number_jenkins_executors: 12
 
