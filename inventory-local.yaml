@@ -7,6 +7,8 @@ config:
     run-as: root
 vars:
  # Local Test Vm specific configuration properties
+  install_ssh_user: apg_install
+  install_ssh_pw: apg_install
   piper_bind_address:  # empty for local testing
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMock

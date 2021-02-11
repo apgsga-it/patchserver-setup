@@ -1,14 +1,14 @@
 {
   "targetInstances": [
     {
-      "name": "DEV-CHPI211",
-      "services": [
-        {
-          "installationHost": "dev-chpi211.apgsga.ch",
-          "serviceName": "it21-db",
-          "serviceType": "oracle-db"
-        },
-        {
+        "name": "DEV-CHPI211",
+        "services": [
+          {
+            "installationHost": "dev-chpi211.apgsga.ch",
+            "serviceName": "it21-db",
+            "serviceType": "oracle-db"
+          },
+          {
           "installationHost": "dev-ds.apgsga.ch",
           "serviceName": "ds-db",
           "serviceType": "oracle-db"

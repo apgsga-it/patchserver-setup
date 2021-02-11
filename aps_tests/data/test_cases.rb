@@ -136,8 +136,7 @@ module TestCases
                         .version("1.0.1.DEV-ADMIN-UIMIG-SNAPSHOT").build()
                     )).build()
                 ))
-        patch.build().
-        end
+        patch.build()
     end
   end
 

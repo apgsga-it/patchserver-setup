@@ -25,10 +25,7 @@ Piper see the [Github Repo]() .
 
 ### Set-up Bolt Hiera Config for Passwords
 
-The initial hiera configuration file
-[common.yaml.initial](./hiera-data/common.yaml.initial) in the directory
-[hiera-data](./hiera-data) needs to be copied to the same directory to
-common.yaml. This later file is ignored by git.
+TODO
 
 In this file the values with TOBECHANGED needs to be adopted accordingly
 .

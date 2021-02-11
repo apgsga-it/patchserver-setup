@@ -68,6 +68,7 @@ plans_installation_order << OpenStruct.new('install_order' => 40, 'name' => 'pip
 plans_installation_order << OpenStruct.new('install_order' => 42, 'name' => 'piper::piper_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 43, 'name' => 'piper::piper_service_properties')
 plans_installation_order << OpenStruct.new('install_order' => 44, 'name' => 'piper::apscli_remote_test_config')
+plans_installation_order << OpenStruct.new('install_order' => 44, 'name' => 'piper::gradle_cred_setup')
 
 
 plans_to_execute = []
