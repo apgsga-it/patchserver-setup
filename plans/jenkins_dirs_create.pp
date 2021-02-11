@@ -17,7 +17,7 @@ plan piper::jenkins_dirs_create (
   apply($targets) {
     # apg-patch-service-server user on target
     $patch_rsa_target = file::read("${targetall.vars[hiera_data_repo_path]}/${lookup('piper::ssh::path::public')}")
-    $ssh_keys = "${user_rsa_target}\n${user_rsa_local}\n${patch_rsa_target}"
+    $ssh_keys = "${user_rsa_target}\n${user_rsa_local}"
     file { $temp_dir:
       ensure => directory,
       owner => $jenkins_user,
@@ -38,7 +38,7 @@ plan piper::jenkins_dirs_create (
     }
     file { '/etc/jenkins/casc/jenkins.yaml':
       ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${user}" , 'authorized_keys' => $ssh_keys }),
+      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${user}" , 'authorized_keys' => $ssh_keys,  'piper_authorized_keys' => $patch_rsa_target }),
       owner => $jenkins_user,
       group => $jenkins_user,
       mode => '0644',

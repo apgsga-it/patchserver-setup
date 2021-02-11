@@ -139,6 +139,17 @@ jenkins:
             providerId: "default"
         - sshPublicKey:
             authorizedKeys:  "<%= $authorized_keys %>"
+      - id: "<%= $piper_jenkins_user %>"
+        name: "<%= $piper_jenkins_user %>"
+        password: "<%= $piper_jenkins_user %>"
+        properties:
+        - "apiToken"
+        - mailer:
+            emailAddress: "<%= $admin_user_email %>"
+        - preferredProvider:
+            providerId: "default"
+        - sshPublicKey:
+            authorizedKeys:  "<%= $piper_authorized_keys %>"
   slaveAgentPort: 0
   updateCenter:
     sites:

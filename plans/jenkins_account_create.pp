@@ -3,6 +3,7 @@ plan piper::jenkins_account_create (
 ) {
   $targets.apply_prep
   $user = "jenkins"
+  $ssh_dir = "/home/${user}/.ssh"
   $maven_dir = "/home/${user}/.m2"
   $applyResult = apply($targets) {
       accounts::user { $user:

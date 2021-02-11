@@ -12,6 +12,7 @@ vars:
   cvs_user: svcCvsClient
   install_ssh_user_key: deployUser
   install_ssh_pw_key: deployPw
+  piper_jenkins_user:  cmPiper
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
