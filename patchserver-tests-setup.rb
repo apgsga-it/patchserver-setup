@@ -50,19 +50,13 @@ def help(opts)
   puts "This script initializes Tests for Piper in the Target VM as defined in the Bolt Puppet Inventory Files : inventory.yaml and inventory-local.yaml\n\n" \
        "Preconditions: \n" \
   "- Jenkins is running on the Target host and ssh access works for the Jenkins Cli\n" \
-  "- The test modules as specified in inventory-local.yaml need to be in cvs.apgsga.ch\n\n" \
-  "Functionality as options: \n" \
-  "- Deletes mavenLocal and the gradle Cache on the the target host \n" \
-  "- Empties the Artifactory according the Maven Profile settings \n" \
-  "- Creates the Testjobs according to inventory-local.yaml  \n" \
-  "- Deletes all Testjobs according to inventory-local.yaml\n" \
-  "- Runs all Testjobs according to  inventory-local.yaml \n\n"
+  "- The test modules as specified in inventory-local.yaml need to be in cvs.apgsga.ch\n\n"
   puts opts
 end
 
 opts = Slop.parse do |o|
   o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
-  o.string '-au', '--artifactoryAdmin', 'User for Artifactory operations, if not present eq -u user', required: false
+  o.string '-au', '--artAdmin', 'User for Artifactory operations, if not present defaults to the -u user', required: false
   o.bool '-y', '--dry', 'Dry run, the effective and rsspective commands will not be executed, default: false', default: false
   o.bool '-cc', '--cleanRepoCaches', 'Cleans Maven and Gradle Cache, default: false', default: false
   o.bool '-cm', '--cleanMavenCache', 'Cleans Maven, default: false', default: false
