@@ -27,9 +27,20 @@ def parse_show_plans_output(output,opts)
   plans_available
 end
 
+def git_apg_clone(user, repo, target_dir)
+  if  File.exist?(target_dir)
+    FileUtils.remove_dir(target_dir, force = true)
+  end
+  gitcmd = "git clone #{user}@git.apgsga.ch:/var/git/repos/#{repo}  #{target_dir}"
+  puts "Executeing : #{gitcmd} "
+  system("#{gitcmd}")
+  puts "Done."
+end
+
 opts = Slop.parse do |o|
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
-  o.bool '-s', '--skipClone', 'Skip cloning of  gradle home locally ', default: false
+  o.bool '-sgc', '--skipGradleClone', 'Skip cloning of  gradle home git repository ', default: false
+  o.bool '-shc', '--skipHieraClone', 'Skip cloning of hiera git repository ', default: false
   o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
   o.string '-t', '--target', 'One of the Puppet inventory Files predefined Target group names, which will be executed. Values: local,test and prod', default: 'local'
   o.separator ''
@@ -46,6 +57,13 @@ opts = Slop.parse do |o|
   end
 end
 targets = %w[local test prod]
+plans_pre_jenkins = []
+plans_pre_jenkins << 'piper::cvs_install'
+plans_pre_jenkins << 'piper::git_install'
+plans_pre_jenkins << 'piper::wget_install'
+plans_pre_jenkins << 'piper::java_install'
+plans_pre_jenkins << 'piper::gradle_install'
+plans_pre_jenkins << 'piper::maven_install'
 plans_with_user_param = []
 plans_with_user_param << 'piper::jenkins_create_jobs'
 plans_with_user_param << 'piper::jenkins_dirs_create'
@@ -83,21 +101,16 @@ puts "Running target group with name : #{opts[:target]} "
 secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
 secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
 if !opts[:skipClone]
-  bolt_inventory_file = File.join(File.dirname(__FILE__), 'inventory.yaml')
-  inventory = YAML.load_file(bolt_inventory_file)
-  temp_dir = inventory['vars']['temp_gradle']
-  if  File.exist?(temp_dir)
-    FileUtils.remove_dir(temp_dir, force = true)
-  end
-  system("git clone #{opts[:user]}@git.apgsga.ch:/var/git/repos/apg-gradle-properties.git #{temp_dir}")
+  git_apg_clone(opts[:user], "apg-gradle-properties.git", "downloads/gradlehome")
 end
-if !opts[:install].empty? and opts[:all]
-  puts 'Specify either  -a  or -i option, but not both. -a being all plans and -i being a filter on the available plan names '
+git_apg_clone(opts[:user],"patchserver-setup-hiera","downloads/hiera")
+if !opts[:install].empty? and (opts[:all] or  opts[:xceptJenkins])
+  puts 'Specify either  -a or -x  or -i option, a being all plans, x plans independent of jenkins, i specific plans'
   puts opts
   exit
 end
-if !opts[:all] and opts[:xceptJenkins]
-  puts 'The x , resp. xceptJenkins option only makes sense with the --all options'
+if opts[:all] and opts[:xceptJenkins]
+  puts 'Choose either the a or x option , a being all plans , x plans which are the pre condition for the jenkins plans'
   puts opts
   exit
 end
@@ -109,7 +122,7 @@ if opts[:list]
   puts 'The ordering of the plan execution will be respected with the --all option'
   puts 'With the -i option, the order of the input defines the execution order of the plans'
 end
-if opts[:install].empty? and !opts[:all]
+if opts[:install].empty? and !opts[:all] and !opts[:xceptJenkins]
   exit
 end
 
@@ -137,16 +150,11 @@ def run(plan,opts,secrets,parm)
   puts "Done: #{plan}"  unless opts[:dry]
 end
 
+if opts[:xceptJenkins]
+  plans_to_execute = plans_pre_jenkins
+end
+
 unless plans_to_execute.empty?
-  if opts[:xceptJenkins]
-    plans_to_execute.delete('piper::jenkins_service_install')
-    plans_to_execute.delete('piper::jenkins_account_create')
-    plans_to_execute.delete('piper::jenkins_dirs_create')
-    plans_to_execute.delete('piper::piper_service_install')
-    plans_to_execute.delete('piper::piper_service_account_create')
-    plans_to_execute.delete('piper::piper_service_properties')
-    plans_to_execute.delete('piper::jenkins_create_jobs')
-  end
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
   sorted_plans.each do |plan|
     if plans_to_execute.include? plan.name

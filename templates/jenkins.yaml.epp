@@ -150,6 +150,17 @@ jenkins:
             providerId: "default"
         - sshPublicKey:
             authorizedKeys:  "<%= $piper_authorized_keys %>"
+      <% $jenkins_users::name.each |$name| { -%>
+        - id: "<%= $name %>"
+          name: "<%= $name %>"
+          password: "<%= $name %>"
+          properties:
+          - "apiToken"
+          - mailer:
+            emailAddress: "<%= $admin_user_email %>"
+          - preferredProvider:
+              providerId: "default"
+      <% } -%>
   slaveAgentPort: 0
   updateCenter:
     sites:

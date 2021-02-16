@@ -13,6 +13,10 @@ vars:
   install_ssh_user_key: deployUser
   install_ssh_pw_key: deployPw
   piper_jenkins_user:  cmPiper
+  jenikins_users:
+    - name: jhe
+    - name: uge
+    - name: che
   # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
   maven_profile: artifactory-che
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
@@ -36,5 +40,4 @@ vars:
   jenkins_install_pipeline_script_path: src/main/groovy/installPipeline.groovy
   jenkins_assemble_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
   github_credential_id: apgsga-jenkins
-  temp_gradle: /tmp/gradlehome
   github_jenkins_version: master

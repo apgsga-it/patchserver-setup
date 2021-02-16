@@ -12,23 +12,41 @@ Piper see the [Github Repo]() .
 2. User / password with sudo rights for the target machine running. This
    user should also have a public rsa key in the default location.
 3. A ssh public key in the user home on the host machine
-4. Configuration of Bolt Hiera for passwords use , see seperate
-   description below
-5. Ruby installed on the Host machine, see [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby),
-6. The target host added as ssh known host to the user, which the
-   installation will be done.
-7. 
-   Bolt installed on the Host machine. For Bolt installation see the
+4. Ruby installed on the Host machine, see
+   [Apg Wiki](https://intranet.apgsga.ch/display/itwi/Ruby)
+5. The target host added as ssh known host to the user, which the
+   installation will be done .
+6. Bolt installed on the Host machine. For Bolt installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-8. The necessary Puppet modules are installed locally:  `bolt puppetfile
+7. The necessary Puppet modules are installed locally:  `bolt puppetfile
    install` in the root directory of the project
 
-### Set-up Bolt Hiera Config for Passwords
+## Before running the Setup
 
-TODO
+After cloneing this repo from Github :
+https://github.com/apgsga-it/patchserver-setup, run:
 
-In this file the values with TOBECHANGED needs to be adopted accordingly
-.
+`bolt module install`
+
+This installs the necessary bolt modules.
+
+Then run:
+
+`bundle install `
+
+This installs the necessary Ruby gems for the ruby scripts.
+
+## Configuration Organisation
+
+The Installation process supports 3 enviroment target type: development, integration and production.
+The development is intended for installation in a local vm. Integration and production
+for centralized servers.
+
+The Parameters, which drive the Puppet Installation are organized into inventory files and hiera data.
+
+### Inventory Files
+
+
 
 ## Running the Setup
 
