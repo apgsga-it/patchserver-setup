@@ -10,6 +10,7 @@ vars:
   piper_bind_address:  localhost
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMat
+
   install_ssh_user: apg_install # TODO (che, 11.2 ) Needs to be adopted
   install_ssh_pw: apg_install # TODO (che, 11.2 ) Needs to be adopted
   artifactory_repo: test-repo

@@ -1,2 +1,0 @@
-yum::user:name: ops-test  # Artifactory User for yum
-yum::user:pw: TOBECHANGED  # Artifactory User Password

@@ -7,4 +7,3 @@ hierarchy:
 defaults:
   data_hash: yaml_data
   datadir: /tmp/patchserver-setup/hiera
-
