@@ -6,5 +6,5 @@ hierarchy:
     path: "environment/%{facts.environment}/config.yaml"
 defaults:
   data_hash: yaml_data
-  datadir: downloads/hiera
+  datadir: /tmp/patchserver-setup/hiera
 

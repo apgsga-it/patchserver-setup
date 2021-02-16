@@ -2,7 +2,7 @@ plan piper::jenkins_service_install(
   TargetSpec $targets
 ) {
   $targets.apply_prep
-su
+  $targetall = get_targets('all')[0]
   run_command('firewall-cmd --permanent --add-port=8080/tcp', $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command('firewall-cmd --reload', $targets, '_catch_errors' => true, '_run_as' => 'root')
   run_command("firewall-cmd --permanent --add-port=${targetall.vars[jenkins_cli_port]}/tcp", $targets, '_catch_errors' => true, '_run_as' => 'root')

@@ -27,30 +27,58 @@ def parse_show_plans_output(output,opts)
   plans_available
 end
 
-def git_apg_clone(user, repo, target_dir)
-  if  File.exist?(target_dir)
-    FileUtils.remove_dir(target_dir, force = true)
+TEMP_DIR_SETUP = "/tmp/patchserver-setup"
+
+def create_new_temp_dir(opts)
+  puts "Creating new tempory directory #{TEMP_DIR_SETUP}"
+  if opts[:dry]
+    "Nope , doing nothing, dry run"
+    return
   end
-  gitcmd = "git clone #{user}@git.apgsga.ch:/var/git/repos/#{repo}  #{target_dir}"
+  if  File.exist?(TEMP_DIR_SETUP)
+    FileUtils.remove_dir(TEMP_DIR_SETUP, force = true)
+  end
+  FileUtils.mkdir_p(TEMP_DIR_SETUP)
+  puts "Done."
+end
+
+def git_apg_clone(opts, repo, target_dir)
+  gitcmd = "git clone #{opts[:user]}@git.apgsga.ch:/var/git/repos/#{repo}  #{TEMP_DIR_SETUP}/#{target_dir}"
   puts "Executeing : #{gitcmd} "
+  if opts[:dry]
+    "Nope , doing nothing, dry run"
+    return
+  end
   system("#{gitcmd}")
   puts "Done."
 end
 
+
+def run(plan,opts,secrets,parm)
+  debug = opts[:debug] ? '--debug' : ' '
+  cmd = "bolt plan run #{plan} #{debug} --user #{opts[:user]} --password xxxxxx --targets #{opts[:target]} #{parm}"
+  puts "#{cmd}"
+  cmd_to_execute = cmd.sub('xxxxxx', secrets.retrieve(opts[:user]))
+  system(cmd_to_execute) unless opts[:dry]
+  puts "Done: #{plan}"  unless opts[:dry]
+end
+
+
 opts = Slop.parse do |o|
-  o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
-  o.bool '-sgc', '--skipGradleClone', 'Skip cloning of  gradle home git repository ', default: false
-  o.bool '-shc', '--skipHieraClone', 'Skip cloning of hiera git repository ', default: false
   o.string '-u', '--user', 'SSH Sudo Username to access destination VM', required: true
-  o.string '-t', '--target', 'One of the Puppet inventory Files predefined Target group names, which will be executed. Values: local,test and prod', default: 'local'
+  o.string '-t', '--target', 'One of the Puppet inventory Files predefined Target group names, which will be executed. Values: local,test and prod. Defaults to local', default: 'local'
+  o.bool '-a', '--all', 'Execute all Bolt plans'
+  o.bool '-x', '--xceptJenkins', 'Execute Plans only, which are pre-condition for the Piper related plans ', default: false
+  o.bool '-aa', '--allPiper', 'Execute Plans only, which are related to Piper ', default: false
+  o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.separator ''
   o.separator 'other options:'
-  o.bool '-l', '--list', 'List all Installation Bolt plans '
-  o.bool '-a', '--all', 'Execute all Bolt plans'
-  o.bool '-x', '--xceptJenkins', 'Execute all Bolt plans', default: false
+  o.bool '-l', '--list', 'List all available Puppet plans '
   o.bool '--dry', '--dry-run','Only print all Bolt plans commands', default: false
-  o.bool '--debug', 'Enable bolt debug optin', default: false
-  o.bool '--jsonOutput', 'Bolt output format json', default: false
+  o.bool '-sgc', '--skipGradleClone', 'Skip cloning of  gradle home git repository into downloads ', default: false
+  o.bool '-shc', '--skipHieraClone', 'Skip cloning of hiera git repository into downloads', default: false
+  o.bool '--debug', 'Enable bolt debug option', default: false
+  o.bool '--jsonOutput', 'Bolt output format json, instead of rainbow', default: false
   o.on '-h', '--help' do
     puts o
     exit
@@ -100,17 +128,20 @@ end
 puts "Running target group with name : #{opts[:target]} "
 secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
 secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
-if !opts[:skipClone]
-  git_apg_clone(opts[:user], "apg-gradle-properties.git", "downloads/gradlehome")
+create_new_temp_dir(opts)
+if !opts[:skipGradleClone]
+  git_apg_clone(opts, "apg-gradle-properties.git", "gradlehome")
 end
-git_apg_clone(opts[:user],"patchserver-setup-hiera","downloads/hiera")
-if !opts[:install].empty? and (opts[:all] or  opts[:xceptJenkins])
-  puts 'Specify either  -a or -x  or -i option, a being all plans, x plans independent of jenkins, i specific plans'
+if !opts[:skipHieraClone]
+  git_apg_clone(opts,"patchserver-setup-hiera","hiera")
+end
+if !opts[:install].empty? and (opts[:all] or  opts[:xceptJenkins]  or opts[:allPiper])
+  puts 'Specify either  -a, -x , -aa or -i option'
   puts opts
   exit
 end
-if opts[:all] and opts[:xceptJenkins]
-  puts 'Choose either the a or x option , a being all plans , x plans which are the pre condition for the jenkins plans'
+if opts[:all] and (opts[:xceptJenkins] or opts[:allPiper])
+  puts 'Choose either the -a, -x or -aa option'
   puts opts
   exit
 end
@@ -119,10 +150,10 @@ if opts[:list]
   plans_available.each do
     | plan | puts plan
   end
-  puts 'The ordering of the plan execution will be respected with the --all option'
+  puts 'The ordering of the plan execution will be respected with the -a, -x or -aa option'
   puts 'With the -i option, the order of the input defines the execution order of the plans'
 end
-if opts[:install].empty? and !opts[:all] and !opts[:xceptJenkins]
+if opts[:install].empty? and !opts[:all] and !opts[:xceptJenkins] and !opts[:allPiper]
   exit
 end
 
@@ -134,25 +165,18 @@ unless opts[:install].empty?
   plans_to_execute = plans
 end
 
-
-
 if opts[:all]
-  plans_available.delete('pipertest::clean_repo')
   plans_to_execute = plans_available
 end
 
-def run(plan,opts,secrets,parm)
-  debug = opts[:debug] ? '--debug' : ' '
-  cmd = "bolt plan run #{plan} #{debug} --user #{opts[:user]} --password xxxxxx --targets #{opts[:target]} #{parm}"
-  puts "#{cmd}"
-  cmd_to_execute = cmd.sub('xxxxxx', secrets.retrieve(opts[:user]))
-  system(cmd_to_execute) unless opts[:dry]
-  puts "Done: #{plan}"  unless opts[:dry]
+if opts[:allPiper]
+  plans_to_execute = plans_available - plans_pre_jenkins
 end
 
 if opts[:xceptJenkins]
   plans_to_execute = plans_pre_jenkins
 end
+
 
 unless plans_to_execute.empty?
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
