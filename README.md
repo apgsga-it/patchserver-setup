@@ -21,6 +21,8 @@ Piper see the [Github Repo]() .
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
 7. The necessary Puppet modules are installed locally:  `bolt puppetfile
    install` in the root directory of the project
+8. Tested Host Enviroments: Macos Big Sur, WSL Ubuntu 18.04 Lts, Windows
+   Native will probably not work
 
 ## Before running the Setup
 

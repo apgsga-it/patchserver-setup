@@ -11,11 +11,19 @@ plan piper::piper_service_properties (
       }
      $timestamp = Timestamp.new().strftime('%Y-%m-%dT%H:%M:%S%:z')
      $targetall = get_targets('all')[0]
+     $artifactory_repo_default = $targetall.vars[artifactory_repo_base]
+     if $targetall.facts[environment] == "development" {
+        $artifactory_repo = "dev${user}-${artifactory_repo_default}"
+      } elsif $targetall.facts[environment] == "integration"{
+        $artifactory_repo = "test-${artifactory_repo_default}"
+      } else {
+        $artifactory_repo = "${artifactory_repo_default}"
+      }
      ['application', 'ops'].each  |$type| {
           $result = download_file("/etc/opt/apg-patch-service-server/${type}_properties.initial", 'piper', $targets)
           out::message($result)
           $applyResult = apply($targets) {
-            $content = epp($result.first['path'], { 'piper_cvs_user' => "${targetall.vars[cvs_user]}", 'jenkins_ssh_user' => "${targetall.vars[piper_jenkins_user]}" })
+            $content = epp($result.first['path'], { 'piper_cvs_user' => "${targetall.vars[cvs_user]}", 'jenkins_ssh_user' => "${targetall.vars[piper_jenkins_user]}", 'artifactory_repo' => $artifactory_repo })
             file { "/etc/opt/apg-patch-service-server/${type}.properties":
               ensure  => present,
               backup => ".puppet.bk.${timestamp}",
