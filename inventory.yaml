@@ -8,6 +8,8 @@ groups:
 vars:
   # Global configuration for all targets
   admin_user_email : # TODO
+  maven_profile_base: artifactory
+  artifactory_repo_base: repo
   cvs_user: svcCvsClient
   install_ssh_user_key: deployUser
   install_ssh_pw_key: deployPw
@@ -39,6 +41,3 @@ vars:
   jenikins_users:
       - name: jhe
       - name: uge
-
-  # TODO (che, 18.11) Move remaining developer specific properties to specific target group, potential impact on ruby test installation
-  maven_profile: artifactory-che
