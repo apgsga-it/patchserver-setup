@@ -155,6 +155,77 @@ jenkins:
     sites:
     - id: "default"
       url: "http://updates.jenkins-ci.org/update-center.json"
+  views:
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        includeRegex: "^(?!PatchJobBuilder)^Patch.*"
+        name: "Patches"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        includeRegex: ".*CHEI211"
+        name: "TargetE1"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        name: "TargetOthers"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        includeRegex: ".*CHPI211"
+        name: "TargetP1"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        includeRegex: ".*CHTI211"
+        name: "TargetT1"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
+        jobNames:
+        - "GenericPipelineJobBuilder"
+        - "PatchJobBuilder"
+        name: "Utility"
+    - all:
+        name: "all"./
+  viewsTabBar: "standard"
 security:
   apiToken:
     creationOfLegacyTokenEnabled: false
