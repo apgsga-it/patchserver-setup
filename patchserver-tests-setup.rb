@@ -98,7 +98,8 @@ end
 
 # Main line
 secrets = Secrets::Store.new("Patchservertestsetup-target-local",86400)
-secrets.prompt_only_when_not_exists(opts[:user], "Please enter pw for user: #{opts[:user]} for local vm test and hit return:",opts[:force])
+secrets.prompt_only_when_not_exists(opts[:user], "Please enter pw for user: #{opts[:user]} for local vm test and hit return:     ",opts[:force])
+puts " "
 puts 'Dry run! No changes will be made' if opts[:dry]
 test_apps = Jenkins::TestApps.new(opts[:user],secrets, inventory_file, inventory_local_file)
 clean_maven_cache(test_apps, opts) if opts[:cleanRepoCaches] or  opts[:cleanAll] or  opts[:cleanMavenCache]
