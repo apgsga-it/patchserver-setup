@@ -123,7 +123,7 @@ plans_to_execute = []
 puts "Running target group with name : #{opts[:target]} "
 secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
 secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:    ")
-puts "\nRecieved password, password wasn't validated, login may fail later with the executing of the Plans (closed stream)"
+puts "\nRecieved password, password wasn't validated, login may fail later with the Execution of the Plans (closed stream)"
 spinner = TTY::Spinner.new("[:spinner] :title",format: 'classic', hide_cursor: true)
 spinner.update(title: 'Loading available Piper Puppet Plans...')
 spinner.auto_spin
@@ -191,13 +191,18 @@ end
 unless plans_to_execute.empty?
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
   puts "The following plans will be executed in the order as listed: "
-  puts sorted_plans
+  sorted_plans.each do |plan|
+    if plans_to_execute.include? plan.name
+      puts "#{plan.name}"
+    end
+  end
+  puts "Running plans, dry: #{opts[:dry]}"
   sorted_plans.each do |plan|
     if plans_to_execute.include? plan.name
       parm = plans_with_user_param.include?(plan.name) ? " user=#{opts[:user]} " : ""
       run(plan.name,opts,secrets,parm)
     end
   end
-
+  puts "Running plans, dry: #{opts[:dry]} done."
 end
 
