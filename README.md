@@ -19,8 +19,6 @@ Piper see the [Github Repo]() .
 6. Bolt Version 3.0.0 installed on the Host machine. For Bolt
    installation see the
    [Puppet Site](https://puppet.com/docs/bolt/latest/bolt_installing.html)
-7. The necessary Puppet modules are installed locally:  `bolt puppetfile
-   install` in the root directory of the project
 8. Tested Host Enviroments: Macos Big Sur, WSL Ubuntu 18.04 Lts, Windows
    Native will probably not work
 
@@ -49,16 +47,20 @@ with:
 
 ## Project Organization
 
-The Installation process supports 3 environment target types:
-development, integration and production. The development is intended for
-installation in a local vm. Integration and production for centralized
-servers.
+The Installation process supports 3 **environment** target types:
+
+- development
+- integration
+- production
+
+development is intended for installation in a local vm.
+Integration and production for centralized servers.
 
 The [Puppet plans](plans) , are always run from the Setup script:
 [patchserver-setup.rb](patchserver-setup.rb) , see below for more
 details.
 
-The Parameters, which drive the Puppet Installation are organized into
+The **Parameters**, which drive the Puppet Installation are organized into
 inventory files, hiera data and command line parameters.
 
 And naturally the Bolt Project itself.
@@ -86,11 +88,12 @@ Bolt merges the respective contexts for a target group.
 
 ### Hiera Data
 
-Hiera Data is retrieved in the plan by specific lookup functions.  
-We generally store security sensitive data in Hiera.
+Hiera Data is retrieved in the plan by specific lookup functions. We
+generally store security sensitive data in Hiera.
 
-The Hiera data is kept in a separate Apg internal Git repository and is
-cloned into a project specific directory in /tmp upon
+The Hiera data is kept in a separate Apg internal Git repository
+git.apgsga.ch:/var/git/repos/patchserver-setup-hiera and is cloned into
+a project specific directory in /tmp/patchserver-setup/hiera upon
 starting the [patchserver-setup.rb](patchserver-setup.rb).
 
 Hiera Access is configured in the file [hiera.yaml](hiera.yaml):
@@ -100,6 +103,8 @@ Hiera Access is configured in the file [hiera.yaml](hiera.yaml):
 The Hiera Data Storage structure is a the moment as follows:
 
 ![Hiera Data](./images/hiera-data.png)
+
+see also git.apgsga.ch:/var/git/repos/patchserver-setup-hiera
 
 ### Bolt / Puppet
 
@@ -141,7 +146,6 @@ against the available plans.
 
 Options --dry: Only prints out what would be executed.
 
-
 ## Running the Setup
 
 Basically the Setup should be able to run unattended, after the Password
@@ -152,8 +156,8 @@ Possible problems:
 Target machine not available, either the ip address or host name in  
 one of the inventory files is wrong or network problems
 
-The Password is wrong, this leads to nasty error messages,  
-since the password is checked initially.
+The Password is wrong, this leads to nasty error messages (closed
+stream),since the password is not checked initially.
 
 A plan has an error.... hmmmmm
 
@@ -168,7 +172,7 @@ Typical usage scenario by example for user <che>
 `./patchserver-setup.rb -u che --target local -aa # Runs all Piper plans for target local`
 
 The setup will need depending between 10 - 20 min..... best go and drink
-a coffee and/or due some exercises ;-)
+a coffee and/or do some exercises ;-)
 
 ## Test Setup Scripts for initializing Tests on a Patchserver Target
 
@@ -244,11 +248,20 @@ The options can be combined
 
 If uncertain about the effects of the script best use the `--dry` option
 
+## Optimizing Startup time of JRuby Scripts
+
+See also https://github.com/jruby/jruby/wiki/Improving-startup-time
+
+Two options are useful:
+
+- Environment Variable : JRUBY_OPTS=--dev
+- Regenerate the JVM's shared class-data archive : java -Xshare:dump
+
 ## Open Points / Todos
 
-- [ ] Artifactory and Maven Profile by convention
+- [ ] Test user/password against Target ,before executing plans
 - [ ] Secrets/ Passwords : Heira Data encrypted
 - [ ] Hiera Files : Read with File gems
-- [ ] Additional Jenkins Users
+- [ ] Additional Jenkins Users (apg dev_ops)
 - [ ] Exclude local target specific plans for prod and test
 

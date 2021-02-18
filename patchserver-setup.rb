@@ -5,11 +5,13 @@ require 'yaml'
 require 'fileutils'
 require 'ostruct'
 require 'apgsecrets'
-require 'json'
+require 'tty-spinner'
+require 'tempfile'
 
 def parse_show_plans_output(output,opts)
   plans_available = []
   if opts[:jsonOutput]
+    require 'json'
     show_plans = JSON.parse(output)
     show_plans['plans'].each do |plan|
       if plan.first.start_with?("piper")
@@ -118,16 +120,24 @@ plans_installation_order << OpenStruct.new('install_order' => 45, 'name' => 'pip
 
 
 plans_to_execute = []
-show_output = `bolt plan show`
-plans_available = parse_show_plans_output(show_output,opts)
+puts "Running target group with name : #{opts[:target]} "
+secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
+secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:    ")
+puts "\nRecieved password, password wasn't validated, login may fail later with the executing of the Plans (closed stream)"
+spinner = TTY::Spinner.new("[:spinner] :title",format: 'classic', hide_cursor: true)
+spinner.update(title: 'Loading available Piper Puppet Plans...')
+spinner.auto_spin
+temp_file = Tempfile.new
+pid = spawn("bolt plan show > #{temp_file.path}")
+spinner.run "Done." do
+  Process.wait pid
+end
+plans_available = parse_show_plans_output(File.read(temp_file.path),opts)
 if !targets.include?(opts[:target])
   puts "Invalid target group name : #{opts[:target]}, please enter one of : #{targets.to_s} "
   puts opts
   exit
 end
-puts "Running target group with name : #{opts[:target]} "
-secrets = Secrets::Store.new("Patschserversetup-#{opts[:target]}",opts[:target] == 'local' ? 86400 : 7200)
-secrets.prompt_and_save(opts[:user], "Please enter pw for user: #{opts[:user]} on targets: #{opts[:target]} and hit return:")
 create_new_temp_dir(opts)
 if !opts[:skipGradleClone]
   git_apg_clone(opts, "apg-gradle-properties.git", "gradlehome")
@@ -180,6 +190,8 @@ end
 
 unless plans_to_execute.empty?
   sorted_plans = plans_installation_order.sort_by {|p| [p.install_order]}
+  puts "The following plans will be executed in the order as listed: "
+  puts sorted_plans
   sorted_plans.each do |plan|
     if plans_to_execute.include? plan.name
       parm = plans_with_user_param.include?(plan.name) ? " user=#{opts[:user]} " : ""

@@ -224,7 +224,7 @@ jenkins:
         - "PatchJobBuilder"
         name: "Utility"
     - all:
-        name: "all"./
+        name: "all"
   viewsTabBar: "standard"
 security:
   apiToken:

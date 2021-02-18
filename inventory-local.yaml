@@ -12,7 +12,6 @@ vars:
   piper_bind_address:  # empty for local testing
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMock
-  artifactory_repo: devche-repo
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   cm_db_piper_user: cm_example_user
