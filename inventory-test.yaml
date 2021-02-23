@@ -11,11 +11,11 @@ vars:
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMat
   install_ssh_user: apg_install # TODO (che, 11.2 ) Needs to be adopted
-  install_ssh_pw: apg_install # TODO (che, 11.2 ) Needs to be adopted
+  install_ssh_pw: <apg_install_pwd> # TODO (che, 11.2 ) Needs to be adopted
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
-  cm_db_piper_user: cm_example_user
-  cm_db_piper_pw: cm_example_user_pw
+  cm_db_piper_user: cm_installer
+  cm_db_piper_pw: <cm_installer_pwd>
   yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified
   pipeline_mail_env: JENKINS-TEST
   number_jenkins_executors: 12
