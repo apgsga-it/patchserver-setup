@@ -16,7 +16,7 @@ vars:
   cm_db_instance: chti212
   cm_db_piper_user: cm_example_user
   cm_db_piper_pw: cm_example_user_pw
-  yum_repo: multiservice_yumdev
+  yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified
   pipeline_mail_env: JENKINS-TEST
   number_jenkins_executors: 12
 
