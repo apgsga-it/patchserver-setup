@@ -6,4 +6,5 @@ source 'https://artifactory4t4apgsga.jfrog.io/artifactory/api/gems/apgGems' do
 end
 gem 'slop'
 gem 'facets'
-gem "tty-spinner"
+gem 'tty-spinner'
+gem 'hiera-eyaml'
