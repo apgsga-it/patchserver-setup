@@ -18,7 +18,7 @@ plan piper::jenkins_dirs_create (
   if $targetall.facts[environment] == "development"{
       $maven_profile = "${maven_profile_default}-${user}"
   } elsif $targetall.facts[environment] == "integration" {
-    $maven_profile = "${maven_profile_default}-TODO" # TODO (che, jhe 17.2) : What profile for Integration?
+    $maven_profile = "${maven_profile_default}-test" # TODO (che, jhe 17.2) : What profile for Integration?
   } else {
      $maven_profile = "${maven_profile_default}"
   }

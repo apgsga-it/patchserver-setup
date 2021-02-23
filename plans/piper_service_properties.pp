@@ -15,7 +15,7 @@ plan piper::piper_service_properties (
      if $targetall.facts[environment] == "development" {
         $artifactory_repo = "dev${user}-${artifactory_repo_default}"
       } elsif $targetall.facts[environment] == "integration"{
-        $artifactory_repo = "test-${artifactory_repo_default}"
+        $artifactory_repo = "${artifactory_repo_default}-test"
       } else {
         $artifactory_repo = "${artifactory_repo_default}"
       }
