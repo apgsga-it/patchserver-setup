@@ -7,13 +7,11 @@ config:
     run-as: root
 vars:
  # Local Test Vm specific configuration properties
-  piper_bind_address:  localhost
+  piper_bind_address:  localhost # TODO (che, 23.2) : needs to be verified
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMat
-
   install_ssh_user: apg_install # TODO (che, 11.2 ) Needs to be adopted
   install_ssh_pw: apg_install # TODO (che, 11.2 ) Needs to be adopted
-  artifactory_repo: test-repo
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   cm_db_piper_user: cm_example_user
