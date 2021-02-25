@@ -15,8 +15,6 @@ vars:
   install_ssh_pw_key: deployPw
   piper_jenkins_user:  cmPiper
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
-  artifactory_user: dev
-  artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
   db_patch_repo: dbpatch-test/

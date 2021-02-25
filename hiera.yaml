@@ -1,6 +1,6 @@
 version: 5
 defaults:
-  datadir: /tmp/hiera
+  datadir: /tmp/patchserver-setup/hiera
 hierarchy:
   - name: "Secret data: per Target environment"
     lookup_key: eyaml_lookup_key # eyaml backend
@@ -8,5 +8,5 @@ hierarchy:
       - "environment/%{facts.environment}/config.eyaml"
       - "common.eyaml"
     options:
-      pkcs7_private_key: /tmp/hiera/keys/private_key.pkcs7.pem
-      pkcs7_public_key:  /tmp/hiera/keys/public_key.pkcs7.pem
+      pkcs7_private_key: "%{facts.eyaml_keys_root_path}/private_key.pkcs7.pem"
+      pkcs7_public_key:  "%{facts.eyaml_keys_root_path}/public_key.pkcs7.pem"
