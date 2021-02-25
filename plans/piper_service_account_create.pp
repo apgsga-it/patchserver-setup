@@ -9,7 +9,6 @@ plan piper::piper_service_account_create (
         ensure  => present,
         shell    => '/bin/bash',
         comment  => " ${user} User",
-        # Default password , enrypted with openssl passwd -1 on target
         password => "${lookup('piper::service::target::pw')}",
       }
       ssh::config_entry { $user:
