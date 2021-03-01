@@ -108,6 +108,8 @@ jenkins:
         value: "<%= $zip_dist_repo %>"
       - key: "MAVEN_PROFILE"
         value: "-P-artifactory,<%= $maven_profile %>"
+      - key: "DBZIPS_FILE_PATH"
+        value: "/var/jenkins/dbZips"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
