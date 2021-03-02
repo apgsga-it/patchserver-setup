@@ -34,7 +34,6 @@ vars:
   jenkins_assemble_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
   github_credential_id: apgsga-jenkins
   github_jenkins_version: master
-  hiera_data_repo_path : /tmp/patchserver-setup/hiera
     # TODO (che, 18.11) Tentative, work in progress
   jenikins_users:
       - name: jhe

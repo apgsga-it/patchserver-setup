@@ -13,12 +13,38 @@ plan piper::local_accounts_create (
       $jenkins_private = "${jenkins_ssh_dir}/id_rsa"
       $piper_public = "${piper_ssh_dir}/id_rsa.pub"
       $piper_private = "${piper_ssh_dir}/id_rsa"
-      # Jenkins User und directories
+      # Jenkins User, Ssh Config und directories
       accounts::user { $jenkins_user:
         ensure  => present,
         shell    => '/bin/bash',
         comment  => " ${user} User added with patchserver-setup",
         password => Sensitive("${lookup('jenkins::target::pw')}"),
+      }
+      ssh::config_entry { $jenkins_user:
+        host  => '*',
+        ensure => present,
+        path   => "${jenkins_ssh_dir}/config",
+        owner  => $jenkins_user,
+        group  => $jenkins_user,
+        lines => [
+          '  NoHostAuthenticationForLocalhost yes',
+          '  StrictHostKeyChecking no',
+          '  UserKnownHostsFile=/dev/null'
+        ],
+      }
+      file { $jenkins_public:
+        ensure => file,
+        content => "${lookup('jenkins::ssh::public::key')}",
+        owner => $jenkins_user,
+        group => $jenkins_user,
+        mode => '0644',
+      }
+      file { $jenkins_private:
+        ensure => file,
+        content => "${lookup('jenkins::ssh::private::key')}",
+        owner => $jenkins_user,
+        group => $jenkins_user,
+        mode => '0600',
       }
       file { "/home/${jenkins_user}/.m2":
         ensure => directory,
@@ -41,33 +67,21 @@ plan piper::local_accounts_create (
         group  => $piper_user,
         lines => [
           '  NoHostAuthenticationForLocalhost yes',
+          '  StrictHostKeyChecking no',
+          '  UserKnownHostsFile=/dev/null'
         ],
       }
-      # Private and Public RSA Key for Jenkins and Piper
-      file { $jenkins_public:
-        ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('jenkins::ssh::path::public')}"),
-        owner => $jenkins_user,
-        group => $jenkins_user,
-        mode => '0644',
-      }
-      file { $jenkins_private:
-        ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('jenkins::ssh::path::private')}"),
-        owner => $jenkins_user,
-        group => $jenkins_user,
-        mode => '0600',
-      }
+      # Private and Public RSA Key
       file { $piper_public:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('piper::ssh::path::public')}"),
+        content => "${lookup('piper::ssh::public::key')}",
         owner => $piper_user,
         group => $piper_user,
         mode => '0644',
       }
       file { $piper_private:
         ensure => file,
-        content => file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('piper::ssh::path::private')}"),
+        content => "${lookup('piper::ssh::private::key')}",
         owner => $piper_user,
         group => $piper_user,
         mode => '0600',

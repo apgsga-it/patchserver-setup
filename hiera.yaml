@@ -6,6 +6,7 @@ hierarchy:
     lookup_key: eyaml_lookup_key # eyaml backend
     paths:
       - "environment/%{facts.environment}/config.eyaml"
+      - "environment/%{facts.environment}/ssh_keys.eyaml"
       - "common.eyaml"
     options:
       pkcs7_private_key: "%{facts.eyaml_keys_root_path}/private_key.pkcs7.pem"

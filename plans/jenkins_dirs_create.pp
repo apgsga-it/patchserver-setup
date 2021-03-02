@@ -24,7 +24,7 @@ plan piper::jenkins_dirs_create (
   }
   apply($targets) {
     # apg-patch-service-server user on target
-    $patch_rsa_target = file::read("${targetall.vars[hiera_data_repo_path]}/environment/${targetall.facts[environment]}/${lookup('piper::ssh::path::public')}")
+    $patch_rsa_target = "${lookup('piper::ssh::public::key')}"
     $ssh_keys = "${user_rsa_target}\n${user_rsa_local}"
     file { $temp_dir:
       ensure => directory,
