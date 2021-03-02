@@ -104,6 +104,7 @@ plans_with_user_param << 'piper::jenkins_create_jobs'
 plans_with_user_param << 'piper::jenkins_dirs_create'
 plans_with_user_param << 'piper::piper_service_properties'
 plans_installation_order = []
+plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::test_user_create')
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::cvs_install')
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::git_install')
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::wget_install')
