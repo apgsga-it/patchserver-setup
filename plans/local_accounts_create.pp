@@ -27,9 +27,7 @@ plan piper::local_accounts_create (
         owner  => $jenkins_user,
         group  => $jenkins_user,
         lines => [
-          '  NoHostAuthenticationForLocalhost yes',
-          '  StrictHostKeyChecking no',
-          '  UserKnownHostsFile=/dev/null'
+          '  NoHostAuthenticationForLocalhost yes'
         ],
       }
       file { $jenkins_public:

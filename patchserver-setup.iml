@@ -18,7 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="rbenv: jruby-9.2.11.1 facet library" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="apgsecrets (v0.3.1, rbenv: jruby-9.2.11.1) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="apscli (v0.8.1, rbenv: jruby-9.2.11.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="apscli (v0.8.2, rbenv: jruby-9.2.11.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="artcli (v0.9.3, rbenv: jruby-9.2.11.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="artifactory (v2.8.2, rbenv: jruby-9.2.11.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bcrypt (v3.1.15, rbenv: jruby-9.2.11.1) [gem]" level="application" />
