@@ -1,4 +1,4 @@
-plan addons::ruby_install(
+plan piper::ruby_install(
   TargetSpec $targets
 ) {
   $targets.apply_prep
