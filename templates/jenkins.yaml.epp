@@ -77,7 +77,7 @@ jenkins:
       - key: "GITHUB_JENKINS_VERSION"
         value: "<%= $github_jenkins_version %>"
       - key: "GRADLE_OPTS"
-        value: "-Dgradle.user.home=<%= $gradle_home %>/home"
+        value: "-Dorg.gradle.daemon=false -Dgradle.user.home=<%= $gradle_home %>/home"
       - key: "GRADLE_USER_HOME_PATH"
         value: "<%= $gradle_home %>/home"
       - key: "REVISIONS_FILES_PATH"
