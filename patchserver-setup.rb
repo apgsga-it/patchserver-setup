@@ -105,6 +105,8 @@ plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'pipe
 plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'piper::java_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::gradle_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::maven_install')
+plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::ruby_install')
+
 ## Needs to run before jenkins account creations
 plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::piper_service_account_create')
 plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'piper::jenkins_account_create')
