@@ -224,6 +224,7 @@ jenkins:
         jobNames:
         - "GenericPipelineJobBuilder"
         - "PatchJobBuilder"
+        - "DeleteLocksJob"
         name: "Utility"
     - all:
         name: "all"
