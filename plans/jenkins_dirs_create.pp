@@ -40,7 +40,7 @@ plan piper::jenkins_dirs_create (
     }
     file { $home_dir/apg-script/branchWorkaround.sh:
       ensure => file,
-      content => epp('piper/runBranchWorkaround.xml.epp', { }),      
+      content => epp('piper/branchWorkaround.sh.epp', { }),      
       owner => $jenkins_user,
       group => $jenkins_user,
       mode => '0640',
