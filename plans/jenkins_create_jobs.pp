@@ -26,4 +26,16 @@ plan piper::jenkins_create_jobs (
     }
     $generic_builder_cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job GenericPipelineJobBuilder < <(cat ${generic_builder_template})"
     run_command("bash -c \'${generic_builder_cmd}\'", $targets, '_catch_errors' => false, '_run_as' => "${user}")
+
+    #Workaround Job for DB-Module Branching
+    $generic_builder_template = "/tmp/genericbuilder-config.xml"
+    apply($targets) {
+      file { $generic_builder_template:
+          ensure  => file,
+          content => epp('piper/runBranchWorkaround.xml.epp', {  })
+        }
+    }
+    $generic_builder_cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job GenericPipelineJobBuilder < <(cat ${generic_builder_template})"
+    run_command("bash -c \'${generic_builder_cmd}\'", $targets, '_catch_errors' => false, '_run_as' => "${user}")
+
 }
