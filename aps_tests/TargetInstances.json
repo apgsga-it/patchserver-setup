@@ -130,6 +130,11 @@
       "name": "CHEI211",
       "services": [
         {
+          "installationHost": "dev-chpi211.apgsga.ch",
+          "serviceName": "it21-db",
+          "serviceType": "oracle-db"
+        },
+        {
           "installationHost": "192.168.1.12",
           "serviceName": "echoservice",
           "serviceType": "linuxservice"
