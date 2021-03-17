@@ -32,6 +32,19 @@ plan piper::jenkins_dirs_create (
       group => $jenkins_user,
       mode => '0777',
     }
+    file { $home_dir/apg-script:
+      ensure => directory,
+      owner => $jenkins_user,
+      group => $jenkins_user,
+      mode => '0777',
+    }
+    file { $home_dir/apg-script/branchWorkaround.sh:
+      ensure => file,
+      content => epp('piper/runBranchWorkaround.xml.epp', { }),      
+      owner => $jenkins_user,
+      group => $jenkins_user,
+      mode => '0640',
+    }
     file { '/etc/jenkins':
        ensure => directory,
        owner => $jenkins_user,
