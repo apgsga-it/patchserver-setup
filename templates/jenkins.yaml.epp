@@ -111,7 +111,7 @@ jenkins:
       - key: "DBZIPS_FILE_PATH"
         value: "/var/jenkins/dbZips"
       - key: "ENVIRONMENT"
-        value: <%= $environment %>"
+        value: "<%= $environment %>"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
