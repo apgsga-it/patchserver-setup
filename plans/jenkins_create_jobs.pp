@@ -26,7 +26,7 @@ plan piper::jenkins_create_jobs (
           # If the run_task failed extract the result set from the error.
           Error['bolt/run-failure'] : { $command_result.details['result_set'] }
           # The sub-plan failed for an unexpected reason.
-          default : { fail_plan($command_result) }
+          default : { fail_plan("$command_result") }
         }
         $std_err =$result.first.value['stderr']
         if $std_err and  !$std_err.empty {
@@ -35,7 +35,7 @@ plan piper::jenkins_create_jobs (
              out::message($std_err)
              out::message("But continueing, since Job ${job_name} already exists")
            } else {
-              fail_plan($command_result)
+              fail_plan("$command_result")
            }
         } else {
            out::message("Creating Job ${job_name} completed.")
