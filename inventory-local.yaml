@@ -7,20 +7,17 @@ config:
   ssh:
     run-as: root
 vars:
-  install_ssh_user: apg_install
-  install_ssh_pw: apg_install
   piper_bind_address:  # empty for local testing
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMock
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
-  cm_db_piper_user: cm_example_user
-  cm_db_piper_pw: cm_example_user_pw
   yum_repo: multiservice_yumdev
   pipeline_mail_env: JENKINS-LOCAL
   number_jenkins_executors: 10
 facts:
   environment: development
+  eyaml_keys_root_path: /tmp/patchserver-setup/hiera/keys/
 
 # For Testing , see ./patchserver-tests-setup.rb
 testapps:

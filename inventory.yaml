@@ -15,8 +15,6 @@ vars:
   install_ssh_pw_key: deployPw
   piper_jenkins_user:  cmPiper
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
-  artifactory_user: dev
-  artifactory_passwd: SdUi3FY1vwHal33UOM/3DQ==
   gem_repo: artifactory4t4apgsga.jfrog.io/artifactory/api/gems/apgGems
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
@@ -34,7 +32,6 @@ vars:
   jenkins_assemble_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
   github_credential_id: apgsga-jenkins
   github_jenkins_version: master
-  hiera_data_repo_path : /tmp/patchserver-setup/hiera
     # TODO (che, 18.11) Tentative, work in progress
   jenkins_users:
       - name: jhe

@@ -44,8 +44,13 @@ def create_new_temp_dir(opts)
   puts "Done."
 end
 
-def git_apg_clone(opts, repo, target_dir)
-  gitcmd = "git clone #{opts[:user]}@git.apgsga.ch:/var/git/repos/#{repo}  #{TEMP_DIR_SETUP}/#{target_dir}"
+def git_apg_clone(opts, repo, target_dir, branch = nil )
+  if branch
+    gitcmd = "git clone -b #{branch}  --single-branch #{opts[:user]}@git.apgsga.ch:/var/git/repos/#{repo}  #{TEMP_DIR_SETUP}/#{target_dir}"
+  else
+    gitcmd = "git clone #{opts[:user]}@git.apgsga.ch:/var/git/repos/#{repo}  #{TEMP_DIR_SETUP}/#{target_dir}"
+  end
+
   puts "Executeing : #{gitcmd} "
   if opts[:dry]
     "Nope , doing nothing, dry run"
@@ -71,7 +76,7 @@ opts = Slop.parse do |o|
   o.string '-t', '--target', 'One of the Puppet inventory Files predefined Target group names, which will be executed. Values: local,test and prod. Defaults to local', default: 'local'
   o.bool '-a', '--all', 'Execute all Bolt plans'
   o.bool '-x', '--xceptJenkins', 'Execute Plans only, which are pre-condition for the Piper related plans ', default: false
-  o.bool '-aa', '--allPiper', 'Execute Plans only, which are related to Piper ', default: false
+  o.bool '-aa', '--allPiper', 'Execute Plans only, which are related to Piper und the Jenkins Installation ', default: false
   o.array '-i', '--install', 'Bolt installation plans to executed on the target host(s), , separated by <,>, the plan names can also match partially ', delimiter: ','
   o.separator ''
   o.separator 'other options:'
@@ -108,9 +113,7 @@ plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'pipe
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::ruby_install')
 
 ## Needs to run before jenkins account creations
-plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::piper_service_account_create')
-plans_installation_order << OpenStruct.new('install_order' => 11, 'name' => 'piper::jenkins_account_create')
-plans_installation_order << OpenStruct.new('install_order' => 12, 'name' => 'piper::accounts_sshkeys')
+plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::local_accounts_create')
 plans_installation_order << OpenStruct.new('install_order' => 13, 'name' => 'piper::jenkins_dirs_create')
 plans_installation_order << OpenStruct.new('install_order' => 20, 'name' => 'piper::jenkins_service_install')
 plans_installation_order << OpenStruct.new('install_order' => 30, 'name' => 'piper::jenkins_create_jobs')

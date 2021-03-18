@@ -32,13 +32,13 @@ plan piper::gradle_cred_setup (
 					group => $jenkins_user,
 					mode => '0700',
 				}
-				exec { "gradle addCredentials --key ${targetall.vars[install_ssh_user_key]} --value ${targetall.vars[install_ssh_user]} -Dgradle.user.home=${targetall.vars[gradle_home]}/home --stacktrace --info":
+				exec { "gradle addCredentials --key ${targetall.vars[install_ssh_user_key]} --value ${lookup('install::ssh::user')} -Dgradle.user.home=${targetall.vars[gradle_home]}/home --stacktrace --info":
 					cwd     => $temp_dir,
 					path     => ['/opt/gradle/bin', '/usr/bin'],
 					user    => $jenkins_user,
 					group   => $jenkins_user,
 				}
-				exec { "gradle addCredentials --key ${targetall.vars[install_ssh_pw_key]} --value ${targetall.vars[install_ssh_pw]} -Dgradle.user.home=${targetall.vars[gradle_home]}/home --stacktrace --info":
+				exec { "gradle addCredentials --key ${targetall.vars[install_ssh_pw_key]} --value ${lookup('install::ssh::pw')} -Dgradle.user.home=${targetall.vars[gradle_home]}/home --stacktrace --info":
 					cwd     => $temp_dir,
 					path     => ['/opt/gradle/bin', '/usr/bin'],
 					user    => $jenkins_user,

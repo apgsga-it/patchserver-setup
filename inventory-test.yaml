@@ -7,21 +7,17 @@ config:
     run-as: root
 vars:
  # Local Test Vm specific configuration properties
-  piper_bind_address:  localhost # TODO (che, 23.2) : needs to be verified
+  piper_bind_address:  localhost
   piper_cvs_remote_host: cvs-t.apgsga.ch
   piper_spring_profiles: live,remotecvs, patchOMat
-  install_ssh_user: apg_install # TODO (che, 11.2 ) Needs to be adopted
-  install_ssh_pw: <apg_install_pwd> # TODO (che, 11.2 ) Needs to be adopted
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
-  cm_db_piper_user: cm_installer
-  cm_db_piper_pw: <cm_installer_pwd>
   yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified
   pipeline_mail_env: JENKINS-TEST
   number_jenkins_executors: 12
   db_patch_repo: dbpatch-test/ # TODO JHE , possibly deprecated
   releases_patch_repo: releases-test/
   zip_dist_repo: zip-dist-test # TODO JHE, possibly deprecated
-
 facts:
   environment: integration
+  eyaml_keys_root_path: /tmp/patchserver-setup/hiera/keys/
