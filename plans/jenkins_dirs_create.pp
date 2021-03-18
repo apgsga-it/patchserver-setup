@@ -46,7 +46,7 @@ plan piper::jenkins_dirs_create (
     }
     file { '/etc/jenkins/casc/jenkins.yaml':
       ensure  => file,
-      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${user}" , 'authorized_keys' => $ssh_keys ,  'piper_authorized_keys' => $patch_rsa_target ,  'maven_profile' => $maven_profile}),
+      content => epp('piper/jenkins.yaml.epp', { 'jenkinsuser' => "${user}" , 'authorized_keys' => $ssh_keys ,  'piper_authorized_keys' => $patch_rsa_target ,  'maven_profile' => $maven_profile, ,  'environment' => $targetall.facts[environment]}),
       owner => $jenkins_user,
       group => $jenkins_user,
       mode => '0644',

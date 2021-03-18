@@ -29,16 +29,16 @@ plan piper::jenkins_create_jobs (
           default : { fail_plan($command_result) }
         }
         $std_err =$result.first.value['stderr']
-        if !$std_err.empty {
+        if $std_err and  !$std_err.empty {
            $rs = $std_err =~ /already exists/
            if $rs {
              out::message($std_err)
              out::message("But continueing, since Job ${job_name} already exists")
            } else {
-             fail_plan($command_result)
+              fail_plan($command_result)
            }
         } else {
-          out::message("Creating Job ${job_name} completed.")
+           out::message("Creating Job ${job_name} completed.")
         }
      }
 }
