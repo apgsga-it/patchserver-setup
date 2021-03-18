@@ -5,37 +5,40 @@ plan piper::jenkins_create_jobs (
 
     #Patch Pipeline Job Builder
      $targets.apply_prep
-     $patch_builder_template = "/tmp/patchbuilder-config.xml"
-     apply($targets) {
-		 		file { $patch_builder_template:
-		 			ensure  => file,
-					content => epp('piper/patchbuilder-config.xml.epp', {  })
-				}
-     }
      $targetall = get_targets('all')[0]
-     $patch_builder_cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job PatchJobBuilder < <(cat ${patch_builder_template})"
-     run_command("bash -c \'${patch_builder_cmd}\'", $targets, '_catch_errors' => false, '_run_as' => "${user}")
-
-    #Generic Pipeline Job Builder
-    $generic_builder_template = "/tmp/genericbuilder-config.xml"
-    apply($targets) {
-      file { $generic_builder_template:
-          ensure  => file,
-          content => epp('piper/genericbuilder-config.xml.epp', {  })
+     $templates_names = ['patchbuilder-config', 'genericbuilder-config','delete-locks-config']
+     $job_names = ['PatchJobBuilder','GenericPipelineJobBuilder','DeleteLocksJob']
+     zip($templates_names,$job_names).each  |$template_row| {
+        $template_name = $template_row[0]
+        $job_name = $template_row[1]
+        $template_file = "/tmp/${template_name}.xml"
+        apply($targets) {
+          file { $template_file:
+            ensure  => file,
+            content => epp("piper/${template_name}.xml.epp", {  })
+          }
         }
-    }
-    $generic_builder_cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job GenericPipelineJobBuilder < <(cat ${generic_builder_template})"
-    run_command("bash -c \'${generic_builder_cmd}\'", $targets, '_catch_errors' => false, '_run_as' => "${user}")
-
-    #Workaround Job for DB-Module Branching
-    $generic_builder_template = "/tmp/genericbuilder-config.xml"
-    apply($targets) {
-      file { $generic_builder_template:
-          ensure  => file,
-          content => epp('piper/runBranchWorkaround.xml.epp', {  })
+        $cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job ${job_name} < <(cat ${template_file})"
+        $command_result = run_command("bash -c \'${cmd}\'", $targets, '_catch_errors' => true, '_run_as' => "${user}")
+        $result = case $command_result {
+          # When the plan returned a ResultSet use it.
+          ResultSet: { $command_result }
+          # If the run_task failed extract the result set from the error.
+          Error['bolt/run-failure'] : { $command_result.details['result_set'] }
+          # The sub-plan failed for an unexpected reason.
+          default : { fail_plan($command_result) }
         }
-    }
-    $generic_builder_cmd = "ssh -o \"StrictHostKeyChecking=no\" -l ${user}  -p ${targetall.vars[jenkins_cli_port]} localhost  create-job GenericPipelineJobBuilder < <(cat ${generic_builder_template})"
-    run_command("bash -c \'${generic_builder_cmd}\'", $targets, '_catch_errors' => false, '_run_as' => "${user}")
-
+        $std_err =$result.first.value['stderr']
+        if !$std_err.empty {
+           $rs = $std_err =~ /already exists/
+           if $rs {
+             out::message($std_err)
+             out::message("But continueing, since Job ${job_name} already exists")
+           } else {
+             fail_plan($command_result)
+           }
+        } else {
+          out::message("Creating Job ${job_name} completed.")
+        }
+     }
 }

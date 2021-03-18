@@ -7,18 +7,15 @@ config:
     run-as: root
 vars:
   admin_user_email : it.architektur@apgsga.ch
-  install_ssh_user: apg_install # TODO (che, 11.2 ) Needs to be adopted
-  install_ssh_pw: apg_install # TODO (che, 11.2 ) Needs to be adopted
-  piper_bind_address:  localhost # TODO verify
+  piper_bind_address:  localhost
   piper_cvs_remote_host: cvs.apgsga.ch
   piper_spring_profiles: live,remotecvs,patchOMat
   artifactory_repo: repo
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
-  cm_db_piper_user: cm_example_user # TODO  TODO (che, 10.2)  -> hiera?
-  cm_db_piper_pw: cm_example_user_pw # TODO  TODO (che, 10.2)  -> hiera?
   yum_repo: multiservice_yumprod
   pipeline_mail_env: JENKINS-PROD
   number_jenkins_executors: 12
 facts:
   environment: production
+  eyaml_keys_root_path: /tmp/patchserver-setup/hiera/keys/ # TODO (jhe,uge) : to be adapted according to requirements

@@ -152,6 +152,21 @@ jenkins:
             providerId: "default"
         - sshPublicKey:
             authorizedKeys:  "<%= $piper_authorized_keys %>"
+<% $jenkins_users.each |$user| { -%>
+      - id: "<%= $user[name] %>"
+        name: "<%= $user[name] %>"
+        password: "<%= $user[name] %>"
+        properties:
+        - "apiToken"
+        - mailer:
+            emailAddress: "<%= $user[email] %>"
+        - preferredProvider:
+            providerId: "default"
+<% if  $user[name] == $jenkinsuser { -%>
+        - sshPublicKey:
+            authorizedKeys:  "<%= $authorized_keys %>"
+<% } -%>
+<% } -%>
   slaveAgentPort: 0
   updateCenter:
     sites:
@@ -224,6 +239,7 @@ jenkins:
         jobNames:
         - "GenericPipelineJobBuilder"
         - "PatchJobBuilder"
+        - "DeleteLocksJob"
         name: "Utility"
     - all:
         name: "all"

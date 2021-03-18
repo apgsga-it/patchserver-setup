@@ -1,9 +1,13 @@
 version: 5
-hierarchy:
-  - name: "Common Data"
-    path: "common.yaml"
-  - name: "Environment"
-    path: "environment/%{facts.environment}/config.yaml"
 defaults:
-  data_hash: yaml_data
   datadir: /tmp/patchserver-setup/hiera
+hierarchy:
+  - name: "Secret data: per Target environment"
+    lookup_key: eyaml_lookup_key # eyaml backend
+    paths:
+      - "environment/%{facts.environment}/config.eyaml"
+      - "environment/%{facts.environment}/ssh_keys.eyaml"
+      - "common.eyaml"
+    options:
+      pkcs7_private_key: "%{facts.eyaml_keys_root_path}/private_key.pkcs7.pem"
+      pkcs7_public_key:  "%{facts.eyaml_keys_root_path}/public_key.pkcs7.pem"

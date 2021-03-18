@@ -10,7 +10,7 @@ plan piper::piper_service_yum_repo (
                       enabled =>  true,
                       gpgcheck => false,
                       descr => 'Apg Piper Repo',
-                      baseurl => "https://${lookup('yum::user:name')}:${lookup('yum::user:pw')}@${artifactory_uri}/${yum_repo}",
+                      baseurl => "https://${lookup('yum::user::name')}:${lookup('yum::user::pw')}@${artifactory_uri}/${yum_repo}",
                       target => '/etc/yum.repos.d/Apg-Piper-Yum.repo'},
               },
               managed_repos => ['Apg-Piper-Yum'],
