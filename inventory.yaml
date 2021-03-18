@@ -33,6 +33,12 @@ vars:
   github_credential_id: apgsga-jenkins
   github_jenkins_version: master
     # TODO (che, 18.11) Tentative, work in progress
-  jenikins_users:
+  jenkins_users:
       - name: jhe
+        email: Julien.Helbling@apgsga.ch
       - name: uge
+        email: Ulrich.Genner@apgsga.ch
+      - name: stb
+        email: Stefan.Brandenberger@apgsga.ch
+      - name: che
+        email: chhenrici@gmail.com
