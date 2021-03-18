@@ -15,6 +15,9 @@ vars:
   yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified
   pipeline_mail_env: JENKINS-TEST
   number_jenkins_executors: 12
+  db_patch_repo: dbpatch-test/ # TODO JHE , possibly deprecated
+  releases_patch_repo: releases-test/
+  zip_dist_repo: zip-dist-test # TODO JHE, possibly deprecated
 facts:
   environment: integration
   eyaml_keys_root_path: /tmp/patchserver-setup/hiera/keys/

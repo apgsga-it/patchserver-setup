@@ -15,14 +15,12 @@ vars:
   install_ssh_pw_key: deployPw
   piper_jenkins_user:  cmPiper
   artifactory_uri: artifactory4t4apgsga.jfrog.io/artifactory
+  gem_repo: artifactory4t4apgsga.jfrog.io/artifactory/api/gems/apgGems
   gradle_home: /var/jenkins/gradle
   maven_home: /var/jenkins/maven
-  db_patch_repo: dbpatch-test/
-  patch_db_folder: /var/opt/apg-patch-service-server/db/
+  patch_db_folder: /var/opt/apg-patch-service-server/db/ # TODO JHE , possibly deprecated
   pipeline_error_mail_to:  4e8212db.apgsgacloud.onmicrosoft.com@emea.teams.ms,Julien.Helbling@apgsga.ch,Ulrich.Genner@apgsga.ch,Stefan.Brandenberger@apgsga.ch]
   pipeline_mail_from: 5f23eabe.apgsgacloud.onmicrosoft.com@emea.teams.ms
-  releases_patch_repo: releases-test/
-  zip_dist_repo: zip-dist-test
   jenkins_cli_port: 53801
   piper_jenkins_host: localhost
   piper_server_port: 9010
