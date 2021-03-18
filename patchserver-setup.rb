@@ -147,7 +147,7 @@ if !opts[:skipGradleClone]
   git_apg_clone(opts, "apg-gradle-properties.git", "gradlehome")
 end
 if !opts[:skipHieraClone]
-  git_apg_clone(opts,"patchserver-setup-hiera","hiera", "che-IT-36775")
+  git_apg_clone(opts,"patchserver-setup-hiera","hiera")
 end
 if !opts[:install].empty? and (opts[:all] or  opts[:xceptJenkins]  or opts[:allPiper])
   puts 'Specify either  -a, -x , -aa or -i option'
