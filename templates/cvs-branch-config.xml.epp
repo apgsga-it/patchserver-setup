@@ -36,13 +36,13 @@
     agent any
 
     environment {
-        def myRequest         =&quot;/var/lib/jenkins/apg-script/branchWorkaround.sh&quot;
+        def myRequest  =&apos;/opt/apg-patch-service-server/bin/branchWorkaround.sh $CVS_ROOT&apos;
     }
 
     triggers {
         cron(&apos;*/5 6-16 * * 1-5&apos;)
     }
-	
+
     stages {
 		stage(&quot;Test&quot;) {
 		    steps {
@@ -62,7 +62,6 @@
 		}
 	}
 }</script>
-    <sandbox>true</sandbox>
   </definition>
   <triggers/>
   <disabled>false</disabled>
