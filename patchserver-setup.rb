@@ -22,7 +22,7 @@ def parse_show_plans_output(output,opts)
     lines = output.split("\n")
     lines.each do |line|
       if line.match(/piper::/)
-        plans_available << line
+        plans_available << line.strip
       end
     end
   end
