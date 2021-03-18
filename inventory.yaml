@@ -32,7 +32,6 @@ vars:
   jenkins_assemble_pipeline_script_path: src/main/groovy/assembleAndDeployPipeline.groovy
   github_credential_id: apgsga-jenkins
   github_jenkins_version: master
-    # TODO (che, 18.11) Tentative, work in progress
   jenkins_users:
       - name: jhe
         email: Julien.Helbling@apgsga.ch
