@@ -130,7 +130,7 @@
       "name": "CHEI211",
       "services": [
         {
-          "installationHost": "dev-chpi211.apgsga.ch",
+          "installationHost": "dev-chei211.apgsga.ch",
           "serviceName": "it21-db",
           "serviceType": "oracle-db"
         },
