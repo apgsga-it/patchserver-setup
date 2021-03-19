@@ -206,6 +206,7 @@ jenkins:
         - "lastFailure"
         - "lastDuration"
         - "buildButton"
+        includeRegex: "(^(?!.*CHEI211))|(^(?!.*CHTI211))|(^(?!.*CHPI211))|(^.*CHEI21.*)|(^.*CHTI21.*)|(^.*CHPI21.*)|(^.*light.*)|(^.*dev-.*)"
         name: "TargetOthers"
     - list:
         columns:
@@ -242,6 +243,7 @@ jenkins:
         - "GenericPipelineJobBuilder"
         - "PatchJobBuilder"
         - "DeleteLocksJob"
+        - "CvsBranchJob"
         name: "Utility"
     - all:
         name: "all"
