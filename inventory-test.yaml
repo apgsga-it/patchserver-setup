@@ -9,7 +9,7 @@ vars:
  # Local Test Vm specific configuration properties
   piper_bind_address:  localhost
   piper_cvs_remote_host: cvs-t.apgsga.ch
-  piper_spring_profiles: live,remotecvs, patchOMat
+  piper_spring_profiles: live,remotecvs, patchOMat, mockDocker
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified

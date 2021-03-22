@@ -9,7 +9,7 @@ vars:
   admin_user_email : it.architektur@apgsga.ch
   piper_bind_address:  localhost
   piper_cvs_remote_host: cvs.apgsga.ch
-  piper_spring_profiles: live,remotecvs,patchOMat
+  piper_spring_profiles: live,remotecvs,patchOMat,liveDocker
   artifactory_repo: repo
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
