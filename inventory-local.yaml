@@ -9,7 +9,7 @@ config:
 vars:
   piper_bind_address:  # empty for local testing
   piper_cvs_remote_host: cvs-t.apgsga.ch
-  piper_spring_profiles: live,remotecvs, patchOMock
+  piper_spring_profiles: live,remotecvs, patchOMock,mockDocker
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   yum_repo: multiservice_yumdev
