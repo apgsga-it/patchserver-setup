@@ -112,6 +112,10 @@ jenkins:
         value: "/var/jenkins/dbZips"
       - key: "ENVIRONMENT"
         value: "<%= $environment %>"
+      - key: "ARCHIVE_SERVER_HOST"
+        value: "svcit21install@apg-cmp-p-001.affichage-p.ch"
+      - key: "ARCHIVE_SERVER_PATH"
+        value: "C:\\\\local\\\\archive\\\\cm\\\\appl-patch"
   labelAtoms:
   - name: "master"
   markupFormatter: "plainText"
