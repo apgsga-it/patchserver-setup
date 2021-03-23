@@ -7,7 +7,7 @@ credentials:
           id: "apgsga-jenkins"
           password: ""
           scope: GLOBAL
-          username: "<%= $jenkinsuser %>"
+          username: "<%= $github_credential_id %>"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
