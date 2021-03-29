@@ -199,7 +199,7 @@ jenkins:
         - "lastFailure"
         - "lastDuration"
         - "buildButton"
-        includeRegex: ".*CHEI211"
+        includeRegex: "(?i).*CHEI211"
         name: "TargetE1"
     - list:
         columns:
@@ -221,7 +221,7 @@ jenkins:
         - "lastFailure"
         - "lastDuration"
         - "buildButton"
-        includeRegex: ".*CHPI211"
+        includeRegex: "(?i).*CHPI211"
         name: "TargetP1"
     - list:
         columns:
@@ -232,7 +232,7 @@ jenkins:
         - "lastFailure"
         - "lastDuration"
         - "buildButton"
-        includeRegex: ".*CHTI211"
+        includeRegex: "(?i).*CHTI211"
         name: "TargetT1"
     - list:
         columns:
