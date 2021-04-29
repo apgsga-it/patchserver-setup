@@ -1,0 +1,107 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.7.2"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.7.2">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>patch</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>patchTarget</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>patchTask</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>patchTaskStatus</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>patchTaskNotification</name>
+          <description></description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>emailTo</name>
+          <description></description>
+          <defaultValue>ulrich.genner@apgsga.ch</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>callingFrom</name>
+          <description></description>
+          <defaultValue>nicht verfügbar</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.83">
+    <script>pipeline {
+    agent any
+    
+    environment {
+        myPatch                 = &quot;${env.patch}&quot;
+        myPatchTarget           = &quot;${env.patchTarget}&quot;
+        myPatchTask             = &quot;${env.patchTask}&quot;
+        myPatchTaskStatus       = &quot;${env.patchTaskStatus}&quot;
+        myPatchTaskNotification = &quot;${env.patchTaskNotification}&quot;
+        myEmailTo               = &quot;${env.emailTo}&quot;
+
+        myEmailSubject=&quot;APG|SGA IT21 ${myPatchTarget.toUpperCase()} - Patch ${myPatch} ${myPatchTask} ${myPatchTaskStatus} ${myPatchTaskNotification}&quot;
+        myEmailText=&quot;Patch-Info für IT21 Umgebung ${myPatchTarget.toUpperCase()}\n\nPatch ${myPatch}\n Verarbeitungs-Schritt: ${myPatchTask}, Ergebnis: ${myPatchTaskStatus}\n Patch-Status ${myPatchTaskNotification}\n Bearbeitung unter https://cm-ui.apgsga.ch/patch-edit/patchNumber=${myPatch}\n\n(techn.) Verarbeitungs-Details ${callingFrom}&quot;
+        myEmailCMFooting=&quot;\n\nAnleitung unter https://wiki.apgsga.ch/pages/viewpage.action?pageId=38830672&quot;
+        myEmailFooting=&quot;\n\n\n\nRueckfragen bitte an mailto:it.architektur@apgsga.ch\nMail automatisch erzeugt aus Jenkins Job \&quot;${BUILD_URL}\&quot;&quot;
+
+        myEmailToOnError=&quot;it.architektur@apgsga.ch&quot;
+    }
+     
+    stages {
+        stage(&apos;sendMail&apos;) {
+            steps {
+                echo &quot;Mail to: \&quot;${myEmailTo}\&quot;&quot;
+                echo &quot;     subject: \&quot;${myEmailSubject}\&quot;&quot;
+                echo &quot;     body:    \&quot;${myEmailText}${myEmailCMFooting}${myEmailFooting}\&quot;&quot;
+                emailext to: &quot;${myEmailTo}&quot;, subject: &quot;${myEmailSubject}&quot;, body: &quot;${myEmailText}${myEmailCMFooting}${myEmailFooting}&quot;
+            }
+        }
+    }
+    
+	post {
+        failure {
+            echo &quot;Mail to \&quot;${myEmailToOnError}\&quot;&quot;
+            echo &quot;     subject: \&quot;ERROR: ${myEmailSubject}\&quot;&quot;
+            echo &quot;     body:    \&quot;${myEMailText}${myEmailFooting}\&quot;&quot;
+            emailext to: &quot;${myEmailToOnError}&quot;, subject: &quot;ERROR: ${myEMailSubject}&quot;, body: &quot;${myEMailText}${myEmailFooting}&quot;
+        }
+	}
+    
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
