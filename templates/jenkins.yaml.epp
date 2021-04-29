@@ -245,6 +245,7 @@ jenkins:
         - "buildButton"
         jobNames:
         - "GenericPipelineJobBuilder"
+        - "notifyPatchStatus"
         - "PatchJobBuilder"
         - "DeleteLocksJob"
         - "CvsBranchJob"
