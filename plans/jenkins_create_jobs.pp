@@ -6,8 +6,8 @@ plan piper::jenkins_create_jobs (
     #Patch Pipeline Job Builder
      $targets.apply_prep
      $targetall = get_targets('all')[0]
-     $templates_names = ['patchbuilder-config', 'genericbuilder-config','delete-locks-config','cvs-branch-config']
-     $job_names = ['PatchJobBuilder','GenericPipelineJobBuilder','DeleteLocksJob','CvsBranchJob']
+     $templates_names = ['patchbuilder-config', 'genericbuilder-config','delete-locks-config','cvs-branch-config','patchConflictNotificationPipeline-config']
+     $job_names = ['PatchJobBuilder','GenericPipelineJobBuilder','DeleteLocksJob','CvsBranchJob','patchConflictNotificationPipeline']
      zip($templates_names,$job_names).each  |$template_row| {
         $template_name = $template_row[0]
         $job_name = $template_row[1]
