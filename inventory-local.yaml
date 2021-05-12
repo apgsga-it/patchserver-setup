@@ -13,7 +13,7 @@ vars:
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   yum_repo: multiservice_yumdev
-  pipeline_mail_env: JENKINS-LOCAL
+  pipeline_mail_env: CM-LOCAL
   number_jenkins_executors: 10
 facts:
   environment: development

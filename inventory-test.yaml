@@ -13,7 +13,7 @@ vars:
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   yum_repo: multiservice_yumdev # TODO (che, 23.2 ) : needs to be verified
-  pipeline_mail_env: JENKINS-TEST
+  pipeline_mail_env: CM-TEST
   number_jenkins_executors: 12
   db_patch_repo: dbpatch-test/ # TODO JHE , possibly deprecated
   releases_patch_repo: releases-test/

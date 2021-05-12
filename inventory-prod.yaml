@@ -14,7 +14,7 @@ vars:
   cm_db_host: chti212.apgsga.ch
   cm_db_instance: chti212
   yum_repo: multiservice_yumprod
-  pipeline_mail_env: JENKINS-PROD
+  pipeline_mail_env: CM-PROD
   number_jenkins_executors: 12
 facts:
   environment: production
