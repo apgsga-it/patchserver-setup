@@ -1,0 +1,57 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+  <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.7.2"/>
+<org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.7.2">
+  <jobProperties/>
+  <triggers/>
+  <parameters/>
+  <options/>
+  </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+<description>Job sending mail notification to developers regarding patch containing same objects.</description>
+<keepDependencies>false</keepDependencies>
+<properties>
+<jenkins.model.BuildDiscarderProperty>
+  <strategy class="hudson.tasks.LogRotator">
+  <daysToKeep>30</daysToKeep>
+<numToKeep>50</numToKeep>
+<artifactDaysToKeep>-1</artifactDaysToKeep>
+<artifactNumToKeep>-1</artifactNumToKeep>
+</strategy>
+</jenkins.model.BuildDiscarderProperty>
+  <hudson.model.ParametersDefinitionProperty>
+  <parameterDefinitions>
+  <hudson.model.StringParameterDefinition>
+  <name>PARAMETERS</name>
+<description></description>
+<defaultValue>defaultJsonString</defaultValue>
+<trim>false</trim>
+</hudson.model.StringParameterDefinition>
+  </parameterDefinitions>
+</hudson.model.ParametersDefinitionProperty>
+  </properties>
+<definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.83">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.2">
+  <configVersion>2</configVersion>
+<userRemoteConfigs>
+<hudson.plugins.git.UserRemoteConfig>
+  <url><%= $pipeline_repo %></url>
+<credentialsId><%= $github_credential_id %></credentialsId>
+</hudson.plugins.git.UserRemoteConfig>
+  </userRemoteConfigs>
+<branches>
+<hudson.plugins.git.BranchSpec>
+  <name>${GITHUB_JENKINS_VERSION}</name>
+</hudson.plugins.git.BranchSpec>
+  </branches>
+<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+<submoduleCfg class="list"/>
+<extensions/>
+</scm>
+<scriptPath>src/main/groovy/patchConflictNotificationPipeline.groovy</scriptPath>
+<lightweight>false</lightweight>
+</definition>
+<triggers/>
+<disabled>false</disabled>
+</flow-definition>

@@ -17,9 +17,9 @@ plan piper::maven_install(
         }
 
     }
-    $dirname = 'apache-maven-3.2.2'
+    $dirname = 'apache-maven-3.8.1'
     $filename = "${dirname}-bin.zip"
-    $mirror = 'https://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.org/dist/maven/binaries/'
+    $mirror = 'https://downloads.apache.org/maven/maven-3/3.8.1/binaries/'
     $install_path = "/opt/${dirname}"
     $profile = @(EOT)
             export MAVEN_HOME=/opt/maven
