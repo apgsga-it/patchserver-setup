@@ -111,6 +111,7 @@ plans_installation_order << OpenStruct.new('install_order' => 1, 'name' => 'pipe
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::gradle_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::maven_install')
 plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::ruby_install')
+plans_installation_order << OpenStruct.new('install_order' => 2, 'name' => 'piper::ruby_gems_install')
 
 ## Needs to run before jenkins account creations
 plans_installation_order << OpenStruct.new('install_order' => 10, 'name' => 'piper::local_accounts_create')
