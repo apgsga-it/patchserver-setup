@@ -199,6 +199,17 @@ jenkins:
         - "lastFailure"
         - "lastDuration"
         - "buildButton"
+        includeRegex: "(?i).*MASTER-LIGHT"
+        name: "Target MASTER-LIGHT"
+    - list:
+        columns:
+        - "status"
+        - "weather"
+        - "jobName"
+        - "lastSuccess"
+        - "lastFailure"
+        - "lastDuration"
+        - "buildButton"
         includeRegex: "(?i).*CHEI211"
         name: "TargetE1"
     - list:
@@ -244,11 +255,12 @@ jenkins:
         - "lastDuration"
         - "buildButton"
         jobNames:
+        - "CvsBranchJob"
+        - "DeleteLocksJob"
         - "GenericPipelineJobBuilder"
         - "notifyPatchStatus"
+        - "patchConflictNotificationPipeline"
         - "PatchJobBuilder"
-        - "DeleteLocksJob"
-        - "CvsBranchJob"
         name: "Utility"
     - all:
         name: "all"
